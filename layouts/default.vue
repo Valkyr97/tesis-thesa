@@ -2,7 +2,7 @@
 
 <template>
   <Nav />
-  <div class="w-5/6 mx-auto">
+  <div class="default_layout">
     <slot />
   </div>
   <Footer />

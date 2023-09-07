@@ -2,7 +2,11 @@
 
 <template>
   <NuxtLayout>
-    <h1>Hechos Interesantes</h1>
+    <h1
+      class="text-7xl text-indigo-900 font-semibold uppercase w-full tracking-tighter py-12 text-center"
+    >
+    Hechos de Interés
+    </h1>
   </NuxtLayout>
 </template>
 

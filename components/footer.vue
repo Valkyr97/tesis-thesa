@@ -12,17 +12,19 @@ const handleFooterNav = (href: string) => {
 
 <template>
   <div class="border-t-2 border-gray-300 py-12">
-    <div class="w-5/6 mx-auto">
-      <div class="flex place-content-between">
-        <div v-for="col in footerData" class="flex flex-col space-y-3">
+    <div class="default_layout">
+      <div
+        class="flex flex-col md:flex-row items-center space-y-12 md:space-y-0 md:items-start md:place-content-between"
+      >
+        <div v-for="col in footerData" class="flex flex-col space-y-1.5 md:space-y-3 items-center md:items-start">
           <h4
-            class="uppercase text-indigo-900 font-medium pb-4 text-2xl"
+            class="uppercase text-indigo-900 font-medium pb-4 text-2xl md:text-xl xl:text-2xl"
           >
             {{ col.title }}
           </h4>
           <span
             v-for="link in col.links"
-            class="text-xl capitalize hover:text-green-600 transition cursor-pointer w-fit"
+            class="text-xl md:text-base xl:text-xl capitalize hover:text-green-600 transition cursor-pointer w-fit"
             @click="handleFooterNav(link.href)"
             >{{ link.name }}</span
           >

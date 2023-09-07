@@ -1,7 +1,7 @@
 export default {
   // Global styles apply to _all_ inputs with matching section keys
   global: {
-    fieldset: 'max-w-md border border-gray-400 rounded px-2 pb-1',
+    fieldset: 'max-w-md border border-gray-400 px-2 pb-1',
     help: 'text-xs text-gray-500',
     inner:
       'formkit-disabled:bg-gray-200 formkit-disabled:cursor-not-allowed formkit-disabled:pointer-events-none',
@@ -23,7 +23,7 @@ export default {
   // Family styles apply to all inputs that share a common family
   'family:box': {
     decorator:
-      'block relative h-5 w-5 mr-2 rounded bg-white bg-gradient-to-b from-transparent to-gray-200 ring-1 ring-gray-400 peer-checked:ring-blue-500 text-transparent peer-checked:text-blue-500',
+      'block relative h-5 w-5 mr-2 bg-white bg-gradient-to-b from-transparent to-gray-200 ring-1 ring-gray-400 peer-checked:ring-blue-500 text-transparent peer-checked:text-blue-500',
     decoratorIcon:
       'flex p-[3px] w-full h-full absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2',
     help: 'mb-2 mt-1.5',
@@ -35,20 +35,20 @@ export default {
   },
   'family:button': {
     input:
-      '$reset inline-flex items-center bg-blue-600 text-white text-sm font-normal py-3 px-6 rounded focus-visible:outline-2 focus-visible:outline-blue-600 focus-visible:outline-offset-2 formkit-disabled:bg-gray-400 formkit-loading:before:w-4 formkit-loading:before:h-4 formkit-loading:before:mr-2 formkit-loading:before:border formkit-loading:before:border-2 formkit-loading:before:border-r-transparent formkit-loading:before:rounded-3xl formkit-loading:before:border-white formkit-loading:before:animate-spin',
+      '$reset inline-flex items-center bg-blue-600 text-white text-sm font-normal py-3 px-6 focus-visible:outline-2 focus-visible:outline-blue-600 focus-visible:outline-offset-2 formkit-disabled:bg-gray-400 formkit-loading:before:w-4 formkit-loading:before:h-4 formkit-loading:before:mr-2 formkit-loading:before:border formkit-loading:before:border-2 formkit-loading:before:border-r-transparent formkit-loading:before:rounded-3xl formkit-loading:before:border-white formkit-loading:before:animate-spin',
     wrapper: 'mb-1',
     prefixIcon: '$reset block w-4 -ml-2 mr-2 stretch',
     suffixIcon: '$reset block w-4 ml-2 stretch',
   },
   'family:dropdown': {
     dropdownWrapper:
-      'my-2 w-full shadow-lg rounded [&::-webkit-scrollbar]:hidden',
+      'my-2 w-full shadow-lg [&::-webkit-scrollbar]:hidden',
     emptyMessageInner:
       'flex items-center justify-center text-sm p-2 text-center w-full text-gray-500 [&>span]:mr-3 [&>span]:ml-0',
     inner:
-      'max-w-md relative flex ring-1 ring-gray-400 focus-within:ring-blue-500 focus-within:ring-2 rounded mb-1 formkit-disabled:focus-within:ring-gray-400 formkit-disabled:focus-within:ring-1 [&>span:first-child]:focus-within:text-blue-500',
+      'max-w-md relative flex ring-1 ring-gray-400 focus-within:ring-blue-500 focus-within:ring-2 mb-1 formkit-disabled:focus-within:ring-gray-400 formkit-disabled:focus-within:ring-1 [&>span:first-child]:focus-within:text-blue-500',
     input: 'w-full px-3 py-2',
-    listbox: 'bg-white shadow-lg rounded overflow-hidden',
+    listbox: 'bg-white shadow-lg overflow-hidden',
     listboxButton: 'flex w-12 self-stretch justify-center mx-auto',
     listitem:
       'pl-7 relative hover:bg-gray-300 data-[is-active="true"]:bg-gray-300 data-[is-active="true"]:aria-selected:bg-blue-600 aria-selected:bg-blue-600 aria-selected:text-white',
@@ -65,13 +65,13 @@ export default {
   },
   'family:text': {
     inner:
-      'flex items-center max-w-md ring-1 ring-gray-400 focus-within:ring-blue-500 focus-within:ring-2 [&>label:first-child]:focus-within:text-blue-500 rounded mb-1',
+      'flex items-center max-w-md ring-1 ring-gray-400 focus-within:ring-blue-500 focus-within:ring-2 [&>label:first-child]:focus-within:text-blue-500 mb-1',
     input:
       'w-full px-3 py-2 border-none text-base text-gray-700 placeholder-gray-400',
   },
   'family:date': {
     inner:
-      'flex items-center max-w-md ring-1 ring-gray-400 focus-within:ring-blue-500 focus-within:ring-2 [&>label:first-child]:focus-within:text-blue-500 rounded mb-1',
+      'flex items-center max-w-md ring-1 ring-gray-400 focus-within:ring-blue-500 focus-within:ring-2 [&>label:first-child]:focus-within:text-blue-500 mb-1',
     input:
       'w-full px-3 py-2 border-none text-gray-700 placeholder-gray-400',
   },
@@ -81,7 +81,7 @@ export default {
     inner:
       'flex max-w-[5.5em] w-full formkit-prefix-icon:max-w-[7.5em] formkit-suffix-icon:formkit-prefix-icon:max-w-[10em]',
     input:
-      '$reset appearance-none w-full cursor-pointer border-none rounded p-0 m-0 bg-transparent [&::-webkit-color-swatch-wrapper]:p-0 [&::-webkit-color-swatch]:border-none',
+      '$reset appearance-none w-full cursor-pointer border-none p-0 m-0 bg-transparent [&::-webkit-color-swatch-wrapper]:p-0 [&::-webkit-color-swatch]:border-none',
     suffixIcon: 'min-w-[2.5em] pr-0 pl-0 m-auto',
   },
   file: {
@@ -114,7 +114,7 @@ export default {
   },
   select: {
     inner:
-      'flex relative max-w-md items-center rounded mb-1 ring-1 ring-gray-400 focus-within:ring-blue-500 focus-within:ring-2 [&>span:first-child]:focus-within:text-blue-500',
+      'flex relative max-w-md items-center mb-1 ring-1 ring-gray-400 focus-within:ring-blue-500 focus-within:ring-2 [&>span:first-child]:focus-within:text-blue-500',
     input:
       'w-full pl-3 pr-8 py-2 border-none text-base text-gray-700 placeholder-gray-400 formkit-multiple:p-0 data-[placeholder="true"]:text-gray-400 formkit-multiple:data-[placeholder="true"]:text-inherit',
     selectIcon:
@@ -124,7 +124,7 @@ export default {
   },
   textarea: {
     inner:
-      'flex max-w-md rounded mb-1 ring-1 ring-gray-400 focus-within:ring-blue-500 [&>label:first-child]:focus-within:text-blue-500',
+      'flex max-w-md mb-1 ring-1 ring-gray-400 focus-within:ring-blue-500 [&>label:first-child]:focus-within:text-blue-500',
     input:
       'block w-full h-32 px-3 py-3 border-none text-base text-gray-700 placeholder-gray-400 focus:shadow-outline',
   },
@@ -135,7 +135,7 @@ export default {
     inner: '[&>div>[data-value]]:absolute [&>div>[data-value]]:mb-0',
     option: 'grow text-ellipsis',
     selection:
-      'static flex left-0 top-0 right-0 bottom-0 mt-0 mb-2 rounded bg-gray-100',
+      'static flex left-0 top-0 right-0 bottom-0 mt-0 mb-2 bg-gray-100',
   },
   datepicker: {
     inner: 'relative',
@@ -196,7 +196,7 @@ export default {
       'appearance-none cursor-pointer px-3 py-1 border-2 rounded-lg mx-1 hover:border-blue-500',
     yearButton:
       'appearance-none cursor-pointer px-3 py-1 border-2 rounded-lg mx-1 hover:border-blue-500',
-    next: 'ml-auto px-3 py-1 hover:bg-gray-100 hover:rounded col-start-3 col-end-3',
+    next: 'ml-auto px-3 py-1 hover:bg-gray-100 hover:col-start-3 col-end-3',
     nextLabel: 'hidden',
     nextIcon: 'flex w-3 select-none [&>svg]:w-full',
     openButton: `
@@ -226,7 +226,7 @@ export default {
       'hover:text-blue-500 disabled:hover:text-inherit disabled:opacity-25',
     fieldset: 'py-4 px-5',
     help: 'mb-2 mt-1.5',
-    item: 'flex w-full mb-1 rounded border border-gray-200',
+    item: 'flex w-full mb-1 border border-gray-200',
     moveDownIcon: 'block w-3 my-1',
     moveUpIcon: 'block w-3 my-1',
     removeControl:
@@ -299,7 +299,7 @@ export default {
       'flex max-h-[350px] flex-col sm:flex-row justify-between w-full max-w-none',
     help: 'pb-2',
     transferlist:
-      'sm:w-3/5 shadow-md flex flex-col min-h-[350px] max-h-[350px] border rounded overflow-hidden select-none bg-gray-50',
+      'sm:w-3/5 shadow-md flex flex-col min-h-[350px] max-h-[350px] border overflow-hidden select-none bg-gray-50',
     transferlistHeader:
       'flex bg-gray-100 justify-between items-center border-b p-3',
     transferlistHeaderItemCount: 'ml-auto text-sm',
@@ -319,7 +319,7 @@ export default {
       'appearance-none border-none w-full p-0 m-0 text-center text-gray-500 italic',
     emptyMessageInner: 'flex items-center justify-center p-2 text-sm',
     transferlistControls: 'bg-white px-3 py-2 border-b',
-    transferlistSearch: 'flex border rounded items-center',
+    transferlistSearch: 'flex border items-center',
     transferlistSearchInput:
       'border-none p-1 w-full bg-transparent outline-none text-sm',
     controlLabel: 'hidden',

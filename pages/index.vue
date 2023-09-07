@@ -3,14 +3,16 @@ import { FormKitIcon } from '@formkit/vue'
 </script>
 
 <template>
-  <div
-    class="h-[160vh] bg-gradient-to-b from-blue-800 to-cyan-400 w-full pb-24"
-  >
+  <div class="bg-gradient-to-b from-blue-800 to-cyan-400 w-full">
     <Nav />
     <div class="flex">
-      <div class="w-5/6 mx-auto flex flex-col">
-        <div class="flex h-[55%] flex-shrink-0 bg-gray-500">
-          <div class="w-2/3 h-full flex-grow-0 flex-shrink-0">
+      <div class="lg:default_layout flex flex-col">
+        <div
+          class="flex lg:flex-row flex-col lg:h-[50%] flex-shrink-0 bg-gray-500"
+        >
+          <div
+            class="lg:w-2/3 w-full h-2/3 lg:h-full flex-grow-0 flex-shrink-0"
+          >
             <img
               class="w-full h-full content-center object-cover"
               src="https://picsum.photos/600/400"
@@ -20,7 +22,7 @@ import { FormKitIcon } from '@formkit/vue'
           <div
             class="w-full h-full bg-white flex flex-col space-y-12 px-12 place-content-center"
           >
-            <h1 class="text-3xl text-indigo-900 font-bold">
+            <h1 class="text-2xl xl:text-3xl text-indigo-900 font-bold">
               Nuestro Catálogo
             </h1>
             <p>
@@ -43,49 +45,59 @@ import { FormKitIcon } from '@formkit/vue'
             </p>
           </div>
         </div>
-        <div class="flex h-1/5 my-12 gap-x-12">
-          <div class="w-1/3 flex flex-col space-y-3 cursor-pointer">
+
+        <div class="flex flex-col lg:flex-row mt-32 sm:mt-12 gap-x-12">
+          <div
+            class="lg:w-1/3 p-2 lg:p-0 w-full flex flex-col space-y-3 cursor-pointer"
+          >
             <img
-              class="w-full h-full"
+              class="w-full h-5/6 lg:h-1/2 xl:h-3/4"
+              
               src="https://picsum.photos/400"
               alt=""
             />
             <h2
-              class="font-medium text-xl text-white hover:text-blue-800 transition w-fit"
+              class="font-semibold text-xl xl:text-2xl text-white hover:text-blue-800 transition w-fit"
             >
               Hechos de Interés
             </h2>
           </div>
-          <div class="w-1/3 flex flex-col space-y-3 cursor-pointer">
+          <div
+            class="lg:w-1/3 p-2 lg:p-0 w-full flex flex-col space-y-3 cursor-pointer"
+          >
             <img
-              class="w-full h-full"
+              class="w-full h-5/6 lg:h-1/2 xl:h-3/4"
+              
               src="https://picsum.photos/400"
               alt=""
             />
             <h2
-              class="font-medium text-2xl text-white hover:text-blue-800 transition w-fit"
+              class="font-semibold text-xl xl:text-2xl text-white hover:text-blue-800 transition w-fit"
             >
-              Contacta con los desarrolladores responsables de estos
-              trabajos
+              Contacta Desarrolladores Para tu Próximo Proyecto
             </h2>
           </div>
-          <div class="w-1/3 flex flex-col space-y-3 cursor-pointer">
+          <div
+            class="lg:w-1/3 p-2 lg:p-0 w-full flex flex-col space-y-3 cursor-pointer"
+          >
             <img
-              class="w-full h-full"
+              class="w-full h-5/6 lg:h-1/2 xl:h-3/4"
+              
               src="https://picsum.photos/400"
               alt=""
             />
             <h2
-              class="font-medium text-2xl text-white hover:text-blue-800 transition w-fit"
+              class="font-semibold text-xl xl:text-2xl text-white hover:text-blue-800 transition w-fit"
             >
-              Contacta con un equipo de desarrollo especializado
+              Contacta con Equipos de Desarrollo Especializados para lo
+              que Necesites
             </h2>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <div class="w-5/6 mx-auto">
+  <div class="default_layout">
     <Gallery
       title="Noticias"
       :elements="
@@ -105,35 +117,88 @@ import { FormKitIcon } from '@formkit/vue'
       "
     />
   </div>
+
   <div
     class="right-0 left-0 bottom-0 bg-gradient-to-b from-gray-100 to-white min-h-screen pb-24"
   >
-    <div class="w-5/6 mx-auto">
+    <div class="default_layout">
       <div
-        class="flex flex-col text-center w-full place-content-center px-24"
+        class="flex flex-col sm:text-center w-full place-content-center sm:px-24"
       >
-        <h1 class="text-6xl text-indigo-900 font-bold uppercase my-12">
+        <h1
+          class="text-3xl sm:text-6xl text-indigo-900 font-bold uppercase my-4 sm:my-12"
+        >
           Nuestros Miembros
         </h1>
-        <p class="text-xl">
+        <p class="sm:text-lg xl:text-xl">
           Lorem, ipsum dolor sit amet consectetur adipisicing elit. Est
           maiores earum cupiditate voluptatum odio quis sunt omnis.
           Reiciendis quibusdam esse aliquid distinctio harum?
         </p>
       </div>
-      <div class="grid grid-cols-4 gap-12 py-8 px-24">
-        <img src="https://picsum.photos/200" alt="" />
-        <img src="https://picsum.photos/200" alt="" />
-        <img src="https://picsum.photos/200" alt="" />
-        <img src="https://picsum.photos/200" alt="" />
-        <img src="https://picsum.photos/200" alt="" />
-        <img src="https://picsum.photos/200" alt="" />
-        <img src="https://picsum.photos/200" alt="" />
-        <img src="https://picsum.photos/200" alt="" />
-        <img src="https://picsum.photos/200" alt="" />
-        <img src="https://picsum.photos/200" alt="" />
-        <img src="https://picsum.photos/200" alt="" />
-        <img src="https://picsum.photos/200" alt="" />
+      <div
+        class="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-12 py-8 sm:px-24"
+      >
+        <img
+          src="https://picsum.photos/200"
+          
+          alt=""
+        />
+        <img
+          src="https://picsum.photos/200"
+          
+          alt=""
+        />
+        <img
+          src="https://picsum.photos/200"
+          
+          alt=""
+        />
+        <img
+          src="https://picsum.photos/200"
+          
+          alt=""
+        />
+        <img
+          src="https://picsum.photos/200"
+          
+          alt=""
+        />
+        <img
+          src="https://picsum.photos/200"
+          
+          alt=""
+        />
+        <img
+          src="https://picsum.photos/200"
+          
+          alt=""
+        />
+        <img
+          src="https://picsum.photos/200"
+          
+          alt=""
+        />
+        <img
+          src="https://picsum.photos/200"
+          
+          alt=""
+        />
+        <img
+          src="https://picsum.photos/200"
+          
+          alt=""
+        />
+        <img
+          src="https://picsum.photos/200"
+          
+          alt=""
+        />
+        <img
+          src="https://picsum.photos/200"
+          
+          alt=""
+        />
       </div>
     </div>
   </div>

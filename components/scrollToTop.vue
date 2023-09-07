@@ -28,12 +28,12 @@ onUnmounted(() => {
 <template>
   <Transition>
     <button
-      class="fixed bottom-4 right-4 border p-2 bg-gray-800 text-white bg-opacity-40"
+      class="fixed bottom-1 right-1 xl:bottom-4 xl:right-4 border p-1.5 xl:p-2 bg-gray-800 text-white bg-opacity-40"
       type="button"
       v-if="showScrollButton"
       @click="scrollToTop"
     >
-      <FormKitIcon icon="up" class="flex w-8 h-8" />
+      <FormKitIcon icon="up" class="flex w-6 h-6 xl:w-8 xl:h-8" />
     </button>
   </Transition>
 </template>

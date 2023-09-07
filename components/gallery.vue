@@ -16,14 +16,19 @@ const handleNewsClick = (link: string) => {
 </script>
 
 <template>
-  <h1 class="text-5xl text-indigo-900 font-medium uppercase my-12">
+  <h1
+    class="text-3xl lg:text-5xl text-indigo-900 font-medium uppercase my-12"
+  >
     {{ title }}
   </h1>
-  <div class="w-full grid grid-cols-3 gap-7 pb-8">
+  <div class="w-full grid grid-cols-3 gap-7 gap-y-20 md:gap-y-16 pb-8">
     <template v-for="(el, i) in elements">
       <div
-        :class="{ 'col-span-2 row-span-2 h-[90vh]': i === 0 }"
-        class="w-full flex flex-col gap-y-1 h-[45vh]"
+        :class="[
+          { 'md:!col-span-2 row-span-2 h-[90vh]': i === 0 },
+          { 'md:col-span-1': i <= 2 },
+        ]"
+        class="w-full flex flex-col gap-y-1 h-[45vh] lg:col-span-1 col-span-full"
       >
         <div class="h-[83%] border-b-8 border-blue-800">
           <img
