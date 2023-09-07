@@ -8,7 +8,7 @@ export type IDev = {
     tool: string
     avility: number
   }[]
-  projects: string[]
+  projects: IProject[]
   phone?: string
   address?: string
   email?: string
@@ -19,4 +19,10 @@ type ISocialMedia = {
   name: string
   icon: string
   link: string
+}
+
+type IProject = {
+  projectName: string
+  downloadLink: string
+  projectId: string
 }
