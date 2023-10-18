@@ -1,8 +1,14 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+
+defineProps<{
+  transparentNav?: boolean
+}>()
+
+</script>
 
 <template>
-  <Nav />
-  <div class="default_layout">
+  <Nav :transparent="transparentNav" />
+  <div class="default_layout pt-44 xl:pt-56">
     <slot />
   </div>
   <Footer />

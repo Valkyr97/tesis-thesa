@@ -1,16 +1,12 @@
 <script setup lang="ts">
-const selectedTechs = ref(new Set())
+const selectedTechs = ref(new Set());
 </script>
 
 <template>
   <NuxtLayout>
-    <h1
-      class="text-7xl text-indigo-900 font-semibold uppercase w-full tracking-tighter py-12 text-center"
-    >
-      Desarrolladores
-    </h1>
+    <h1 class="title">Desarrolladores</h1>
     <div
-      class="flex gap-x-2 place-content-between border-y py-3 px-1 sticky top-0.5 z-10 bg-white/90"
+      class="flex flex-wrap gap-x-4 place-content-between border-y py-3 px-1 sticky top-0.5 z-10 bg-white"
     >
       <span
         v-for="tech in techs"

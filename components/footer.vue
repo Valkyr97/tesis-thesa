@@ -11,7 +11,7 @@ const handleFooterNav = (href: string) => {
 </script>
 
 <template>
-  <div class="border-t-2 border-gray-300 py-12">
+  <div class="border-t-2 border-gray-300 bg-white text-black py-12">
     <div class="default_layout">
       <div
         class="flex flex-col md:flex-row items-center space-y-12 md:space-y-0 md:items-start md:place-content-between"

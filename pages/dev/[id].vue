@@ -2,7 +2,7 @@
 const route = useRoute()
 const dev = ref()
 
-onMounted(() => {
+onBeforeMount(() => {
   if (!route.params.id) return
   dev.value = devsData.find((d) => d.id === route.params.id)
 })

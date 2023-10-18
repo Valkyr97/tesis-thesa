@@ -1,18 +1,16 @@
 <script setup lang="ts">
 import { FormKitIcon } from '@formkit/vue'
 
-const isCategoriesFilterOpen = ref(false)
-const selectedCategories = ref(new Set())
+const route = useRoute()
+const selectedCategories = computed(() => new Set(route.query.categories))
 </script>
 
 <template>
   <NuxtLayout>
-    <h1
-      class="text-7xl text-indigo-900 font-semibold uppercase w-full tracking-tighter py-12 text-center"
+    <h1 class="title">Nuestros juegos</h1>
+    <div
+      class="flex gap-x-4 place-content-between border-y py-3 px-1 sticky top-0.5 z-10 bg-white flex-wrap overflow-hidden"
     >
-      Nuestros juegos
-    </h1>
-    <div class="flex gap-x-2 place-content-between border-y py-3 px-1 sticky top-0.5 z-10 bg-white/90">
       <span
         v-for="category in categories"
         class="text-indigo-900 capitalize font-semibold text-lg cursor-pointer w-fit hover:text-cyan-500 active:!text-cyan-300 transition"
@@ -20,14 +18,20 @@ const selectedCategories = ref(new Set())
           '!text-cyan-500': selectedCategories.has(category.value),
         }"
         @click="
-          selectedCategories.has(category.value)
-            ? selectedCategories.delete(category.value)
-            : selectedCategories.add(category.value)
+          $router.push({
+            query: {
+              categories: selectedCategories.has(category.value)
+                ? (selectedCategories.delete(category.value) || []) && [
+                    ...selectedCategories,
+                  ]
+                : [...selectedCategories.add(category.value)],
+            },
+          })
         "
         >{{ category.label }}</span
       >
     </div>
-     <!-- <div class="w-full border-b py-2">
+    <!-- <div class="w-full border-b py-2">
      <div class="flex flex-col relative">
         <button
           @click="isCategoriesFilterOpen = !isCategoriesFilterOpen"
@@ -53,9 +57,13 @@ const selectedCategories = ref(new Set())
       </div> 
     </div> -->
     <div class="grid grid-cols-3 py-4 gap-20 w-full">
-      <div class="w-full h-[40vh] relative" v-for="game in games">
+      <div
+        v-for="game in gamesData"
+        class="w-full h-[40vh] relative cursor-pointer group overflow-hidden"
+        @click="$router.push(`/game/${game.id}`)"
+      >
         <img
-          class="w-full h-full content-center object-cover"
+          class="w-full h-full content-center object-cover group-hover:scale-110 transition"
           :src="game.pictures[0]"
           alt=""
         />

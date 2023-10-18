@@ -1,4 +1,4 @@
-import { IDev } from 'types/IDevelopers'
+import { IDev } from '~/types/IDevelopers'
 
 const devs: IDev[] = [
   {

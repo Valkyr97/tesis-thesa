@@ -1,5 +1,6 @@
 const teams = [
   {
+    id: '1',
     logo: 'https://picsum.photos/400',
     name: 'Team Name',
     teamPicture: 'https://picsum.photos/900',
@@ -46,6 +47,7 @@ const teams = [
     ],
   },
   {
+    id: '2',
     logo: 'https://picsum.photos/400',
     name: 'Team Name',
     teamPicture: 'https://picsum.photos/900',
@@ -86,6 +88,7 @@ const teams = [
     ],
   },
   {
+    id: '3',
     logo: 'https://picsum.photos/400',
     name: 'Team Name',
     teamPicture: 'https://picsum.photos/900',
@@ -126,6 +129,7 @@ const teams = [
     ],
   },
   {
+    id: '4',
     logo: 'https://picsum.photos/400',
     name: 'Team Name',
     teamPicture: 'https://picsum.photos/900',

@@ -6,4 +6,8 @@
   .default_layout {
     @apply p-3 sm:px-[3%] lg:px-0 lg:max-w-4xl xl:max-w-7xl mx-auto;
   }
+
+  .title {
+    @apply text-7xl text-indigo-900 font-semibold uppercase w-full tracking-tighter py-12 text-center
+  }
 }
