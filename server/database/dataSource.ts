@@ -1,11 +1,11 @@
 import { DataSource } from 'typeorm'
-import { Editor } from '../modules/editors/editor.entity'
-import { Developer } from '../modules/developers/developer.entity'
-import { Game } from '../modules/games/game.entity'
-import { Category } from '../modules/categories/category.entity'
-import { Team } from '../modules/teams/team.entity'
-import { DevToTech } from '../modules/relations/DevsToTechs'
-import { Tech } from '../modules/techs/techs.entity'
+import { Editor } from '../entities/editor'
+import { Developer } from '../entities/developer'
+import { Game } from '../entities/game'
+import { Category } from '../entities/category'
+import { Team } from '../entities/team'
+import { DevToTech } from '../entities/devsToTechs'
+import { Tech } from '../entities/techs'
 
 export default new DataSource({
   type: 'postgres',

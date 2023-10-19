@@ -3,17 +3,20 @@ import {
   Column,
   Entity,
   PrimaryGeneratedColumn,
+  ManyToMany,
+  JoinTable,
   CreateDateColumn,
   UpdateDateColumn,
   ManyToOne,
-  OneToMany,
+  BaseEntity,
 } from 'typeorm'
-import { State } from '../../enums/state'
-import { Editor } from '../editors/editor.entity'
-import { Developer } from '../developers/developer.entity'
+import { State } from '../enums/state'
+import { Category } from './category'
+import { Editor } from './editor'
+import { Developer } from './developer'
 
 @Entity()
-export class Team {
+export class Game extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number
 
@@ -24,7 +27,13 @@ export class Team {
   description: string
 
   @Column('text')
-  picture: string
+  demo: string
+
+  @Column('text')
+  downloadLink: string
+
+  @Column('simple-array')
+  pictures: string[]
 
   @Column({
     type: 'enum',
@@ -39,7 +48,11 @@ export class Team {
   @UpdateDateColumn()
   lastUpdated: Date
 
-  @OneToMany(() => Developer, (dev) => dev.team)
+  @ManyToMany(() => Category)
+  @JoinTable()
+  categories: Category[]
+
+  @ManyToMany(() => Developer, (developer) => developer.games)
   developers: Developer[]
 
   @ManyToOne(() => Editor)

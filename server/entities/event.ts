@@ -1,6 +1,6 @@
 //@ts-nocheck
 import { Column, Entity } from 'typeorm'
-import { Content } from './content.entity'
+import { Content } from './content'
 
 export type blogType = 'new' | 'event'
 

@@ -7,15 +7,16 @@ import {
   ManyToMany,
   JoinTable,
   OneToMany,
+  BaseEntity,
 } from 'typeorm'
-import { State } from '../../enums/state'
-import { Editor } from '../editors/editor.entity'
-import { Game } from '../games/game.entity'
-import { Team } from '../teams/team.entity'
-import { DevToTech } from '../relations/DevsToTechs'
+import { State } from '../enums/state'
+import { Editor } from './editor'
+import { Game } from './game'
+import { Team } from './team'
+import { DevToTech } from './devsToTechs'
 
 @Entity()
-export class Developer {
+export class Developer extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number
 
@@ -28,7 +29,7 @@ export class Developer {
   @Column('text')
   avatar: string
 
-  @Column('text')
+  @Column('text', { nullable: true })
   abstract: string
 
   @Column('text', { nullable: true })
@@ -51,11 +52,11 @@ export class Developer {
   @JoinTable()
   games: Game[]
 
-  @OneToMany(() => DevToTech, devToTech => devToTech.developer)
+  @OneToMany(() => DevToTech, (devToTech) => devToTech.developer)
   public devToTech: DevToTech[]
 
   @ManyToOne(() => Team, (team) => team.developers)
-  team: String
+  team: Team
 
   @ManyToOne(() => Editor)
   private registeredBy: Editor

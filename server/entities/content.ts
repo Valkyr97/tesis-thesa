@@ -8,8 +8,8 @@ import {
     UpdateDateColumn,
     ManyToOne,
   } from 'typeorm'
-  import { State } from '../../enums/state'
-  import { Editor } from '../editors/editor.entity'
+  import { State } from '../enums/state'
+  import { Editor } from './editor'
   
   @Entity()
   export class Content extends BaseEntity {

@@ -1,10 +1,16 @@
 //@ts-nocheck
-import { Column, Entity, PrimaryGeneratedColumn, BaseEntity, ManyToOne } from 'typeorm'
-import { State } from '../../enums/state'
-import { Editor } from '../editors/editor.entity'
+import {
+  Column,
+  Entity,
+  PrimaryGeneratedColumn,
+  BaseEntity,
+  ManyToOne,
+} from 'typeorm'
+import { State } from '../enums/state'
+import { Editor } from './editor'
 
 @Entity()
-export class Category {
+export class Category extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number
 

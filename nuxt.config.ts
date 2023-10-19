@@ -1,7 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
-  modules: ['@nuxtjs/tailwindcss', '@formkit/nuxt'],
+  modules: ['@formkit/nuxt', '@nuxtjs/tailwindcss',],
   routeRules: {
     '/private/**': { ssr: false },
     '/auth/**': { ssr: false },

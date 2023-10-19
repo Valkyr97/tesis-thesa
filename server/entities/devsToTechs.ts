@@ -5,8 +5,8 @@ import {
   PrimaryGeneratedColumn,
   ManyToOne,
 } from 'typeorm'
-import { Developer } from '../developers/developer.entity'
-import { Tech } from '../techs/techs.entity'
+import { Developer } from './developer'
+import { Tech } from './techs'
 
 @Entity()
 export class DevToTech {

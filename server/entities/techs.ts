@@ -1,10 +1,16 @@
 //@ts-nocheck
-import { Column, Entity, PrimaryGeneratedColumn, OneToMany } from 'typeorm'
-import { State } from '../../enums/state'
-import { DevToTech } from '../relations/DevsToTechs'
+import {
+  Column,
+  Entity,
+  PrimaryGeneratedColumn,
+  OneToMany,
+  BaseEntity,
+} from 'typeorm'
+import { State } from '../enums/state'
+import { DevToTech } from './devsToTechs'
 
 @Entity()
-export class Tech {
+export class Tech extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number
 

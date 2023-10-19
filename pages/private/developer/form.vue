@@ -1,18 +1,22 @@
 <script setup lang="ts">
 const submit = async (value: any) => {
-  const { body } = await $fetch('/api/developer', {
+  const response = await $fetch('/api/developer', {
     method: 'post',
-    body: { name: value.name, password: value.password },
+    body: { ...value },
   })
-  console.log(body)
 }
 </script>
 
 <template>
-  <div>
+  <NuxtLayout>
     <FormKit type="form" @submit="submit">
-      <FormKit type="text" name="name" />
-      <FormKit type="text" name="password" />
+      <FormKit required label="Nombre" type="text" name="name" />
+      <FormKit required label="Rol" type="text" name="role" />
+      <FormKit required label="Avatar" type="text" name="avatar" />
+      <FormKit label="Teléfono" type="tel" name="phone" />
+      <FormKit label="Email" type="email" name="email" />
+      <FormKit label="Dirección" type="text" name="address" />
+      <!-- <FormKit label="abstract" type="textarea" name="abstract" /> -->
     </FormKit>
-  </div>
+  </NuxtLayout>
 </template>

@@ -1,18 +1,26 @@
 <script setup lang="ts">
-
-defineProps<{
-  transparentNav?: boolean
-}>()
-
+withDefaults(
+  defineProps<{
+    transparentNav?: boolean
+    nav: boolean
+    footer: boolean
+    scroll: boolean
+  }>(),
+  {
+    nav: true,
+    footer: true,
+    scroll: true,
+  }
+)
 </script>
 
 <template>
-  <Nav :transparent="transparentNav" />
-  <div class="default_layout pt-44 xl:pt-56">
+  <Nav v-if="nav" :transparent="transparentNav" />
+  <div :class="{ 'pt-44 xl:pt-56': nav }" class="default_layout">
     <slot />
   </div>
-  <Footer />
-  <ScrollToTop />
+  <Footer v-if="footer" />
+  <ScrollToTop v-if="scroll" />
 </template>
 
 <style scoped></style>
