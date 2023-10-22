@@ -3,29 +3,33 @@ import {
   Column,
   Entity,
   PrimaryGeneratedColumn,
+  BaseEntity,
+  ManyToOne,
   CreateDateColumn,
   UpdateDateColumn,
-  ManyToOne,
-  OneToMany,
-  BaseEntity,
 } from 'typeorm'
 import { State } from '../enums/state'
 import { Editor } from './editor'
-import { Developer } from './developer'
 
 @Entity()
-export class Team extends BaseEntity {
+export class Headline extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number
 
   @Column('text')
   name: string
 
-  @Column('text', { nullable: true })
-  description: string
+  @Column('text')
+  img: string
+
+  @Column('text')
+  body: string
 
   @Column('text', { nullable: true })
-  picture: string
+  link: string
+
+  @Column('text', { nullable: true })
+  date: Date
 
   @Column({
     type: 'enum',
@@ -39,9 +43,6 @@ export class Team extends BaseEntity {
 
   @UpdateDateColumn()
   lastUpdated: Date
-
-  @OneToMany(() => Developer, (dev) => dev.team)
-  developers: Developer[]
 
   @ManyToOne(() => Editor)
   private registeredBy: Editor

@@ -27,7 +27,7 @@ const primaryLinks: links[] = [
 const secondaryLinks: links[] = [
   {
     name: `Hechos interesantes ${new Date().getFullYear()}`,
-    to: "interesting_facts",
+    to: "/interesting_facts",
   },
 ];
 </script>

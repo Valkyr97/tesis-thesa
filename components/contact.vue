@@ -42,9 +42,9 @@
         </div>
       </div>
     </div>
-    <span class="absolute bottom-2 left-2 text-gray-400 hover:text-cyan-400 cursor-pointer select-none">
+    <NuxtLink to="/private" class="absolute bottom-2 left-2 text-gray-400 hover:text-cyan-400 cursor-pointer select-none">
       Ir a la sección de editor
-    </span>
+    </NuxtLink>
   </div>
 </template>
 

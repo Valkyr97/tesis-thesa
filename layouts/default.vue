@@ -2,9 +2,9 @@
 withDefaults(
   defineProps<{
     transparentNav?: boolean
-    nav: boolean
-    footer: boolean
-    scroll: boolean
+    nav?: boolean
+    footer?: boolean
+    scroll?: boolean
   }>(),
   {
     nav: true,

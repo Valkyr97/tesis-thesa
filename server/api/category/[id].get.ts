@@ -2,13 +2,14 @@ import { Category } from '~/server/entities/category'
 import { State } from '~/server/enums/state'
 
 export default defineEventHandler(async (event) => {
-  const query = getQuery(event)
+  const id = getRouterParam(event, 'id')
+  if (!id) return
 
   try {
-    const categories = await Category.find({
-      where: { state: State.ACTIVE },
+    const category = await Category.findOneBy({
+      id: Number(id),
     })
-    return categories
+    return category
   } catch (e) {
     console.log(e)
   }

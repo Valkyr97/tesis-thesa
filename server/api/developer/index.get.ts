@@ -1,14 +1,13 @@
-import { Category } from '~/server/entities/category'
+import { Developer } from '~/server/entities/developer'
 import { State } from '~/server/enums/state'
 
 export default defineEventHandler(async (event) => {
-  const query = getQuery(event)
-
   try {
-    const categories = await Category.find({
+    const developers = await Developer.find({
+      relations: { team: true },
       where: { state: State.ACTIVE },
     })
-    return categories
+    return developers
   } catch (e) {
     console.log(e)
   }

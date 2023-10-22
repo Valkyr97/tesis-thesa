@@ -23,16 +23,16 @@ export class Game extends BaseEntity {
   @Column('text')
   name: string
 
-  @Column('text')
+  @Column('text', { nullable: true })
   description: string
 
-  @Column('text')
+  @Column('text', { nullable: true })
   demo: string
 
   @Column('text')
   downloadLink: string
 
-  @Column('simple-array')
+  @Column('simple-array', { nullable: true })
   pictures: string[]
 
   @Column({
@@ -53,6 +53,7 @@ export class Game extends BaseEntity {
   categories: Category[]
 
   @ManyToMany(() => Developer, (developer) => developer.games)
+  @JoinTable()
   developers: Developer[]
 
   @ManyToOne(() => Editor)

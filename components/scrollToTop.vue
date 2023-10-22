@@ -11,7 +11,7 @@ const handleScroll = () => {
   const windowHeight = window.innerHeight;
   const scrollHeight = document.documentElement.scrollHeight;
   const scrollPosition =
-    window.pageYOffset ||
+    window.scrollY ||
     document.documentElement.scrollTop ||
     document.body.scrollTop;
 

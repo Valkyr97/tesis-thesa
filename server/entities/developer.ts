@@ -5,7 +5,6 @@ import {
   PrimaryGeneratedColumn,
   ManyToOne,
   ManyToMany,
-  JoinTable,
   OneToMany,
   BaseEntity,
 } from 'typeorm'
@@ -26,7 +25,7 @@ export class Developer extends BaseEntity {
   @Column('text')
   role: string
 
-  @Column('text')
+  @Column('text', { nullable: true })
   avatar: string
 
   @Column('text', { nullable: true })
@@ -35,7 +34,7 @@ export class Developer extends BaseEntity {
   @Column('text', { nullable: true })
   phone: string
 
-  @Column('text', { nullable: true })
+  @Column('text', { unique: true })
   email: string
 
   @Column('text', { nullable: true })
@@ -49,7 +48,6 @@ export class Developer extends BaseEntity {
   state: State
 
   @ManyToMany(() => Game, (game) => game.developers)
-  @JoinTable()
   games: Game[]
 
   @OneToMany(() => DevToTech, (devToTech) => devToTech.developer)

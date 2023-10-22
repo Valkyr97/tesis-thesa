@@ -3,12 +3,23 @@ import { Game } from '~/server/entities/game'
 
 export default defineEventHandler(async (event) => {
   try {
-    const { categories, developers, ...rest } = await readBody(event)
+    const id = getRouterParam(event, 'id')
 
-    const newGame = new Game()
-    const manager = Game.getRepository()
+    if (!id) {
+      throw 'Id no válido'
+    }
 
-    manager.merge(newGame, { ...rest })
+    const { categories, developers, ...body } = await readBody(event)
+
+    await Game.update(id, body)
+
+    const newGame = await Game.findOneOrFail({
+      where: { id: Number(id) },
+      relations: { categories: true, developers: true },
+    })
+
+    newGame.categories.splice(0)
+    newGame.developers.splice(0)
 
     await newGame.save()
 
@@ -28,6 +39,8 @@ export default defineEventHandler(async (event) => {
             dev !== 0 && arr.indexOf(dev) === i
         )
       )
+
+    return newGame
   } catch (e) {
     console.log(e)
   }
