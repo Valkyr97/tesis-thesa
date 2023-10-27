@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { Game } from '~/server/entities/game'
+import { deleteGame, fetchGames } from '~/api'
 
 const { warningToast } = useWarningToast()
 
-const games = ref<Game[]>()
+const { data: games, refresh } = await fetchGames()
 
-const keys = ['Nombre', 'Descripción', 'Categorías']
+const keys = ['Nombre', 'Géneros']
 
 const path = '/private/game/form'
 
@@ -14,26 +14,19 @@ const data = computed(
     games.value?.map((g) => ({
       id: g.id,
       Nombre: g.name,
-      Descripción: g.description,
-      Categorías: g.categories.map((c) => c.name).join(', '),
+      Géneros: g.categories?.map((c) => c.name).join(', '),
     })) || []
 )
-
-const fetchGames = async () => {
-  games.value = await $fetch('/api/game', { query: { categories: true } })
-}
 
 const handleDelete = async (id: any) => {
   warningToast('eliminar', {
     text: 'el juego: ' + games.value?.find((g) => g.id === id)?.name,
     onConfirm: async () => {
-      await $fetch(`/api/game/${id}`, { method: 'DELETE' })
-      await fetchGames()
+      await deleteGame(id)
+      await refresh()
     },
   })
 }
-
-onMounted(() => fetchGames())
 </script>
 
 <template>
@@ -41,7 +34,7 @@ onMounted(() => fetchGames())
     @delete="handleDelete"
     :keys="keys"
     :tableRowsData="data"
-    :createRoute="path"
+    :onPlusClick="() => $router.push(path)"
     :onRowClick="(id: any) => $router.push({ path, query: {id}})"
   />
 </template>

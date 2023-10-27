@@ -1,11 +1,13 @@
 import { Developer } from '~/server/entities/developer'
-import { State } from '~/server/enums/state'
 
 export default defineEventHandler(async (event) => {
+  const { skip, take, withTeam } = getQuery(event)
+
   try {
     const developers = await Developer.find({
-      relations: { team: true },
-      where: { state: State.ACTIVE },
+      skip: typeof skip === 'number' ? skip : 0,
+      take: typeof take === 'number' ? take : undefined,
+      relations: { team: !!withTeam },
     })
     return developers
   } catch (e) {

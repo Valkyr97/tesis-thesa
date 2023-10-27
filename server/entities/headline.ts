@@ -8,7 +8,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm'
-import { State } from '../enums/state'
+import { State } from '../enums/HeadlineType'
 import { Editor } from './editor'
 
 @Entity()
@@ -28,15 +28,14 @@ export class Headline extends BaseEntity {
   @Column('text', { nullable: true })
   link: string
 
-  @Column('text', { nullable: true })
+  @Column('date', { nullable: true })
   date: Date
 
   @Column({
     type: 'enum',
-    enum: State,
-    default: State.ACTIVE,
+    enum: ['event', 'new'],
   })
-  state: State
+  type: HeadlineType
 
   @CreateDateColumn()
   createdAt: Date

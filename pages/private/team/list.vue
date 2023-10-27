@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { Team } from '~/server/entities/team'
+import { deleteTeam, fetchTeams } from '~/api'
 
 const { warningToast } = useWarningToast()
 
-const teams = ref<Team[]>()
+const { data: teams, refresh } = await fetchTeams()
 
 const keys = ['Nombre', 'Descripción']
 
@@ -18,16 +18,12 @@ const data = computed(
     })) || []
 )
 
-const fetchTeams = async () => {
-  teams.value = await $fetch('/api/team', { query: { categories: true } })
-}
-
 const handleDelete = (id: any) => {
   warningToast('eliminar', {
     text: 'el equipo: ' + teams.value?.find((t) => t.id === id)?.name,
     onConfirm: async () => {
-      await $fetch(`/api/team/${id}`, { method: 'DELETE' })
-      await fetchTeams()
+      await deleteTeam(id)
+      await refresh()
     },
   })
 }
@@ -38,7 +34,7 @@ const handleDelete = (id: any) => {
     @delete="handleDelete"
     :keys="keys"
     :tableRowsData="data"
-    :createRoute="path"
+    :onPlusClick="() => $router.push(path)"
     :onRowClick="(id: any) => $router.push({ path, query: {id}})"
   />
 </template>

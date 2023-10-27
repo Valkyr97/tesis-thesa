@@ -1,12 +1,18 @@
 import { Headline } from '~/server/entities/headline'
-import { State } from '~/server/enums/state'
+import { HeadlineType } from '../../../utils/enums'
 
 export default defineEventHandler(async (event) => {
-  const query = getQuery(event)
+  const { type, skip, take } = getQuery(event)
+
+  const whereOptions =
+    //@ts-ignore
+    type && Object.values(HeadlineType).includes(type) ? { type: type } : {}
 
   try {
     const contents = await Headline.find({
-      where: { state: State.ACTIVE },
+      where: whereOptions,
+      skip: typeof skip === 'number' ? skip : 0,
+      take: typeof take === 'number' ? take : undefined,
     })
     return contents
   } catch (e) {

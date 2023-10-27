@@ -1,13 +1,17 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+const handleClick = () => {
+  // $router.push(`/team/${team.id}`)
+}
+</script>
 
 <template>
   <NuxtLayout>
     <h1 class="title">Equipos de Desarrollo</h1>
     <div class="flex flex-col gap-10 py-2">
       <div
-        v-for="team in teamsData"
-        @click="$router.push(`/team/${team.id}`)"
-        class="flex h-[33vh] gap-4 w-full border"
+      @click="handleClick"
+      v-for="team in teamsData"
+      class="flex h-[33vh] gap-4 w-full border"
       >
         <div class="flex h-full basis-2/5 flex-shrink-0">
           <img

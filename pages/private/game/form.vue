@@ -2,8 +2,8 @@
 import type { Category } from '~/server/entities/category'
 import type { Developer } from '~/server/entities/developer'
 
-const categoriesList = ref<{ label: string; value: number }[]>([])
-const devsList = ref<{ label: string; value: number }[]>([])
+const categoriesList = ref<{ label: string; value: number }[] | undefined>([])
+const devsList = ref<{ label: string; value: number }[] | undefined>([])
 const route = useRoute()
 const { id } = route.query
 
@@ -14,19 +14,21 @@ const images = ref<string[]>([''])
 const { actualData, submit } = useSubmit('/api/game', id)
 
 onBeforeMount(async () => {
-  const response = await $fetch('/api/category')
-  categoriesList.value = response.map((cat) => ({
+  const { data: categories } = await useFetch('/api/category')
+
+  categoriesList.value = categories.value?.map((cat) => ({
     value: cat.id,
     label: cat.name,
   }))
 
-  const developers = await $fetch('/api/developer')
+  const { data: developers } = await useFetch('/api/developer')
+
   devsList.value = [
     { label: '', value: 0 },
-    ...developers.map((dev) => ({
+    ...(developers.value?.map((dev) => ({
       value: dev.id,
       label: dev.name,
-    })),
+    })) || []),
   ]
 
   devs.value = actualData.value.developers.map((d: Developer) => d.id)
@@ -85,7 +87,12 @@ onBeforeMount(async () => {
 
       <div class="flex-1">
         <FormKit label="Link al Demo" type="text" name="demo" />
-        <FormKit required label="Link de Descarga" type="text" name="downloadLink" />
+        <FormKit
+          required
+          label="Link de Descarga"
+          type="text"
+          name="downloadLink"
+        />
 
         <FormKit
           name="pictures"

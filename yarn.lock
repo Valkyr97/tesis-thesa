@@ -1358,6 +1358,11 @@
   resolved "https://registry.yarnpkg.com/@types/estree/-/estree-1.0.3.tgz#2be19e759a3dd18c79f9f436bd7363556c1a73dd"
   integrity sha512-CS2rOaoQ/eAgAfcTfq6amKG7bsN+EMcgGY4FAFQdvSj2y1ixvOZTUA9mOtCai7E1SYu283XNw7urKK30nP3wkQ==
 
+"@types/gapi@^0.0.46":
+  version "0.0.46"
+  resolved "https://registry.yarnpkg.com/@types/gapi/-/gapi-0.0.46.tgz#a40a34ce8a7dd9d903f93401a36a06ec828a99eb"
+  integrity sha512-lOSwnIOzx5CD+BtXlS7gPQWuiK8G0B7FNtYGPxF/FTNF3hfTPr5AwB077IebwS+yoeQxZu8pPIh2DI/x4rpAxQ==
+
 "@types/http-proxy@^1.17.11":
   version "1.17.13"
   resolved "https://registry.yarnpkg.com/@types/http-proxy/-/http-proxy-1.17.13.tgz#dd3a4da550580eb0557d4c7128a2ff1d1a38d465"

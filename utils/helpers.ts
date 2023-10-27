@@ -6,3 +6,4 @@ export const loadImage = (event: Event, url: string) => {
     }
   })
 }
+

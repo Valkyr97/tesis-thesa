@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { Developer } from '~/server/entities/developer'
+import { deleteDeveloper, fetchDevelopers } from '~/api'
 
 // State
-const developers = ref<Partial<Developer>[]>()
+const { data: developers, refresh } = await fetchDevelopers({ team: true })
 
 const { warningToast } = useWarningToast()
 
@@ -23,25 +23,17 @@ const data = computed(
 )
 
 //Actions
-const fetchDevelopers = async () => {
-  developers.value = await $fetch('/api/developer', { query: { team: true } })
-}
-
 const handleDelete = (id: any) => {
   const name = developers.value?.find((d) => d.id === id)?.name
 
   warningToast('eliminar', {
     text: 'el Desarrollador: ' + name,
     onConfirm: async () => {
-      await $fetch(`/api/developer/${id}`, { method: 'DELETE' })
-      await fetchDevelopers()
+      await deleteDeveloper(id)
+      await refresh()
     },
   })
 }
-
-onMounted(() => {
-  fetchDevelopers()
-})
 </script>
 
 <template>
@@ -49,7 +41,7 @@ onMounted(() => {
     @delete="handleDelete"
     :keys="keys"
     :tableRowsData="data"
-    :createRoute="path"
+    :onPlusClick="() => $router.push(path)"
     :onRowClick="(id: any) => $router.push({ path, query: {id}})"
   />
 </template>

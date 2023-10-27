@@ -3,15 +3,15 @@ import type { IDev } from '../../types/IDevelopers'
 import { FormKitIcon } from '@formkit/vue'
 
 const props = defineProps<{
-  devId: string
+  avatar: string
+  title: string
+  subtitle: string
+  skills?: { tool: string }[]
+  address?: string
+  phone?: string
+  email?: string
+  socialMedias?: { name: string }[]
 }>()
-
-const dev = ref<IDev>()
-
-onMounted(() => {
-  if (!props.devId) return
-  dev.value = devsData.find((d) => d.id === props.devId)
-})
 </script>
 
 <template>
@@ -21,18 +21,18 @@ onMounted(() => {
     <div class="flex gap-3 items-start pb-2 border-b">
       <img
         @error="e => (e.target as HTMLImageElement).src = '/avatar.png'"
-        :src="dev?.avatar"
+        :src="avatar"
         class="rounded h-16 w-16 object-contain"
         alt=""
       />
       <div class="flex flex-col">
-        <h2 class="text-xl font-medium">{{ dev?.name }}</h2>
+        <h2 class="text-xl font-medium">{{ title }}</h2>
         <h3 class="capitalize text-gray-400 text-sm -mt-1.5 mb-1">
-          {{ dev?.specialization }}
+          {{ subtitle }}
         </h3>
         <div class="flex gap-x-3 flex-wrap h-fit gap-y-1">
           <div
-            v-for="skill in dev?.skills"
+            v-for="skill in skills"
             class="flex flex-col items-center relative w-fit place-content-between bg-cyan-50/60 backdrop-blur-sm"
           >
             <span
@@ -45,7 +45,7 @@ onMounted(() => {
       </div>
     </div>
     <div class="flex py-2 px-2 gap-2">
-      <UiTooltip v-if="dev?.address" :text="dev.address">
+      <UiTooltip v-if="address" :text="address">
         <div
           class="border border-current h-7 w-7 flex place-content-center items-center p-1 rounded-full"
         >
@@ -62,21 +62,21 @@ onMounted(() => {
           </svg>
         </div>
       </UiTooltip>
-      <UiTooltip v-if="dev?.phone" :text="dev.phone">
+      <UiTooltip v-if="phone" :text="phone">
         <FormKitIcon
           icon="telephone"
           class="flex h-7 border border-current p-1 rounded-full"
         />
       </UiTooltip>
-      <UiTooltip v-if="dev?.email" :text="dev.email">
+      <UiTooltip v-if="email" :text="email">
         <FormKitIcon
           icon="email"
           class="flex h-7 border border-current p-1 rounded-full"
         />
       </UiTooltip>
-     
-      <template v-if="dev?.socialMedias">
-        <div v-for="socialMedia in dev.socialMedias" class="flex">
+
+      <template v-if="socialMedias">
+        <div v-for="socialMedia in socialMedias" class="flex">
           <span>{{ socialMedia.name }}</span>
         </div>
       </template>

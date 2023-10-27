@@ -1,5 +1,39 @@
 <script setup lang="ts">
 import { FormKitIcon } from '@formkit/vue'
+import { fetchEvents, fetchNews } from '~/utils/api'
+
+export type element = {
+  img: string
+  name: string
+  date: Date
+  description: string
+  link: string
+}
+
+const news = ref(await fetchNews())
+const events = ref(await fetchEvents())
+
+const newsForGallery = computed(
+  () =>
+    news.value?.map((n) => ({
+      img: n.img,
+      date: n.date,
+      description: n.body,
+      link: n.link,
+      name: n.name,
+    })) || ([] as element[])
+)
+
+const eventsForGallery = computed(
+  () =>
+    events.value?.map((e) => ({
+      img: e.img,
+      date: e.date,
+      description: e.body,
+      link: e.link,
+      name: e.name,
+    })) || ([] as element[])
+)
 </script>
 
 <template>
@@ -101,25 +135,11 @@ import { FormKitIcon } from '@formkit/vue'
         </div>
       </div>
     </div>
+
     <div class="default_layout">
-      <Gallery
-        title="Noticias"
-        :elements="
-          newsData.map(({ createdAt, ...rest }) => ({
-            ...rest,
-            date: createdAt,
-          }))
-        "
-      />
-      <Gallery
-        title="próximos eventos"
-        :elements="
-          eventsData.map(({ eventDate, ...rest }) => ({
-            ...rest,
-            date: eventDate,
-          }))
-        "
-      />
+      <Gallery title="Noticias" :elements="newsForGallery" />
+
+      <Gallery title="próximos eventos" :elements="eventsForGallery" />
     </div>
 
     <div

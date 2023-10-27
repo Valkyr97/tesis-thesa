@@ -1,5 +1,4 @@
 import { Team } from '~/server/entities/team'
-import { State } from '~/server/enums/state'
 
 export default defineEventHandler(async (event) => {
   const id = getRouterParam(event, 'id')
@@ -10,8 +9,7 @@ export default defineEventHandler(async (event) => {
       id: Number(id),
     })
 
-    team.state = State.DELETED
-    await team.save()
+    await team.remove()
 
     return team
   } catch (e) {

@@ -10,7 +10,7 @@ import {
   ManyToOne,
   BaseEntity,
 } from 'typeorm'
-import { State } from '../enums/state'
+import { State } from '../enums/HeadlineType'
 import { Category } from './category'
 import { Editor } from './editor'
 import { Developer } from './developer'
@@ -35,13 +35,6 @@ export class Game extends BaseEntity {
   @Column('simple-array', { nullable: true })
   pictures: string[]
 
-  @Column({
-    type: 'enum',
-    enum: State,
-    default: State.ACTIVE,
-  })
-  state: State
-
   @CreateDateColumn()
   createdAt: Date
 
@@ -58,4 +51,15 @@ export class Game extends BaseEntity {
 
   @ManyToOne(() => Editor)
   private registeredBy: Editor
+
+  static findByCategories(categories: number[]) {
+    return this.createQueryBuilder('game')
+      .leftJoin('game.categories', 'category')
+      .where('category.id IN (:...categories)', { categories })
+      .groupBy('game.id')
+      .having('COUNT(DISTINCT category.id) = :total', {
+        total: categories.length,
+      })
+      .getMany()
+  }
 }

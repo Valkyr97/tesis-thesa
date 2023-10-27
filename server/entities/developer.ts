@@ -8,7 +8,7 @@ import {
   OneToMany,
   BaseEntity,
 } from 'typeorm'
-import { State } from '../enums/state'
+import { State } from '../enums/HeadlineType'
 import { Editor } from './editor'
 import { Game } from './game'
 import { Team } from './team'
@@ -39,13 +39,6 @@ export class Developer extends BaseEntity {
 
   @Column('text', { nullable: true })
   address: string
-
-  @Column({
-    type: 'enum',
-    enum: State,
-    default: State.ACTIVE,
-  })
-  state: State
 
   @ManyToMany(() => Game, (game) => game.developers)
   games: Game[]

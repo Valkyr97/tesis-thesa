@@ -5,7 +5,7 @@ defineProps<{
     keys:  string[]
     tableRowsData: any[]
     onRowClick?: (id: any) => void
-    createRoute?: any
+    onPlusClick?: () => void
 }>()
 
 defineEmits<{
@@ -28,7 +28,7 @@ defineEmits<{
           </th>
         </tr>
         <button
-        @click="$router.push(createRoute)"
+        @click="onPlusClick"
         class="absolute right-2 top-0 text-2xl font-bold text-center hover:text-green-600">+</button>
       </thead>
       <tbody>

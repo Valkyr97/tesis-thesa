@@ -1,12 +1,8 @@
 <script setup lang="ts">
-import { Category } from '~/server/entities/category'
+import { fetchCategories, deleteCategory } from '~/api'
 
-const categories = ref<Partial<Category>[]>()
-
-const fetchCategories = async () => {
-  const response = await $fetch('/api/category')
-  categories.value = response
-}
+//State
+const { data: categories, refresh } = await fetchCategories()
 
 const { warningToast } = useWarningToast()
 
@@ -22,15 +18,13 @@ const handleDelete = async (id: any) => {
   const name = categories.value?.find((c) => c.id === id)?.name
 
   warningToast('eliminar', {
-    text: 'la categoría: ' + name,
+    text: 'la categoría' + ' ' + name,
     onConfirm: async () => {
-      await $fetch(`/api/category/${id}`, { method: 'DELETE' })
-      await fetchCategories()
+      await deleteCategory(id)
+      await refresh()
     },
   })
 }
-
-onMounted(() => fetchCategories())
 </script>
 
 <template>
@@ -38,7 +32,7 @@ onMounted(() => fetchCategories())
     @delete="handleDelete"
     :keys="keys"
     :tableRowsData="data"
-    :createRoute="path"
+    :onPlusClick="() => $router.push(path)"
     :onRowClick="(id: any) => $router.push({ path, query: { id } })"
   />
 </template>

@@ -1,12 +1,12 @@
 import { Team } from '~/server/entities/team'
-import { State } from '~/server/enums/state'
 
 export default defineEventHandler(async (event) => {
+  const { skip, take } = getQuery(event)
+  
   try {
     const teams = await Team.find({
-      where: {
-        state: State.ACTIVE,
-      },
+      skip: typeof skip === 'number' ? skip : 0,
+      take: typeof take === 'number' ? take : undefined,
     })
     return teams
   } catch (e) {

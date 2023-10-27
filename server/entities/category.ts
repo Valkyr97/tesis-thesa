@@ -6,7 +6,7 @@ import {
   BaseEntity,
   ManyToOne,
 } from 'typeorm'
-import { State } from '../enums/state'
+import { State } from '../enums/HeadlineType'
 import { Editor } from './editor'
 
 @Entity()
@@ -16,13 +16,6 @@ export class Category extends BaseEntity {
 
   @Column('text')
   name: string
-
-  @Column({
-    type: 'enum',
-    enum: State,
-    default: State.ACTIVE,
-  })
-  state: State
 
   @ManyToOne(() => Editor)
   private registeredBy: Editor

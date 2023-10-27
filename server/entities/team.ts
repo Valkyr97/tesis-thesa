@@ -9,7 +9,7 @@ import {
   OneToMany,
   BaseEntity,
 } from 'typeorm'
-import { State } from '../enums/state'
+import { State } from '../enums/HeadlineType'
 import { Editor } from './editor'
 import { Developer } from './developer'
 
@@ -26,13 +26,6 @@ export class Team extends BaseEntity {
 
   @Column('text', { nullable: true })
   picture: string
-
-  @Column({
-    type: 'enum',
-    enum: State,
-    default: State.ACTIVE,
-  })
-  state: State
 
   @CreateDateColumn()
   createdAt: Date

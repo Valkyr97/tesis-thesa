@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { FormKitIcon } from '@formkit/vue'
+import { fetchGame } from '~/api'
 
 const route = useRoute()
-const game = ref()
+const {data: game} = await fetchGame(route.params.id)
 
 onBeforeMount(() => {
   if (!route.params.id) return
-  game.value = gamesData.find((g) => g.id === route.params.id)
 })
 </script>
 
@@ -30,11 +30,15 @@ onBeforeMount(() => {
         </h1>
         <h1 class="text-3xl font-thin">|</h1>
         <div class="flex flex-col h-full gap-y-2 place-content-start w-fit">
-          <div class="flex items-center text-center gap-x-3 hover:text-cyan-400 cursor-pointer">
+          <div
+            class="flex items-center text-center gap-x-3 hover:text-cyan-400 cursor-pointer"
+          >
             <FormKitIcon icon="playCircle" class="flex h-5" />
             <span class="capitalize"> ver trailer </span>
           </div>
-          <div class="flex items-center text-center gap-x-3 hover:text-cyan-400 cursor-pointer">
+          <div
+            class="flex items-center text-center gap-x-3 hover:text-cyan-400 cursor-pointer"
+          >
             <FormKitIcon icon="fileImage" class="flex h-5" />
             <span class="capitalize"> ver imágenes </span>
           </div>
@@ -49,46 +53,49 @@ onBeforeMount(() => {
             {{ game.description }}
           </p>
         </div>
-        <div class="w-1/3 flex flex-col space-y-7">
-          <h4 class="list_title text-xl uppercase font-semibold">
+        <div class="w-1/3 flex flex-col">
+          <h4 class="list_title text-xl uppercase font-semibold mb-2">
             Datos del juego:
           </h4>
-          <ul class="h-min">
-            <li class="h-min">
-              <h5 class="list_title w-fit mb-3">Desarrolladores</h5>
-              <ul
-                class="transition-all transform list-inside delay-75 flex gap-x-2"
-              >
-                <li v-for="dev in game.developers">
-                  <UiInteractiveAvatar
-                    :img="dev.avatar"
-                    :title="dev.memberName"
-                  />
-                </li>
-              </ul>
-            </li>
-          </ul>
-          <ul class="h-min">
-            <li class="group h-min">
-              <h5 class="list_title w-fit">Categorías</h5>
-              <ul
-                class="transition-all transform list-inside delay-75 flex gap-x-4"
-              >
-                <li
-                  @click="
-                    $router.push({
-                      path: '/games',
-                      query: { categories: category.id },
-                    })
-                  "
-                  class="text-indigo-900 font-bold hover:text-cyan-500 cursor-pointer"
-                  v-for="category in game.categories"
+          <div class="pl-3 space-y-2">
+            <ul class="h-min">
+              <li class="h-min">
+                <h5 class="list_title w-fit mb-3">Desarrolladores</h5>
+                <ul
+                  class="transition-all transform list-inside delay-75 flex gap-x-2"
                 >
-                  {{ category.name }}
-                </li>
-              </ul>
-            </li>
-          </ul>
+                  <li v-for="dev in game.developers">
+                    <UiInteractiveAvatar
+                      :img="dev.avatar"
+                      :title="dev.name"
+                      :subtitle="dev.role"
+                    />
+                  </li>
+                </ul>
+              </li>
+            </ul>
+            <ul class="h-min">
+              <li class="group h-min">
+                <h5 class="list_title w-fit">Géneros</h5>
+                <ul
+                  class="transition-all transform list-inside delay-75 flex gap-x-4"
+                >
+                  <li
+                    @click="
+                      $router.push({
+                        path: '/games',
+                        query: { categories: category.id },
+                      })
+                    "
+                    class="text-indigo-900 font-bold hover:text-cyan-500 cursor-pointer"
+                    v-for="category in game.categories"
+                  >
+                    {{ category.name }}
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>

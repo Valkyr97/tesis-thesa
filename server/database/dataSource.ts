@@ -7,6 +7,8 @@ import { Team } from '../entities/team'
 import { DevToTech } from '../entities/devsToTechs'
 import { Tech } from '../entities/techs'
 import { Headline } from '../entities/headline'
+import { Survey } from '../entities/survey'
+import { Question } from '../entities/question'
 
 export default new DataSource({
   type: 'postgres',
@@ -15,7 +17,18 @@ export default new DataSource({
   username: 'postgres',
   password: 'root',
   database: 'test',
-  entities: [Editor, Developer, Game, Category, Team, DevToTech, Tech, Headline],
+  entities: [
+    Editor,
+    Developer,
+    Game,
+    Category,
+    Team,
+    DevToTech,
+    Tech,
+    Headline,
+    Survey,
+    Question,
+  ],
   synchronize: true,
   logging: false,
 })

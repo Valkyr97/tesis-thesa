@@ -1,5 +1,4 @@
 import { Headline } from '~/server/entities/headline'
-import { State } from '~/server/enums/state'
 
 export default defineEventHandler(async (event) => {
   const id = getRouterParam(event, 'id')

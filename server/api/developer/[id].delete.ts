@@ -1,5 +1,4 @@
 import { Developer } from '~/server/entities/developer'
-import { State } from '~/server/enums/state'
 
 export default defineEventHandler(async (event) => {
   const id = getRouterParam(event, 'id')

@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { Headline } from '~/server/entities/headline'
+import { fetchNews, deleteNew } from '~/api'
 
-const headlines = ref<Headline[]>()
+const { data: news, refresh } = await fetchNews()
 
 const { warningToast } = useWarningToast()
 
@@ -11,28 +11,22 @@ const path = '/private/new/form'
 
 const data = computed(
   () =>
-    headlines.value?.map((c) => ({
+    news.value?.map((c) => ({
       id: c.id,
       Noticia: c.name,
       Fecha: c.lastUpdated,
     })) || []
 )
 
-const fetchHeadlines = async () => {
-  headlines.value = await $fetch('/api/headline')
-}
-
 const handleDelete = (id: any) => {
   warningToast('eliminar', {
-    text: 'la noticia: ' + headlines.value?.find((h) => h.id === id)?.name,
+    text: 'la noticia: ' + news.value?.find((h) => h.id === id)?.name,
     onConfirm: async () => {
-      await $fetch(`/api/headline/${id}`, { method: 'DELETE' })
-      await fetchHeadlines()
+      await deleteNew(id)
+      await refresh()
     },
   })
 }
-
-onMounted(() => fetchHeadlines())
 </script>
 
 <template>
@@ -40,7 +34,7 @@ onMounted(() => fetchHeadlines())
     @delete="handleDelete"
     :keys="keys"
     :tableRowsData="data"
-    :createRoute="path"
+    :onPlusClick="() => $router.push(path)"
     :onRowClick="(id: any) => $router.push({ path, query: {id}})"
   />
 </template>
