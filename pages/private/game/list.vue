@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import { deleteGame, fetchGames } from '~/api'
+import useGames from '~/composables/api/useGames'
 
 const { warningToast } = useWarningToast()
+
+const { deleteGame, fetchGames } = useGames()
 
 const { data: games, refresh } = await fetchGames()
 
@@ -35,6 +37,6 @@ const handleDelete = async (id: any) => {
     :keys="keys"
     :tableRowsData="data"
     :onPlusClick="() => $router.push(path)"
-    :onRowClick="(id: any) => $router.push({ path, query: {id}})"
+    :onEditClick="(id: any) => $router.push({ path, query: {id}})"
   />
 </template>

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { FormKitIcon } from '@formkit/vue'
-import { fetchEvents, fetchNews } from '~/utils/api'
+import useEvents from '~/composables/api/useEvents'
+import useNews from '~/composables/api/useNews'
 
 export type element = {
   img: string
@@ -10,8 +11,11 @@ export type element = {
   link: string
 }
 
-const news = ref(await fetchNews())
-const events = ref(await fetchEvents())
+const { fetchNews } = useNews()
+const { fetchEvents } = useEvents()
+
+const { data: news } = await fetchNews()
+const { data: events } = await fetchEvents()
 
 const newsForGallery = computed(
   () =>
@@ -21,7 +25,7 @@ const newsForGallery = computed(
       description: n.body,
       link: n.link,
       name: n.name,
-    })) || ([] as element[])
+    })) || []
 )
 
 const eventsForGallery = computed(
@@ -32,7 +36,7 @@ const eventsForGallery = computed(
       description: e.body,
       link: e.link,
       name: e.name,
-    })) || ([] as element[])
+    })) || []
 )
 </script>
 

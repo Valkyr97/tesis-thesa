@@ -1,4 +1,6 @@
 //@ts-nocheck
+import { FormRedirectUri } from '~/utils/enums'
+
 export default () => {
   const CLIENT_ID =
     '904292748520-b6vmkudb5479e30s99ieq62vg3133fd0.apps.googleusercontent.com'
@@ -13,7 +15,6 @@ export default () => {
           'access_token=' +
           params['access_token']
       )
-      console.log(data)
       if (status.value === 'error' || error.value) {
         return false
       }
@@ -26,13 +27,8 @@ export default () => {
   /*
    * Create form to request access token from Google's OAuth 2.0 server.
    */
-  function oauth2SignIn(
-    redirect_uri?:
-      | 'http://localhost:3000/private/survey/list'
-      | 'http://localhost:3000/private/survey/form'
-  ) {
-    const REDIRECT_URI =
-      redirect_uri ?? 'http://localhost:3000/private/survey/form'
+  function oauth2SignIn(redirect_uri?: FormRedirectUri) {
+    const REDIRECT_URI = redirect_uri ?? FormRedirectUri.FORM
     // Google's OAuth 2.0 endpoint for requesting an access token
     const oauth2Endpoint = 'https://accounts.google.com/o/oauth2/v2/auth'
 
@@ -45,7 +41,8 @@ export default () => {
     const params = {
       client_id: CLIENT_ID,
       redirect_uri: REDIRECT_URI,
-      scope: 'https://www.googleapis.com/auth/forms.body',
+      scope:
+        'https://www.googleapis.com/auth/forms.body https://www.googleapis.com/auth/drive.file',
       state: 'try_sample_request',
       include_granted_scopes: 'true',
       response_type: 'token',

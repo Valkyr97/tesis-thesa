@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import { deleteTeam, fetchTeams } from '~/api'
+import useTeams from '~/composables/api/useTeams'
 
 const { warningToast } = useWarningToast()
+
+const { deleteTeam, fetchTeams } = useTeams()
 
 const { data: teams, refresh } = await fetchTeams()
 
@@ -35,6 +37,6 @@ const handleDelete = (id: any) => {
     :keys="keys"
     :tableRowsData="data"
     :onPlusClick="() => $router.push(path)"
-    :onRowClick="(id: any) => $router.push({ path, query: {id}})"
+    :onEditClick="(id: any) => $router.push({ path, query: {id}})"
   />
 </template>

@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import { deleteEvent, fetchEvents } from '~/api'
+import useEvents from '~/composables/api/useEvents'
 
 const { warningToast } = useWarningToast()
+
+const { deleteEvent, fetchEvents } = useEvents()
 
 const { data: events, refresh } = await fetchEvents()
 
@@ -35,6 +37,6 @@ const handleDelete = (id: any) => {
     :keys="keys"
     :tableRowsData="data"
     :onPlusClick="() => $router.push(path)"
-    :onRowClick="(id: any) => $router.push({ path, query: {id}})"
+    :onEditClick="(id: any) => $router.push({ path, query: {id}})"
   />
 </template>

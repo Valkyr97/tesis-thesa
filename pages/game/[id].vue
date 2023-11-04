@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { FormKitIcon } from '@formkit/vue'
-import { fetchGame } from '~/api'
+import useGames from '~/composables/api/useGames'
 
 const route = useRoute()
-const {data: game} = await fetchGame(route.params.id)
+const { fetchGame } = useGames()
+const { data: game } = await fetchGame(route.params.id)
 
 onBeforeMount(() => {
   if (!route.params.id) return

@@ -10,6 +10,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     gapi_client_id:
       '904292748520-epvs2lqvad52jcb4f6jbuenned6ca3d5.apps.googleusercontent.com',
+    secret_key: 'sOm3R4reStringt4hAt1muSingasK3y'
   },
 
   app: {
@@ -17,6 +18,10 @@ export default defineNuxtConfig({
       script: [{ src: 'https://accounts.google.com/gsi/client' }],
     },
   },
+
+  // formkit: {
+  //   autoImport: true,
+  // },
 
   nitro: {
     esbuild: {

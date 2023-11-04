@@ -1,7 +1,9 @@
 import { defineFormKitConfig } from '@formkit/vue'
-import { es } from '@formkit/i18n'
 import { genesisIcons } from '@formkit/icons'
 import { generateClasses } from '@formkit/themes'
+import { es } from '@formkit/i18n'
+import { createAutoHeightTextareaPlugin } from '@formkit/addons'
+
 import myTilwindTheme from './tailwind-theme'
 
 export default defineFormKitConfig({
@@ -13,4 +15,7 @@ export default defineFormKitConfig({
   config: {
     classes: generateClasses(myTilwindTheme),
   },
+  plugins: [
+    createAutoHeightTextareaPlugin()
+  ]
 })

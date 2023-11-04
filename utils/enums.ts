@@ -10,3 +10,8 @@ export enum HeadlineType {
   EVENT,
   NEW,
 }
+
+export enum FormRedirectUri {
+  LIST = 'http://localhost:3000/private/survey/list',
+  FORM = 'http://localhost:3000/private/survey/form',
+}

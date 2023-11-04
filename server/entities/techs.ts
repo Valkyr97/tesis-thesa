@@ -17,8 +17,6 @@ export class Tech extends BaseEntity {
   @Column('text')
   name: string
 
-  
-
   @OneToMany(() => DevToTech, (devToTech) => devToTech.tech)
   public devToTech: DevToTech[]
 }

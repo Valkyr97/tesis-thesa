@@ -1,46 +1,48 @@
 <script setup lang="ts">
-import { FormKitIcon } from "@formkit/vue";
+import { FormKitIcon } from '@formkit/vue'
 
-const showDownButton = ref(false);
-const showUpButton = ref(false);
+const showDownButton = ref(false)
+const showUpButton = ref(false)
 
 const handleScroll = () => {
-  const scrollDistance = window.scrollY || document.documentElement.scrollTop;
-  showDownButton.value = scrollDistance >= window.innerHeight;
+  const scrollDistance = window.scrollY || document.documentElement.scrollTop
+  showDownButton.value = scrollDistance >= window.innerHeight
 
-  const windowHeight = window.innerHeight;
-  const scrollHeight = document.documentElement.scrollHeight;
+  const windowHeight = window.innerHeight
+  const scrollHeight = document.documentElement.scrollHeight
   const scrollPosition =
     window.scrollY ||
     document.documentElement.scrollTop ||
-    document.body.scrollTop;
+    document.body.scrollTop
 
-  showUpButton.value = scrollPosition < scrollHeight - windowHeight;
-};
+  showUpButton.value =
+    scrollPosition <= windowHeight * 0.3 &&
+    scrollPosition < scrollHeight - windowHeight * 0.5
+}
 
 const scrollToTop = () => {
   window.scrollTo({
     top: 0,
-    behavior: "smooth",
-  });
-};
+    behavior: 'smooth',
+  })
+}
 
 const scrollToBottom = () => {
-  const { scrollHeight } = document.body;
+  const { scrollHeight } = document.body
   window.scrollTo({
     top: scrollHeight,
-    behavior: "smooth",
-  });
-};
+    behavior: 'smooth',
+  })
+}
 
 onMounted(() => {
-  window.addEventListener("scroll", handleScroll);
+  window.addEventListener('scroll', handleScroll)
   handleScroll()
-});
+})
 
 onUnmounted(() => {
-  window.removeEventListener("scroll", handleScroll);
-});
+  window.removeEventListener('scroll', handleScroll)
+})
 </script>
 
 <template>
@@ -48,7 +50,7 @@ onUnmounted(() => {
     <button
       class="fixed bottom-1 right-1 xl:bottom-4 xl:right-4 border p-1.5 xl:p-2 bg-gray-800 text-white bg-opacity-40"
       type="button"
-      v-if="(!showDownButton) && showUpButton"
+      v-if="!showDownButton && showUpButton"
       @click="scrollToBottom"
     >
       <FormKitIcon icon="down" class="flex w-6 h-6 xl:w-8 xl:h-8" />

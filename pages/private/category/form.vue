@@ -13,6 +13,6 @@ const { submit, actualData } = useSubmit('/api/category', id)
     @submit="submit"
     v-model="actualData"
   >
-    <FormKit required type="text" name="name" label="Nombre de la Categoría" />
+    <FormKit outer-class="max-w-lg" required type="text" name="name" label="Nombre del Género" placeholder="Acción" />
   </FormKit>
 </template>

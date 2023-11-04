@@ -43,10 +43,10 @@ onBeforeMount(async () => {
     type="form"
     v-model="actualData"
   >
-    <div class="flex flex-grow gap-x-8">
+    <div class="flex xl:flex-row flex-col flex-grow gap-x-8">
       <div class="flex-1">
         <FormKit required label="Nombre" type="text" name="name" />
-        <FormKit label="Descripción" type="textarea" name="description" />
+        <FormKit label="Descripción" type="textarea" auto-height name="description" />
 
         <FormKit
           label="Categorías en las que encaja"

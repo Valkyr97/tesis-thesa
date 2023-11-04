@@ -6,7 +6,6 @@ import {
   BaseEntity,
   ManyToOne,
 } from 'typeorm'
-import { State } from '../enums/HeadlineType'
 import { Editor } from './editor'
 
 @Entity()

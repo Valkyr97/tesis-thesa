@@ -1,15 +1,29 @@
 //@ts-nocheck
-import { Column, Entity, BaseEntity, PrimaryColumn, OneToMany } from 'typeorm'
+import {
+  Column,
+  Entity,
+  BaseEntity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+} from 'typeorm'
 import { Question } from './question'
+import { Editor } from './editor'
 
 @Entity()
 export class Survey extends BaseEntity {
-  @PrimaryColumn('text', { unique: true })
-  id: string
+  @PrimaryGeneratedColumn()
+  id: number
+
+  @Column('text', { unique: true })
+  formId: string
 
   @Column('text')
   title: string
 
   @OneToMany(() => Question, (q) => q.survey, { nullable: true })
   questions: Question[]
+
+  @ManyToOne(() => Editor)
+  registeredBy: Editor
 }

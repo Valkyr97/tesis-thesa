@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import { fetchCategories, deleteCategory } from '~/api'
+import useCategories from '~/composables/api/useCategories'
 
 //State
+const { fetchCategories, deleteCategory } = useCategories()
+
 const { data: categories, refresh } = await fetchCategories()
 
 const { warningToast } = useWarningToast()
@@ -33,6 +35,6 @@ const handleDelete = async (id: any) => {
     :keys="keys"
     :tableRowsData="data"
     :onPlusClick="() => $router.push(path)"
-    :onRowClick="(id: any) => $router.push({ path, query: { id } })"
+    :onEditClick="(id: any) => $router.push({ path, query: { id } })"
   />
 </template>

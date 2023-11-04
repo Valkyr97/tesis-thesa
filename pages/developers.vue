@@ -1,9 +1,13 @@
 <script setup lang="ts">
+import useDevelopers from '~/composables/api/useDevelopers'
+
 // const router = useRouter()
 // const selectedTechs = ref(new Set())
 // const route = useRoute()
 
-const developers = ref(await fetchDevelopers())
+const { fetchDevelopers } = useDevelopers()
+
+const { data: developers } = await fetchDevelopers()
 
 // const handleFilterUpdated = (elements: Set<any>) => {
 //   router.push({ query: { techs: [...elements] } })

@@ -1,13 +1,19 @@
 <script setup lang="ts">
+import useCategories from '~/composables/api/useCategories'
+import useGames from '~/composables/api/useGames'
+
 //State
 const route = useRoute()
 const router = useRouter()
+
+const { fetchCategories } = useCategories()
+const { fetchGames } = useGames()
 
 const {
   data: categories,
   error,
   status,
-} = await useFetch('/api/category', { query: { select: ['name', 'id'] } })
+} = await fetchCategories({ select: ['name', 'id'] })
 
 const routeCategories = computed(
   () =>
@@ -18,8 +24,8 @@ const routeCategories = computed(
     []
 )
 
-const { data: games, refresh } = await useFetch('/api/game', {
-  query: { categories: routeCategories.value },
+const { data: games, refresh } = await fetchGames({
+  categories: routeCategories.value,
 })
 
 //Actions

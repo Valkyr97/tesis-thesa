@@ -11,17 +11,25 @@
   "devDependencies": {
     "@nuxt/devtools": "^1.0.0",
     "@nuxtjs/tailwindcss": "^6.8.0",
+    "@types/bcrypt": "^5.0.1",
+    "@types/jsonwebtoken": "^9.0.4",
     "@types/node": "^20.8.7",
+    "@vueuse/core": "^10.5.0",
+    "@vueuse/nuxt": "^10.5.0",
     "nuxt": "^3.7.4"
   },
   "dependencies": {
+    "@formkit/addons": "^1.2.2",
     "@formkit/icons": "^0.19.2",
-    "@formkit/nuxt": "^0.19.2",
-    "@formkit/themes": "^0.19.2",
+    "@formkit/nuxt": "^1.2.2",
+    "@formkit/themes": "^1.2.2",
     "@types/gapi": "^0.0.46",
+    "bcrypt": "^5.1.1",
+    "jsonwebtoken": "^9.0.2",
     "pg": "^8.11.3",
     "reflect-metadata": "^0.1.13",
     "typeorm": "^0.3.17",
-    "vue-toastification": "^2.0.0-rc.5"
+    "vue-toastification": "^2.0.0-rc.5",
+    "vuedraggable": "^4.1.0"
   }
 }

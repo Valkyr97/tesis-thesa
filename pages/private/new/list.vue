@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import { fetchNews, deleteNew } from '~/api'
+import useNews from '~/composables/api/useNews'
+
+const { fetchNews, deleteNew } = useNews()
 
 const { data: news, refresh } = await fetchNews()
 
@@ -35,6 +37,6 @@ const handleDelete = (id: any) => {
     :keys="keys"
     :tableRowsData="data"
     :onPlusClick="() => $router.push(path)"
-    :onRowClick="(id: any) => $router.push({ path, query: {id}})"
+    :onEditClick="(id: any) => $router.push({ path, query: {id}})"
   />
 </template>
