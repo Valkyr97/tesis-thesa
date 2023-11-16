@@ -16,9 +16,7 @@ const handleNewsClick = (link: string) => {
 </script>
 
 <template>
-  <h1
-    class="text-3xl lg:text-5xl text-indigo-900 font-medium uppercase my-12"
-  >
+  <h1 class="text-3xl lg:text-5xl text-indigo-900 font-medium uppercase my-12">
     {{ title }}
   </h1>
   <div class="w-full grid grid-cols-3 gap-7 gap-y-20 md:gap-y-16 pb-8">
@@ -37,10 +35,10 @@ const handleNewsClick = (link: string) => {
             :src="el.img"
           />
         </div>
-        <h5 class="">
+        <h5 v-if="el.date" class="">
           {{
             new Date(
-              el.date.toLocaleString('en-US', {
+              el.date?.toLocaleString('en-US', {
                 timeZone: 'Europe/Madrid',
               })
             ).toLocaleDateString('es-ES', {

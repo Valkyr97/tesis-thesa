@@ -1,18 +1,34 @@
 <script setup lang="ts">
+
+
 const route = useRoute()
 const { id } = route.query
 
-const devsList = ref<{ label: string; value: number }[]>([])
+const devsList = ref<{ label: string; value: number; attrs?: any }[]>([
+  {
+    label: 'Seleccione un desarrollador',
+    value: 0,
+    attrs: { selected: true, disabled: true },
+  },
+])
 const devs = ref<number[]>([])
 
 const { actualData, submit } = useSubmit('/api/team', id)
+const { fetchDevelopers } = useDevelopers()
 
 onBeforeMount(async () => {
-  const developers = await $fetch('/api/developer')
-  devsList.value = developers.map((dev) => ({
-    value: dev.id,
-    label: dev.name,
-  }))
+  const { data: developers } = await fetchDevelopers({
+    withTeam: true,
+    withoutTeam: true,
+  })
+
+  devsList.value = [
+    ...devsList.value,
+    ...(developers.value?.map((dev) => ({
+      value: dev.id,
+      label: dev.name,
+    })) || []),
+  ]
 })
 </script>
 
@@ -55,7 +71,14 @@ onBeforeMount(async () => {
             v-for="(item, index) in items"
             :key="item"
             :index="index"
-            :options="devsList.filter((d) => !devs.includes(d.value))"
+            :options="[
+              {
+                label: 'Seleccione un desarrollador',
+                value: 0,
+                attrs: { selected: true, disabled: true },
+              },
+              ...devsList.filter((d) => !devs.includes(d.value)),
+            ]"
           />
           <button
             type="button"
@@ -69,3 +92,4 @@ onBeforeMount(async () => {
     </div>
   </FormKit>
 </template>
+~/stores/api/useDevelopers

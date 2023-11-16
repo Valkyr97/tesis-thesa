@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import useSurvey from '~/composables/api/useSurvey'
-
 definePageMeta({
   middleware: 'oauth2',
   name: 'survey_list',
@@ -44,10 +42,22 @@ const handleRouteChangeToUpdate = (id: number) => {
 
 <template>
   <TemplatesDynamicTable
-    @delete="handleDelete"
     :keys="keys"
     :tableRowsData="data"
     :onPlusClick="() => $router.push(path)"
-    :onEditClick="(id: any) => handleRouteChangeToUpdate(id)"
+    :actions="[
+      {
+        name: 'edit',
+        icon: 'tools',
+        iconColor: 'green-950',
+        onAction: (id) => handleRouteChangeToUpdate(id),
+      },
+      {
+        name: 'delete',
+        icon: 'trash',
+        iconColor: 'red-950',
+        onAction: handleDelete,
+      },
+    ]"
   />
 </template>

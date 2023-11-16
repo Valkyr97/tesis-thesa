@@ -8,8 +8,8 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm'
-import { State } from '../enums/HeadlineType'
 import { Editor } from './editor'
+import { HeadlineType } from '~/utils/enums'
 
 @Entity()
 export class Headline extends BaseEntity {
@@ -33,7 +33,7 @@ export class Headline extends BaseEntity {
 
   @Column({
     type: 'enum',
-    enum: ['event', 'new'],
+    enum: HeadlineType,
   })
   type: HeadlineType
 

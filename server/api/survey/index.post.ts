@@ -1,5 +1,5 @@
 import dataSource from '~/server/database/dataSource'
-import { Survey } from '~/server/entities/survey'
+import { Survey } from '~/server/database/entities/survey'
 
 export default defineEventHandler(async (event) => {
   try {
@@ -10,14 +10,20 @@ export default defineEventHandler(async (event) => {
     survey.formId = formId
     survey.title = title
 
+    await survey.save()
+
     await dataSource
       .createQueryBuilder()
       .relation(Survey, 'registeredBy')
       .of(survey)
-      .add(event.context.user_id)
+      .set(event.context.user_id)
 
-    return await survey.save()
+    return survey
   } catch (e) {
     console.log(e)
+    throw createError({
+      status: 500,
+      message: 'Error creating the survey',
+    })
   }
 })

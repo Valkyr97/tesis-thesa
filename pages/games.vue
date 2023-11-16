@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import useCategories from '~/composables/api/useCategories'
-import useGames from '~/composables/api/useGames'
+
 
 //State
 const route = useRoute()

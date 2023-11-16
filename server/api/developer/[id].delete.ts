@@ -1,4 +1,4 @@
-import { Developer } from '~/server/entities/developer'
+import { Developer } from '~/server/database/entities/developer'
 
 export default defineEventHandler(async (event) => {
   const id = getRouterParam(event, 'id')

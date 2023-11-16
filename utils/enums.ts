@@ -7,8 +7,8 @@ export enum entity {
 }
 
 export enum HeadlineType {
-  EVENT,
-  NEW,
+  EVENT = 'event',
+  NEW = 'new',
 }
 
 export enum FormRedirectUri {

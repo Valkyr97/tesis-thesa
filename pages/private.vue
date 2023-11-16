@@ -1,5 +1,9 @@
 <script setup lang="ts">
 const { trySampleRequest } = useOauth()
+
+definePageMeta({
+  middleware: ['auth'],
+})
 </script>
 
 <template>
@@ -29,6 +33,9 @@ const { trySampleRequest } = useOauth()
         </NuxtLink>
         <NuxtLink active-class="text-green-600" to="/private/survey/list">
           Encuestas
+        </NuxtLink>
+        <NuxtLink active-class="text-green-600" to="/private/editor/list">
+          Editores
         </NuxtLink>
       </ul>
     </div>

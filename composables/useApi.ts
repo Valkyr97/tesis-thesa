@@ -3,31 +3,12 @@ import { useToast } from 'vue-toastification'
 export default (path: string) => {
   const toast = useToast()
 
-  const isLoading = useLoading()
+  const uiStore = useUiStore()
 
-  const handleFetchMany = async (query?: any) => {
-    const response = await useFetch(path, { query })
+  const { token } = useUserStore()
 
-    isLoading.value =
-      response.status.value === 'idle' || response.status.value === 'pending'
-
-    if (response.error.value || response.status.value === 'error') {
-      toast.error('Lo sentimos ha ocurrido un error')
-      console.log(response.error.value)
-    }
-    return response
-  }
-
-  const handleFetchOne = async (id: any, query?: any) => {
-    const response = await useFetch(`${path}/${id}`, { query })
-    isLoading.value =
-      response.status.value === 'idle' || response.status.value === 'pending'
-
-    if (response.error.value || response.status.value === 'error') {
-      toast.error('Lo sentimos ha ocurrido un error')
-      console.log(response.error.value)
-    }
-    return response
+  const headers = {
+    'x-authorization-token': `Bearer ${token}`,
   }
 
   const handleDeleteOne = async (id: any, query?: any) => {
@@ -35,8 +16,14 @@ export default (path: string) => {
       method: 'DELETE',
       query,
     })
-    isLoading.value =
-      response.status.value === 'idle' || response.status.value === 'pending'
+    watch(
+      () => response.status,
+      (status) => {
+        uiStore.setIsLoading(
+          status.value === 'idle' || status.value === 'pending'
+        )
+      }
+    )
 
     if (response.error.value || response.status.value === 'error') {
       toast.error('Lo sentimos ha ocurrido un error')
@@ -52,12 +39,24 @@ export default (path: string) => {
       method: 'POST',
       body: { ...value },
       query,
+      headers,
     })
-    isLoading.value =
-      response.status.value === 'idle' || response.status.value === 'pending'
+    watch(
+      () => response.status,
+      (status) => {
+        uiStore.setIsLoading(
+          status.value === 'idle' || status.value === 'pending'
+        )
+      }
+    )
+
+    console.log(response)
 
     if (response.error.value || response.status.value === 'error') {
-      toast.error('Lo sentimos ha ocurrido un error')
+      toast.error(
+        response.error?.value?.data?.message ||
+          'Lo sentimos ha ocurrido un error'
+      )
       console.log(response.error.value)
     } else if (response.status.value === 'success') {
       toast.success('Creación completada')
@@ -70,12 +69,21 @@ export default (path: string) => {
       method: 'PUT',
       body: { ...value },
       query,
+      headers,
     })
-    isLoading.value =
-      response.status.value === 'idle' || response.status.value === 'pending'
+    watch(
+      () => response.status,
+      (status) => {
+        uiStore.setIsLoading(
+          status.value === 'idle' || status.value === 'pending'
+        )
+      }
+    )
 
     if (response.error.value || response.status.value === 'error') {
-      toast.error('Lo sentimos ha ocurrido un error')
+      toast.error(
+        response.error?.value?.message || 'Lo sentimos ha ocurrido un error'
+      )
       console.log(response.error.value)
     } else if (response.status.value === 'success') {
       toast.success('Actualización completada')
@@ -84,8 +92,6 @@ export default (path: string) => {
   }
 
   return {
-    handleFetchMany,
-    handleFetchOne,
     handleDeleteOne,
     handleCreate,
     handleUpdate,

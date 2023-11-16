@@ -3,13 +3,13 @@ import UiWarningToast from '~/components/ui/WarningToast.vue'
 
 export default function () {
   const toast = useToast()
-  const isLoading = useLoading()
+  const uiStore = useUiStore()
 
   const warningToast = (
     action: string,
     options: { text?: string; onConfirm: () => void }
   ) => {
-    isLoading.value = true
+    uiStore.setIsLoading(true)
 
     const { onConfirm, text } = options
 
@@ -36,7 +36,7 @@ export default function () {
         closeOnClick: false,
         icon: false,
         closeButton: false,
-        onClose: () => (isLoading.value = false),
+        onClose: () => uiStore.setIsLoading(false),
       }
     )
   }

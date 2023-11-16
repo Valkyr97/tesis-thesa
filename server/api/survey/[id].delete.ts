@@ -1,4 +1,4 @@
-import { Survey } from '~/server/entities/survey'
+import { Survey } from '~/server/database/entities/survey'
 
 export default defineEventHandler(async (event) => {
   const id = getRouterParam(event, 'id')

@@ -7,6 +7,7 @@ const protectedPaths = [
   '/api/headline',
   '/api/survey',
   '/api/team',
+  '/api/editor',
 ]
 
 export default defineEventHandler((event) => {
@@ -14,16 +15,27 @@ export default defineEventHandler((event) => {
     event.method !== 'GET' &&
     protectedPaths.some((path) => event.path.startsWith(path))
   ) {
-    const runtimeConfig = useRuntimeConfig()
-    const token = getRequestHeader(event, 'x-authorization-token')
+    try {
+      const runtimeConfig = useRuntimeConfig()
+      const token = getRequestHeader(event, 'x-authorization-token')?.split(
+        ' '
+      )[1]
 
-    if (token) {
-      const verifiedToken: any = jwt.verify(token, runtimeConfig.secret_key)
-      event.context.user_id = verifiedToken?.user_id
-    } else {
+      if (token) {
+        const verifiedToken: any = jwt.verify(token, runtimeConfig.secret_key)
+        console.log(verifiedToken)
+        event.context.user_id = verifiedToken?.user_id
+      } else {
+        throw createError({
+          statusCode: 401,
+          statusMessage: 'Invalid token',
+        })
+      }
+    } catch (e: any) {
+      console.log(e)
       throw createError({
-        statusCode: 401,
-        statusMessage: 'Not valid token',
+        statusCode: 500,
+        message: e.message,
       })
     }
   }

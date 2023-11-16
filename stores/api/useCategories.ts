@@ -1,20 +1,32 @@
 import { useToast } from 'vue-toastification'
 
-export default () => {
+export default defineStore('api/categories', () => {
   const toast = useToast()
 
-  const isLoading = useLoading()
+  const { token } = useUserStore()
+
+  const headers = {
+    'x-authorization-token': `Bearer ${token}`,
+  }
+
+  const uiStore = useUiStore()
 
   const fetchCategories = async (query?: any) => {
-    const response = await useFetch('/api/category', { query })
+    const response = await useFetch('/api/category', { query, headers })
 
     if (response.error.value || response.status.value === 'error') {
       toast.error('Lo sentimos ha ocurrido un error')
       console.log(response.error.value)
     }
 
-    isLoading.value =
-      response.status.value === 'idle' || response.status.value === 'pending'
+    watch(
+      () => response.status,
+      (status) => {
+        uiStore.setIsLoading(
+          status.value === 'idle' || status.value === 'pending'
+        )
+      }
+    )
 
     return response
   }
@@ -23,10 +35,17 @@ export default () => {
     const response = await useFetch(`/api/category/${id}`, {
       method: 'DELETE',
       query,
+      headers,
     })
 
-    isLoading.value =
-      response.status.value === 'idle' || response.status.value === 'pending'
+    watch(
+      () => response.status,
+      (status) => {
+        uiStore.setIsLoading(
+          status.value === 'idle' || status.value === 'pending'
+        )
+      }
+    )
 
     if (response.error.value || response.status.value === 'error') {
       toast.error('Lo sentimos ha ocurrido un error')
@@ -41,4 +60,4 @@ export default () => {
     fetchCategories,
     deleteCategory,
   }
-}
+})

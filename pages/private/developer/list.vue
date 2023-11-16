@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import useDevelopers from '~/composables/api/useDevelopers'
+
 
 // State
 const { fetchDevelopers, deleteDeveloper } = useDevelopers()
@@ -40,10 +40,22 @@ const handleDelete = (id: any) => {
 
 <template>
   <TemplatesDynamicTable
-    @delete="handleDelete"
     :keys="keys"
     :tableRowsData="data"
     :onPlusClick="() => $router.push(path)"
-    :onEditClick="(id: any) => $router.push({ path, query: {id}})"
+    :actions="[
+      {
+        name: 'edit',
+        icon: 'tools',
+        iconColor: 'green-950',
+        onAction: (id) => $router.push({ path, query: id }),
+      },
+      {
+        name: 'delete',
+        icon: 'trash',
+        iconColor: 'red-950',
+        onAction: handleDelete,
+      },
+    ]"
   />
 </template>

@@ -1,37 +1,31 @@
 <script setup lang="ts">
-import useDevelopers from '~/composables/api/useDevelopers'
+//State
+const { fetchEditors, deleteEditor } = useEditor()
 
-// State
-const { fetchDevelopers, deleteDeveloper } = useDevelopers()
-
-const { data: developers, refresh } = await fetchDevelopers({ team: true })
+const { data: editors, refresh } = await fetchEditors()
 
 const { warningToast } = useWarningToast()
 
-const keys = ['Nombre', 'Rol', 'Email', 'Equipo']
+const keys = ['Editor', 'Correo']
 
-const path = '/private/developer/form'
+const path = '/private/editor/form'
 
-// Getters
 const data = computed(
   () =>
-    developers.value?.map((d) => ({
-      id: d.id,
-      Nombre: d.name,
-      Rol: d.role,
-      Email: d.email,
-      Equipo: d.team?.name,
+    editors.value?.map((c) => ({
+      id: c.id,
+      Editor: c.name,
+      Correo: c.email,
     })) || []
 )
 
-//Actions
-const handleDelete = (id: any) => {
-  const name = developers.value?.find((d) => d.id === id)?.name
+const handleDelete = async (id: any) => {
+  const name = editors.value?.find((c) => c.id === id)?.name
 
   warningToast('eliminar', {
-    text: 'el Desarrollador: ' + name,
+    text: 'el editor ' + name,
     onConfirm: async () => {
-      await deleteDeveloper(id)
+      await deleteEditor(id)
       await refresh()
     },
   })
@@ -40,10 +34,22 @@ const handleDelete = (id: any) => {
 
 <template>
   <TemplatesDynamicTable
-    @delete="handleDelete"
     :keys="keys"
     :tableRowsData="data"
-    :onPlusClick="() => $router.push(path)"
-    :onEditClick="(id: any) => $router.push({ path, query: {id}})"
+    :actions="[
+      {
+        name: 'edit',
+        icon: 'tools',
+        iconColor: 'green-950',
+        onAction: (id) => $router.push({ path, query: id }),
+      },
+      {
+        name: 'delete',
+        icon: 'trash',
+        iconColor: 'red-950',
+        onAction: handleDelete,
+      },
+    ]"
   />
 </template>
+~/stores/api/useEditor

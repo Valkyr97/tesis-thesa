@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt'
-import { Editor } from '~/server/entities/editor'
+import { Editor } from '~/server/database/entities/editor'
 
 export default defineEventHandler(async (event) => {
   try {

@@ -1,4 +1,4 @@
-import { Developer } from '../../entities/developer'
+import { Developer } from '../../database/entities/developer'
 
 export default defineEventHandler(async (event) => {
   try {
@@ -10,7 +10,11 @@ export default defineEventHandler(async (event) => {
     manager.merge(newDev, { ...body })
 
     return await newDev.save()
-  } catch (e) {
+  } catch (e: any) {
     console.log(e)
+    throw createError({
+      statusCode: e.statusCode || 500,
+      message: e.message || 'Lo sentimos ha ocurrido un error mientras registraba el desarrollador'
+    })
   }
 })

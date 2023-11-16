@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import useDevelopers from '~/composables/api/useDevelopers'
-
 // const router = useRouter()
 // const selectedTechs = ref(new Set())
 // const route = useRoute()
@@ -37,3 +35,4 @@ const { data: developers } = await fetchDevelopers()
 </template>
 
 <style scoped></style>
+~/stores/api/useDevelopers

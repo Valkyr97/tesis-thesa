@@ -13,19 +13,24 @@ const { submit, actualData } = useSubmit('/api/developer', id)
     @submit="submit"
     v-model="actualData"
   >
-    <div class="flex flex-wrap gap-x-8 xl:flex-row flex-col">
+    <div class="flex flex-wrap gap-x-8 lg:flex-row flex-col">
       <div class="flex-1">
-        <FormKit required label="Nombre" type="text" name="name" />
-        <FormKit required label="Rol" type="text" name="role" />
-        <FormKit label="Avatar" type="text" name="avatar" />
+        <FormKit placeholder="Antonio" required label="Nombre" type="text" name="name" />
+        <FormKit
+          required
+          label="Rol en el equipo"
+          placeholder="Project Manager"
+          name="role"
+          type="text"
+        />
+        <FormKit placeholder="https://picsum.photos/200" type="text" label="Link a la imagen de perfil" name="avatar" />
+        <FormKit type="textarea" label="Resumen" auto-height />
       </div>
       <div class="flex-1">
-        <FormKit label="Teléfono" type="tel" name="phone" />
-        <FormKit required label="Email" type="email" name="email" />
-        <FormKit label="Dirección" type="text" name="address" />
+        <FormKit placeholder="some@correo.com" label="Correo Electrónico" type="email" name="email" />
+        <FormKit label="Número de teléfono" type="tel" name="phone" />
+        <FormKit label="Dirección" type="textarea" auto-height name="address" />
       </div>
-      <!-- <FormKit label="abstract" type="textarea" auto-height name="abstract" /> -->
     </div>
   </FormKit>
 </template>
-~/composables/useSubmit

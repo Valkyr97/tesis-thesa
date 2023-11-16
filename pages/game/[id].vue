@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { FormKitIcon } from '@formkit/vue'
-import useGames from '~/composables/api/useGames'
+
 
 const route = useRoute()
 const { fetchGame } = useGames()
@@ -108,3 +108,4 @@ onBeforeMount(() => {
   @apply text-blue-800 text-lg font-medium;
 }
 </style>
+~/stores/api/useGames

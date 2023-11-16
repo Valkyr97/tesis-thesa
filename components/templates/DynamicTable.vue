@@ -6,6 +6,12 @@ defineProps<{
   tableRowsData: any[]
   onEditClick?: (id: any) => void
   onPlusClick?: () => void
+  actions?: {
+    name?: string
+    icon: string
+    iconColor?: string
+    onAction?: (param?: any) => void
+  }[]
 }>()
 
 defineEmits<{
@@ -21,6 +27,8 @@ defineEmits<{
           <th scope="col" class="px-6 py-3" v-for="key in keys">
             {{ key }}
           </th>
+          <th></th>
+          <th></th>
         </tr>
         <button
           @click="onPlusClick"
@@ -50,23 +58,20 @@ defineEmits<{
               </td>
             </template>
           </td>
-          <div
-            class="absolute right-3 top-0 h-full hidden group-hover:flex gap-x-3"
-          >
-            <button type="button" class="text-center">
-              <FormKitIcon
-                @click="onEditClick ? onEditClick(row.id) : {}"
-                icon="tools"
-                class="flex h-4 text-green-950"
-              />
-            </button>
-            <button
-              @click.stop="$emit('delete', row.id)"
-              type="button"
-              class="text-center"
-            >
-              <FormKitIcon icon="trash" class="flex h-4 text-red-950" />
-            </button>
+          <div class="absolute right-3 top-0 h-full flex gap-x-2">
+            <template v-for="action in actions">
+              <button
+                @click="action.onAction ? action.onAction(row.id) : {}"
+                type="button"
+                class="text-center"
+              >
+                <FormKitIcon
+                  :icon="action.icon"
+                  :class="action.iconColor ? `text-${action.iconColor}` : ''"
+                  class="flex h-[1.12rem] hover:scale-110 transition"
+                />
+              </button>
+            </template>
           </div>
         </tr>
       </tbody>

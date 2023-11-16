@@ -2,7 +2,7 @@
 import draggable from 'vuedraggable'
 import { FormKitIcon } from '@formkit/vue'
 
-import useSurvey from '~/composables/api/useSurvey'
+
 
 definePageMeta({
   middleware: 'oauth2',
@@ -14,9 +14,9 @@ onBeforeRouteLeave(() => {
 })
 
 // State
-const router = useRouter()
 const { createSurvey, fetchSurveyById, updateFormInGoogle } = useSurvey()
-const id = JSON.parse(localStorage.getItem('formToUpdateId') || '{}')
+const formToUpdateId = localStorage.getItem('formToUpdateId')
+const id = formToUpdateId && JSON.parse(formToUpdateId)
 
 const formInfo = ref({
   title: '',
@@ -29,22 +29,24 @@ const surveyForms = ref<any[]>([])
 const requests = ref<any[]>([])
 
 // Request
-const response = await fetchSurveyById(Number(id), {
-  onResponseCallback: ({ response: data }) => {
-    if (id) {
-      formInfo.value = {
-        title: data._data.info?.title,
-        description: data._data.info?.description,
-        formId: data._data.formId,
-      }
+const response =
+  id &&
+  (await fetchSurveyById(Number(id), {
+    onResponseCallback: ({ response: data }) => {
+      if (id) {
+        formInfo.value = {
+          title: data._data.info?.title,
+          description: data._data.info?.description,
+          formId: data._data.formId,
+        }
 
-      if (data._data.items) {
-        const oldData = transformDataFromGoogleData(data._data.items)
-        surveyForms.value = oldData
+        if (data._data.items) {
+          const oldData = transformDataFromGoogleData(data._data.items)
+          surveyForms.value = oldData
+        }
       }
-    }
-  },
-})
+    },
+  }))
 
 // Getters
 const readyForSaveRequests = computed(() =>
@@ -56,17 +58,12 @@ const readyForSaveRequests = computed(() =>
 
 // Actions
 const handleSubmit = async (values: any) => {
-  let response
-  if (!id)
-    response = await createSurvey(values.title, readyForSaveRequests.value)
-  else
-    response = await updateFormInGoogle(
-      formInfo.value.formId,
-      readyForSaveRequests.value
-    )
-  console.log(response)
-  response?.refresh()
-  // router.push('/private/survey/list')
+  if (!id) {
+    await createSurvey(values.title, readyForSaveRequests.value)
+  } else {
+    await updateFormInGoogle(formInfo.value.formId, readyForSaveRequests.value)
+    response.refresh()
+  }
 }
 
 const handleClone = (e: any) => {
@@ -156,6 +153,9 @@ const handleAdd = (e: any) => {
       />
       <div class="flex w-full place-content-between">
         <div class="flex flex-col w-2/3 p-2">
+          <h3 class="text-gray-600 text-xl" v-if="surveyForms?.length < 1">
+            Arrastre un elemento para comenzar a crear su formulario
+          </h3>
           <draggable
             item-key="id"
             class="flex flex-col gap-y-3 items-start flex-wrap pb-12 h-full place-content-start"
@@ -174,10 +174,6 @@ const handleAdd = (e: any) => {
                 @click="handleSelect(element)"
                 :class="{ 'shadow-md': selected === element.id }"
                 class="w-full pb-4 group border px-2"
-                v-if="
-                  element.action !== 'deleteItem' &&
-                  element.action !== 'moveItem'
-                "
               >
                 <BarHolder
                   :is-selected="selected === element.id"
@@ -312,7 +308,12 @@ const handleAdd = (e: any) => {
             ghostClass="ghost"
           >
             <template #item="{ element }">
-              <pre>{{ element }}</pre>
+              <div
+                class="flex gap-x-3 border py-0.5 px-1 items-center rounded-sm border-gray-400 cursor-pointer"
+              >
+                <FormKitIcon :icon="element.icon" class="flex h-4" />
+                <span>{{ element.name }}</span>
+              </div>
             </template>
           </draggable>
         </div>
@@ -320,3 +321,4 @@ const handleAdd = (e: any) => {
     </FormKit>
   </div>
 </template>
+~/stores/api/useSurvey

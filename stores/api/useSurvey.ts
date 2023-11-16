@@ -1,9 +1,15 @@
 import { useToast } from 'vue-toastification'
 
-export default () => {
+export default defineStore('api/survey', () => {
   const toast = useToast()
 
-  const isLoading = useLoading()
+  const uiStore = useUiStore()
+
+  const { token } = useUserStore()
+
+  const headers = {
+    'x-authorization-token': `Bearer ${token}`,
+  }
 
   const createFormInGoogle = async (title: string) => {
     const params = JSON.parse(localStorage.getItem('oauth2-params') || '')
@@ -21,8 +27,14 @@ export default () => {
       },
     })
 
-    isLoading.value =
-      response.status.value === 'idle' || response.status.value === 'pending'
+    watch(
+      () => response.status,
+      (status) => {
+        uiStore.setIsLoading(
+          status.value === 'idle' || status.value === 'pending'
+        )
+      }
+    )
 
     if (!response.error.value && response.status.value === 'success') {
       //@ts-ignore
@@ -31,6 +43,10 @@ export default () => {
     } else {
       toast.error('Ha ocurrido un error al crear el formulario con google')
       console.log(response.error.value)
+      throw createError({
+        statusCode: 400,
+        message: 'Error creating the form in Google',
+      })
     }
 
     return response
@@ -56,12 +72,22 @@ export default () => {
       }
     )
 
-    isLoading.value =
-      response.status.value === 'idle' || response.status.value === 'pending'
+    watch(
+      () => response.status,
+      (status) => {
+        uiStore.setIsLoading(
+          status.value === 'idle' || status.value === 'pending'
+        )
+      }
+    )
 
     if (response.error.value || response.status.value === 'error') {
       toast.error('Ha ocurrido un error al crear el formulario con google')
       console.log(response.error.value)
+      throw createError({
+        statusCode: 400,
+        message: 'Error updating the survey in Google',
+      })
     }
 
     return response
@@ -92,8 +118,14 @@ export default () => {
       console.log(response.error.value)
     }
 
-    isLoading.value =
-      response.status.value === 'idle' || response.status.value === 'pending'
+    watch(
+      () => response.status,
+      (status) => {
+        uiStore.setIsLoading(
+          status.value === 'idle' || status.value === 'pending'
+        )
+      }
+    )
 
     return response
   }
@@ -114,8 +146,14 @@ export default () => {
       console.log(response.error.value)
     }
 
-    isLoading.value =
-      response.status.value === 'idle' || response.status.value === 'pending'
+    watch(
+      () => response.status,
+      (status) => {
+        uiStore.setIsLoading(
+          status.value === 'idle' || status.value === 'pending'
+        )
+      }
+    )
 
     return response
   }
@@ -127,6 +165,7 @@ export default () => {
         formId,
         title,
       },
+      headers,
     })
 
     if (response.error.value || response.status.value === 'error') {
@@ -134,38 +173,60 @@ export default () => {
         'Lo sentimos ha ocurrido un error al guardar la encuesta en nuestra base de datos'
       )
       console.log(response.error.value)
+      throw createError({
+        statusCode: 400,
+        message: 'Survey not saved',
+      })
     }
 
-    isLoading.value =
-      response.status.value === 'idle' || response.status.value === 'pending'
+    watch(
+      () => response.status,
+      (status) => {
+        uiStore.setIsLoading(
+          status.value === 'idle' || status.value === 'pending'
+        )
+      }
+    )
 
     return response
   }
 
   const fetchSurveysFromDb = async (query?: any) => {
-    const response = await useFetch('/api/survey', { query })
+    const response = await useFetch('/api/survey', { query, headers })
 
     if (response.error.value || response.status.value === 'error') {
       toast.error('Lo sentimos ha ocurrido un error')
       console.log(response.error.value)
     }
 
-    isLoading.value =
-      response.status.value === 'idle' || response.status.value === 'pending'
+    watch(
+      () => response.status,
+      (status) => {
+        uiStore.setIsLoading(
+          status.value === 'idle' || status.value === 'pending'
+        )
+      }
+    )
 
     return response
   }
 
   const fetchSurveyByIdFromDb = async (id: number, query?: any) => {
-    const response = await useFetch(`/api/survey/${id}`, { query })
+    const response = await useFetch(`/api/survey/${id}`, { query, headers })
 
     if (response.error.value || response.status.value === 'error') {
       toast.error('Lo sentimos ha ocurrido un error')
       console.log(response.error.value)
     }
 
-    isLoading.value =
-      response.status.value === 'idle' || response.status.value === 'pending'
+    watch(
+      () => response.status,
+      (status) => {
+        uiStore.setIsLoading(
+          status.value === 'idle' || status.value === 'pending'
+        )
+      }
+    )
 
     return response
   }
@@ -174,10 +235,17 @@ export default () => {
     const response = await useFetch(`/api/survey/${id}`, {
       method: 'DELETE',
       query,
+      headers,
     })
 
-    isLoading.value =
-      response.status.value === 'idle' || response.status.value === 'pending'
+    watch(
+      () => response.status,
+      (status) => {
+        uiStore.setIsLoading(
+          status.value === 'idle' || status.value === 'pending'
+        )
+      }
+    )
 
     if (response.error.value || response.status.value === 'error') {
       toast.error('Lo sentimos ha ocurrido un error')
@@ -191,16 +259,22 @@ export default () => {
   const createSurvey = async (title: string, requests: any) => {
     const {
       data: createData,
-      error: createError,
+      error: onCreateError,
       status: createStatus,
     } = await createFormInGoogle(title)
+
     if (
-      createError.value ||
+      onCreateError.value ||
       createStatus.value === 'error' ||
       //@ts-ignore
       !createData.value?.formId
-    )
-      return
+    ) {
+      throw createError({
+        statusCode: 400,
+        statusMessage: 'Bad Request',
+        message: 'Error creating the survey in Google',
+      })
+    }
 
     const {
       data: updateData,
@@ -212,7 +286,13 @@ export default () => {
       requests
     )
 
-    if (updateError.value || updateStatus.value === 'error') return
+    if (updateError.value || updateStatus.value === 'error') {
+      throw createError({
+        statusCode: 400,
+        statusMessage: 'Bad Request',
+        message: 'Error creating the survey in Google',
+      })
+    }
 
     const response = await saveToDb(
       //@ts-ignore
@@ -220,7 +300,13 @@ export default () => {
       title
     )
 
-    if (response.error.value || response.status.value === 'error') return
+    if (response.error.value || response.status.value === 'error') {
+      throw createError({
+        statusCode: 400,
+        statusMessage: 'Bad Request',
+        message: 'Error saving the survey in our Database',
+      })
+    }
 
     toast.success('Encuesta creada satisfactoriamente', { timeout: 1500 })
 
@@ -240,7 +326,11 @@ export default () => {
     } = await fetchSurveyByIdFromDb(id)
 
     if (dbError.value || dbStatus.value === 'error' || !dbData.value?.formId)
-      return
+      throw createError({
+        statusCode: 404,
+        statusMessage: 'Not Found',
+        message: 'Survey not found',
+      })
 
     const response = await fetchSurveyByIdFromGoogle(
       dbData.value.formId,
@@ -249,7 +339,13 @@ export default () => {
       }
     )
 
-    if (response.error.value || response.status.value === 'error') return
+    if (response.error.value || response.status.value === 'error') {
+      throw createError({
+        statusCode: 404,
+        statusMessage: 'Not Found',
+        message: 'Survey not found in Google Drive',
+      })
+    }
 
     return response
   }
@@ -292,4 +388,4 @@ export default () => {
     deleteFormInGoogle,
     deleteSurvey,
   }
-}
+})

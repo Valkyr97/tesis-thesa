@@ -1,4 +1,4 @@
-import { Headline } from '~/server/entities/headline'
+import { Headline } from '~/server/database/entities/headline'
 
 export default defineEventHandler(async (event) => {
   try {
@@ -10,7 +10,11 @@ export default defineEventHandler(async (event) => {
     manager.merge(newContent, { ...body })
 
     return await newContent.save()
-  } catch (e) {
-    console.log(e)
+  } catch (e: any) {
+    console.log(e, e.message)
+    throw createError({
+      statusCode: 500,
+      message: 'Error creating the Headline',
+    })
   }
 })

@@ -1,8 +1,8 @@
 export const formItems = [
-  { name: 'Pregunta', type: 'questionItem' },
+  { name: 'Pregunta', type: 'questionItem', icon: 'add' },
   // { name: 'Grupo de Preguntas', type: 'questionGroupItem' },
   // { name: 'Salto de Página', type: 'pageBreakItem' },
-  { name: 'Texto', type: 'textItem' },
+  { name: 'Texto', type: 'textItem', icon: 'text' },
   // { name: 'Imagen', type: 'imageItem' },
   // { name: 'Video', type: 'videoItem' },
 ]
@@ -49,7 +49,7 @@ export const questionTypes = [
 ]
 
 export const defineRequest = (request: any, item?: any) => {
-  request.isNew
+  return request.isNew
     ? {
         createItem: {
           item: {

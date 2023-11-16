@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { FormKitIcon } from '@formkit/vue'
-import useEvents from '~/composables/api/useEvents'
-import useNews from '~/composables/api/useNews'
+
+
 
 export type element = {
   img: string
@@ -175,10 +175,6 @@ const eventsForGallery = computed(
           <img src="https://picsum.photos/200" alt="" />
           <img src="https://picsum.photos/200" alt="" />
           <img src="https://picsum.photos/200" alt="" />
-          <img src="https://picsum.photos/200" alt="" />
-          <img src="https://picsum.photos/200" alt="" />
-          <img src="https://picsum.photos/200" alt="" />
-          <img src="https://picsum.photos/200" alt="" />
         </div>
       </div>
     </div>
@@ -188,3 +184,4 @@ const eventsForGallery = computed(
 </template>
 
 <style scoped></style>
+~/stores/api/useEvents~/stores/api/useNews

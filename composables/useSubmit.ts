@@ -13,9 +13,9 @@ export default function (path: string, id?: any) {
 
   const submit = async (value: any) => {
     if (id) {
-      return handleUpdate(id, value)
+      await handleUpdate(id, value)
     } else {
-      return handleCreate(value)
+      await handleCreate(value)
     }
   }
 
