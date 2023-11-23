@@ -5,387 +5,232 @@ export default defineStore('api/survey', () => {
 
   const uiStore = useUiStore()
 
+  const status = ref<any>()
+
   const { token } = useUserStore()
 
   const headers = {
     'x-authorization-token': `Bearer ${token}`,
   }
 
-  const createFormInGoogle = async (title: string) => {
-    const params = JSON.parse(localStorage.getItem('oauth2-params') || '')
-
-    const response = await useFetch('https://forms.googleapis.com/v1/forms', {
-      method: 'POST',
-      body: {
-        info: {
-          title: title,
-          document_title: title,
-        },
-      },
-      headers: {
-        Authorization: `Bearer ${params['access_token']}`,
-      },
-    })
-
-    watch(
-      () => response.status,
-      (status) => {
-        uiStore.setIsLoading(
-          status.value === 'idle' || status.value === 'pending'
-        )
-      }
-    )
-
-    if (!response.error.value && response.status.value === 'success') {
-      //@ts-ignore
-      // return saveToDb(data.value.formId, title)
-      // toast.success('Success')
-    } else {
-      toast.error('Ha ocurrido un error al crear el formulario con google')
-      console.log(response.error.value)
-      throw createError({
-        statusCode: 400,
-        message: 'Error creating the form in Google',
-      })
-    }
-
-    return response
-  }
-
-  const updateFormInGoogle = async (
-    formId: any,
-    requests: any[],
-    query?: any
-  ) => {
-    const params = JSON.parse(localStorage.getItem('oauth2-params') || '')
-
-    const response = await useFetch(
-      `https://forms.googleapis.com/v1/forms/${formId}:batchUpdate`,
-      {
-        method: 'POST',
-        body: {
-          requests,
-        },
-        headers: {
-          Authorization: `Bearer ${params['access_token']}`,
-        },
-      }
-    )
-
-    watch(
-      () => response.status,
-      (status) => {
-        uiStore.setIsLoading(
-          status.value === 'idle' || status.value === 'pending'
-        )
-      }
-    )
-
-    if (response.error.value || response.status.value === 'error') {
-      toast.error('Ha ocurrido un error al crear el formulario con google')
-      console.log(response.error.value)
-      throw createError({
-        statusCode: 400,
-        message: 'Error updating the survey in Google',
-      })
-    }
-
-    return response
-  }
-
-  const fetchSurveyByIdFromGoogle = async (
+  const fetchSurveyById = async (
     formId: string,
     options?: {
       onResponse: (response?: any) => void
     }
   ) => {
-    const params = JSON.parse(localStorage.getItem('oauth2-params') || '')
+    try {
+      uiStore.isLoading = true
 
-    const response = await useFetch(
-      `https://forms.googleapis.com/v1/forms/${formId}`,
-      {
-        headers: {
-          Authorization: `Bearer ${params['access_token']}`,
-        },
+      const response = await useFetch(`/api/survey/${formId}`, {
         onResponse(response) {
           options?.onResponse(response)
         },
-      }
-    )
+        headers,
+      })
 
-    if (response.error.value || response.status.value === 'error') {
-      toast.error('Lo sentimos ha ocurrido un error')
-      console.log(response.error.value)
-    }
+      uiStore.isLoading = false
 
-    watch(
-      () => response.status,
-      (status) => {
-        uiStore.setIsLoading(
-          status.value === 'idle' || status.value === 'pending'
-        )
-      }
-    )
-
-    return response
-  }
-
-  const deleteFormInGoogle = async (formId: string) => {
-    const params = JSON.parse(localStorage.getItem('oauth2-params') || '')
-
-    const uri = `https://www.googleapis.com/drive/v3/files/${formId}`
-
-    const response = await useFetch(uri, {
-      headers: {
-        Authorization: `Bearer ${params['access_token']}`,
-      },
-    })
-
-    if (response.error.value || response.status.value === 'error') {
-      toast.error('Lo sentimos ha ocurrido un error')
-      console.log(response.error.value)
-    }
-
-    watch(
-      () => response.status,
-      (status) => {
-        uiStore.setIsLoading(
-          status.value === 'idle' || status.value === 'pending'
-        )
-      }
-    )
-
-    return response
-  }
-
-  const saveToDb = async (formId: string, title: string) => {
-    const response = await useFetch('/api/survey', {
-      method: 'POST',
-      body: {
-        formId,
-        title,
-      },
-      headers,
-    })
-
-    if (response.error.value || response.status.value === 'error') {
-      toast.error(
-        'Lo sentimos ha ocurrido un error al guardar la encuesta en nuestra base de datos'
+      watch(
+        () => response.pending.value,
+        (value) => {
+          uiStore.isLoading = value
+        }
       )
-      console.log(response.error.value)
+
+      if (response.error.value || response.status.value === 'error') {
+        throw response.error.value
+      }
+
+      return response
+    } catch (e) {
+      console.log(e)
+      toast.error('Lo sentimos ha ocurrido un error')
       throw createError({
         statusCode: 400,
-        message: 'Survey not saved',
+        message: 'Error obtaining the survey',
       })
     }
-
-    watch(
-      () => response.status,
-      (status) => {
-        uiStore.setIsLoading(
-          status.value === 'idle' || status.value === 'pending'
-        )
-      }
-    )
-
-    return response
   }
 
-  const fetchSurveysFromDb = async (query?: any) => {
-    const response = await useFetch('/api/survey', { query, headers })
+  const createSurvey = async (title: string, requests: any[]) => {
+    try {
+      uiStore.isLoading = true
+
+      const {
+        error: createFormError,
+        data: createFormData,
+        status: createFormStatus,
+      } = await useFetch('/api/survey', {
+        method: 'POST',
+        headers,
+        body: {
+          title,
+          document_title: title,
+        },
+      })
+
+      if (createFormError.value || createFormStatus.value === 'error') {
+        toast.error('Lo sentimos ha ocurrido un error')
+        console.log(createFormError.value)
+        throw createError({
+          statusCode:
+            createFormError.value?.status ||
+            createFormError.value?.statusCode ||
+            400,
+          message: createFormError.value?.message || 'error',
+        })
+      }
+
+      //@ts-ignore
+      const id = createFormData.value?.formId
+
+      if (!id)
+        throw createError({
+          statusCode: 401,
+          message: 'Not id in the created Form',
+        })
+
+      const response = await useFetch(`/api/survey/${id}`, {
+        method: 'PUT',
+        headers,
+        body: {
+          requests,
+        },
+      })
+
+      watch(
+        () => response.pending.value,
+        (value) => {
+          uiStore.isLoading = value
+        }
+      )
+
+      if (response.error.value || response.status.value === 'error') {
+        throw response.error
+      } else if (response.status.value === 'success') {
+        toast.success('Encuesta creada satisfactoriamente')
+      }
+
+      return response
+    } catch (e) {
+      console.log('error: ', e)
+      toast.error(
+        'Lo sentimos ha ocurrido un error en la creación de la encuesta'
+      )
+    } finally {
+      uiStore.isLoading = false
+    }
+  }
+
+  const updateSurvey = async (formId: any, requests: any[], query?: any) => {
+    try {
+      uiStore.isLoading = true
+
+      if (requests.length === 0) {
+        toast.success('Encuesta actualizada satisfactoriamente')
+        uiStore.isLoading = false
+        return
+      }
+
+      const response = await useFetch(`/api/survey/${formId}`, {
+        method: 'PUT',
+        headers,
+        body: {
+          requests,
+        },
+      })
+
+      watch(
+        () => response.pending.value,
+        (value) => {
+          uiStore.isLoading = value
+        }
+      )
+
+      if (response.error.value || response.status.value === 'error') {
+        throw response.error.value
+      } else if (response.status.value === 'success') {
+        toast.success('Encuesta actualizada satisfactoriamente')
+        return response
+      }
+    } catch (e) {
+      console.log(e)
+      toast.error('Lo sentimos ha ocurrido un error al actualizar la encuesta')
+    } finally {
+      uiStore.isLoading = false
+    }
+  }
+
+  const fetchSurveyList = async () => {
+    uiStore.isLoading = true
+
+    const response = await useFetch('/api/survey', { headers })
 
     if (response.error.value || response.status.value === 'error') {
       toast.error('Lo sentimos ha ocurrido un error')
       console.log(response.error.value)
     }
 
-    watch(
-      () => response.status,
-      (status) => {
-        uiStore.setIsLoading(
-          status.value === 'idle' || status.value === 'pending'
-        )
-      }
-    )
+    uiStore.isLoading = false
 
     return response
   }
 
-  const fetchSurveyByIdFromDb = async (id: number, query?: any) => {
-    const response = await useFetch(`/api/survey/${id}`, { query, headers })
-
-    if (response.error.value || response.status.value === 'error') {
-      toast.error('Lo sentimos ha ocurrido un error')
-      console.log(response.error.value)
-    }
-
-    watch(
-      () => response.status,
-      (status) => {
-        uiStore.setIsLoading(
-          status.value === 'idle' || status.value === 'pending'
-        )
-      }
-    )
-
-    return response
-  }
-
-  const deleteSurveyFromDb = async (id: number, query?: any) => {
+  const deleteSurvey = async (id: string) => {
     const response = await useFetch(`/api/survey/${id}`, {
       method: 'DELETE',
-      query,
       headers,
     })
-
-    watch(
-      () => response.status,
-      (status) => {
-        uiStore.setIsLoading(
-          status.value === 'idle' || status.value === 'pending'
-        )
-      }
-    )
-
     if (response.error.value || response.status.value === 'error') {
       toast.error('Lo sentimos ha ocurrido un error')
       console.log(response.error.value)
     } else if (response.status.value === 'success') {
-      toast.success('Eliminado satisfactorio')
+      toast.success('Encuesta eliminada satisfactoriamente')
     }
-    return response
-  }
-
-  const createSurvey = async (title: string, requests: any) => {
-    const {
-      data: createData,
-      error: onCreateError,
-      status: createStatus,
-    } = await createFormInGoogle(title)
-
-    if (
-      onCreateError.value ||
-      createStatus.value === 'error' ||
-      //@ts-ignore
-      !createData.value?.formId
-    ) {
-      throw createError({
-        statusCode: 400,
-        statusMessage: 'Bad Request',
-        message: 'Error creating the survey in Google',
-      })
-    }
-
-    const {
-      data: updateData,
-      error: updateError,
-      status: updateStatus,
-    } = await updateFormInGoogle(
-      //@ts-ignore
-      createData.value.formId,
-      requests
-    )
-
-    if (updateError.value || updateStatus.value === 'error') {
-      throw createError({
-        statusCode: 400,
-        statusMessage: 'Bad Request',
-        message: 'Error creating the survey in Google',
-      })
-    }
-
-    const response = await saveToDb(
-      //@ts-ignore
-      createData.value.formId,
-      title
-    )
-
-    if (response.error.value || response.status.value === 'error') {
-      throw createError({
-        statusCode: 400,
-        statusMessage: 'Bad Request',
-        message: 'Error saving the survey in our Database',
-      })
-    }
-
-    toast.success('Encuesta creada satisfactoriamente', { timeout: 1500 })
 
     return response
   }
 
-  const fetchSurveyById = async (
-    id: number,
-    options?: {
-      onResponseCallback: (response?: any) => void
-    }
-  ) => {
-    const {
-      data: dbData,
-      error: dbError,
-      status: dbStatus,
-    } = await fetchSurveyByIdFromDb(id)
+  const fetchSurveyResponses = async (id: string) => {
+    try {
+      uiStore.isLoading = true
 
-    if (dbError.value || dbStatus.value === 'error' || !dbData.value?.formId)
-      throw createError({
-        statusCode: 404,
-        statusMessage: 'Not Found',
-        message: 'Survey not found',
+      const response = await useFetch(`/api/survey/responses/${id}`, {
+        headers,
       })
 
-    const response = await fetchSurveyByIdFromGoogle(
-      dbData.value.formId,
-      options?.onResponseCallback && {
-        onResponse: options?.onResponseCallback,
+      uiStore.isLoading = false
+
+      watch(
+        () => response.pending.value,
+        (value) => {
+          uiStore.isLoading = value
+        }
+      )
+
+      if (response.error.value || response.status.value === 'error') {
+        throw response.error.value
       }
-    )
 
-    if (response.error.value || response.status.value === 'error') {
+      return response
+    } catch (e) {
+      console.log(e)
+      toast.error('Lo sentimos ha ocurrido un error')
       throw createError({
-        statusCode: 404,
-        statusMessage: 'Not Found',
-        message: 'Survey not found in Google Drive',
+        statusCode: 400,
+        message: 'Error obtaining the survey responses',
       })
     }
-
-    return response
-  }
-
-  const deleteSurvey = async (id: number) => {
-    const {
-      data: dbData,
-      error: dbError,
-      status: dbStatus,
-    } = await fetchSurveyByIdFromDb(id)
-
-    if (dbError.value || dbStatus.value === 'error' || !dbData.value?.formId)
-      return
-
-    const {
-      data: googleDeleteData,
-      error: googleDeleteError,
-      status: googleDeleteStatus,
-    } = await deleteFormInGoogle(dbData.value.formId)
-
-    if (googleDeleteError.value || googleDeleteStatus.value === 'error') return
-
-    const response = await deleteSurveyFromDb(id)
-
-    if (response.error.value || response.status.value === 'error') return
-
-    return response
   }
 
   return {
-    createFormInGoogle,
-    saveToDb,
-    fetchSurveysFromDb,
-    updateFormInGoogle,
+    updateSurvey,
     createSurvey,
-    fetchSurveyByIdFromDb,
-    fetchSurveyByIdFromGoogle,
     fetchSurveyById,
-    deleteSurveyFromDb,
-    deleteFormInGoogle,
+    fetchSurveyList,
+    fetchSurveyResponses,
     deleteSurvey,
+    status,
   }
 })

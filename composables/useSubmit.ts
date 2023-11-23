@@ -1,5 +1,3 @@
-import { useToast } from 'vue-toastification'
-
 export default function (path: string, id?: any) {
   const actualData = ref()
   const { handleCreate, handleUpdate } = useApi(path)

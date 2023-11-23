@@ -1,4 +1,4 @@
-import { getFormById } from '~/server/utils/survey'
+import { getResponsesById } from '~/server/utils/survey'
 
 export default defineEventHandler(async (event) => {
   const id = getRouterParam(event, 'id')
@@ -10,14 +10,14 @@ export default defineEventHandler(async (event) => {
         message: 'ID is Required',
       })
 
-    const response = await getFormById(id)
+    const response = await getResponsesById(id)
 
     return response
   } catch (e: any) {
     console.log(e)
     throw createError({
       statusCode: e.statusCode || e.status || e.code || 500,
-      message: e.message || 'Internal error obtaining the survey',
+      message: e.message || 'Internal error obtaining the responses',
     })
   }
 })

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const props = defineProps(['modelValue', 'isSelected', 'subtype'])
+const props = defineProps(['modelValue', 'isSelected', 'subtype', 'disabled'])
 const emit = defineEmits<{
   (e: 'update:modelValue', value: any): void
   (e: 'change', field: fields): void
@@ -26,7 +26,8 @@ const value = computed({
     help="Escoja las opciones para su pregunta de opciones"
     dynamic
     v-model="value"
-    #default="{ items }"
+    :disabled="disabled"
+    #default="{ items, node }"
   >
     <FormKit
       v-for="(item, i) in items"
@@ -35,7 +36,7 @@ const value = computed({
       @input.passive="emit('change', fields.OPTIONS)"
       type="text"
       validation="required"
-      outer-class="max-w-xs"
+      outer-class=""
       placeholder="Opción"
       inner-class="$remove:ring-1 $remove:focus-within:ring-blue-500 $remove:focus-within:ring-2"
       input-class="$remove:border-none border-b $remove:py-2 !px-2"
@@ -62,9 +63,10 @@ const value = computed({
           $emit('change', fields.OPTIONS)
         }
       "
-      v-if="isSelected"
+      :disabled="disabled"
+      v-if="isSelected && !disabled"
       type="button"
-      class="border px-4 py-0.5 mb-4 -mt-2 rounded-sm border-gray-400"
+      class="border px-4 py-0.5 mb-4 -mt-2 rounded-sm border-gray-400 disabled:opacity-60"
     >
       Añadir opción
     </button>

@@ -1,14 +1,11 @@
-//@ts-nocheck
-import { FormRedirectUri } from '~/utils/enums'
+import { FormRedirectUri } from '#imports'
 
-export default () => {
+export const useOAuth = defineStore('oAuth', () => {
   const CLIENT_ID =
     '904292748520-b6vmkudb5479e30s99ieq62vg3133fd0.apps.googleusercontent.com'
 
-  // If there's an access token, try an API request.
-  // Otherwise, start OAuth 2.0 flow.
   async function trySampleRequest() {
-    const params = JSON.parse(localStorage.getItem('oauth2-params'))
+    const params = JSON.parse(localStorage.getItem('oauth2-params')!)
     if (params && params['access_token']) {
       const { error, status, data } = await useFetch(
         'https://www.googleapis.com/drive/v3/about?fields=user&' +
@@ -24,9 +21,6 @@ export default () => {
     return true
   }
 
-  /*
-   * Create form to request access token from Google's OAuth 2.0 server.
-   */
   function oauth2SignIn(redirect_uri?: FormRedirectUri) {
     const REDIRECT_URI = redirect_uri ?? FormRedirectUri.FORM
     // Google's OAuth 2.0 endpoint for requesting an access token
@@ -38,7 +32,7 @@ export default () => {
     form.setAttribute('action', oauth2Endpoint)
 
     // Parameters to pass to OAuth 2.0 endpoint.
-    const params = {
+    const params: any = {
       client_id: CLIENT_ID,
       redirect_uri: REDIRECT_URI,
       scope:
@@ -63,7 +57,7 @@ export default () => {
   }
 
   return {
-    oauth2SignIn,
     trySampleRequest,
+    oauth2SignIn,
   }
-}
+})

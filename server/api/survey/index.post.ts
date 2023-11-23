@@ -1,29 +1,42 @@
-import dataSource from '~/server/database/dataSource'
-import { Survey } from '~/server/database/entities/survey'
+import { createForm } from '~/server/utils/survey'
 
 export default defineEventHandler(async (event) => {
   try {
-    const { formId, title } = await readBody(event)
+    const { title, document_title } = await readBody(event)
 
-    const survey = new Survey()
+    const editor = event.context.user_id
 
-    survey.formId = formId
-    survey.title = title
+    if (!editor) {
+      throw createError({
+        statusCode: 401,
+        message: 'Not valid editor',
+      })
+    }
 
-    await survey.save()
+    // await useServiceOAuthLogin()
 
-    await dataSource
-      .createQueryBuilder()
-      .relation(Survey, 'registeredBy')
-      .of(survey)
-      .set(event.context.user_id)
+    const response = await createForm(title, document_title)
 
-    return survey
-  } catch (e) {
+    return response
+    // const survey = new Survey()
+
+    // survey.formId = formId
+    // survey.title = title
+
+    // await survey.save()
+
+    // await dataSource
+    //   .createQueryBuilder()
+    //   .relation(Survey, 'registeredBy')
+    //   .of(survey)
+    //   .set(editor)
+
+    // return survey
+  } catch (e: any) {
     console.log(e)
     throw createError({
-      status: 500,
-      message: 'Error creating the survey',
+      statusCode: e.statusCode || 500,
+      message: e.message || 'Error creating the survey',
     })
   }
 })

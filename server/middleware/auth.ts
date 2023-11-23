@@ -8,6 +8,7 @@ const protectedPaths = [
   '/api/survey',
   '/api/team',
   '/api/editor',
+  '/api/auth/refresh-token',
 ]
 
 export default defineEventHandler((event) => {
@@ -23,18 +24,17 @@ export default defineEventHandler((event) => {
 
       if (token) {
         const verifiedToken: any = jwt.verify(token, runtimeConfig.secret_key)
-        console.log(verifiedToken)
         event.context.user_id = verifiedToken?.user_id
       } else {
         throw createError({
           statusCode: 401,
-          statusMessage: 'Invalid token',
+          message: 'Invalid token',
         })
       }
     } catch (e: any) {
       console.log(e)
       throw createError({
-        statusCode: 500,
+        statusCode: e.statusCode || 500,
         message: e.message,
       })
     }

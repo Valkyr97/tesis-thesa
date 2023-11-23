@@ -1,61 +1,79 @@
 <script setup lang="ts">
+import { FormKitIcon } from '@formkit/vue'
+
 definePageMeta({
-  middleware: 'oauth2',
+  // middleware: 'oauth2',
   name: 'survey_list',
 })
 
+const router = useRouter()
+
 const { warningToast } = useWarningToast()
+
+const { fetchSurveyList, deleteSurvey } = useSurvey()
+
+const { data: surveys, refresh, status } = await fetchSurveyList()
+
+const uiStore = useUiStore()
 
 const keys = ['Encuesta']
 
-const router = useRouter()
-
 const path = '/private/survey/form'
-
-const { fetchSurveysFromDb, deleteSurvey } = useSurvey()
-
-const { data: surveys, refresh } = await fetchSurveysFromDb()
 
 const data = computed(
   () =>
-    surveys.value?.map((s) => ({
+    surveys.value?.map((s: any) => ({
       id: s.id,
-      Encuesta: s.title,
+      Encuesta: s.name,
     })) || []
 )
 
 const handleDelete = (id: any) => {
   warningToast('eliminar', {
-    text: 'la encuesta: ' + surveys.value?.find((s) => s.id === id)?.title,
+    text: 'la encuesta: ' + surveys.value?.find((s: any) => s.id === id)?.title,
     onConfirm: async () => {
+      uiStore.isLoading = true
+
       await deleteSurvey(id)
+
       await refresh()
+
+      uiStore.isLoading = false
     },
   })
 }
 
-const handleRouteChangeToUpdate = (id: number) => {
+const handleRouteChangeToUpdate = async (id: number) => {
   localStorage.setItem('formToUpdateId', JSON.stringify(id))
-  router.push(path)
+  await router.push(path)
 }
 </script>
 
 <template>
+  <div class="flex" v-if="status === 'pending'">
+    <FormKitIcon icon="spinner" class="h-6 animate-spin" />
+  </div>
   <TemplatesDynamicTable
     :keys="keys"
     :tableRowsData="data"
     :onPlusClick="() => $router.push(path)"
     :actions="[
       {
+        name: 'visualization',
+        icon: 'eye',
+        iconColor: 'blue',
+        onAction: (id) => $router.push(`/private/survey/${id}/responses`),
+      },
+      {
         name: 'edit',
         icon: 'tools',
-        iconColor: 'green-950',
+        iconColor: 'green',
         onAction: (id) => handleRouteChangeToUpdate(id),
       },
       {
         name: 'delete',
         icon: 'trash',
-        iconColor: 'red-950',
+        iconColor: 'red',
         onAction: handleDelete,
       },
     ]"

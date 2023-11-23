@@ -1,5 +1,19 @@
 <script setup lang="ts">
-const { signIn } = useAuth()
+definePageMeta({
+  middleware: [
+    (to, from) => {
+      const userStore = useUserStore()
+      if (userStore.isAuthenticated) {
+        if(from.path === '/auth/login') {
+          return navigateTo('/private')
+        }
+        return abortNavigation()
+      }
+    },
+  ],
+})
+
+const { signIn, refreshToken } = useAuth()
 const { setIsAuthenticated, setToken } = useUserStore()
 const router = useRouter()
 
@@ -9,9 +23,25 @@ const handleSubmit = async (values: any) => {
   if (status.value === 'success' && data.value?.token) {
     setIsAuthenticated(true)
     setToken(data.value.token)
+
+    setInterval(
+      async () => {
+        const { data, error, status } = await refreshToken()
+        if (status.value === 'success' && data.value?.token) {
+          setIsAuthenticated(true)
+          setToken(data.value.token)
+        } else {
+          console.log(error.value)
+          router.push('/auth/login')
+        }
+      },
+      1 * 60 * 60 * 1000 // 1 Hora en milisegundos
+    )
+
     router.push('/private')
   } else {
     console.log(error.value)
+    router.push('/auth/login')
     return
   }
 }
@@ -41,4 +71,3 @@ const handleSubmit = async (values: any) => {
     </div>
   </div>
 </template>
-~/stores/api/useAuth

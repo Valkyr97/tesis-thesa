@@ -1,17 +1,12 @@
 <script setup lang="ts">
-const route = useRoute()
-
-const { id } = route.query
-
-const { submit, actualData } = useSubmit('/api/editor', id)
+const { submit } = useSubmit('/api/editor')
 </script>
 
 <template>
   <FormKit
-    :submit-label="id ? 'Actualizar' : 'Crear'"
+    submit-label="Crear"
     type="form"
     @submit="({ password2, ...value }) => submit(value)"
-    v-model="actualData"
   >
     <div class="flex flex-wrap gap-x-8 xl:flex-row flex-col">
       <div class="flex-1">

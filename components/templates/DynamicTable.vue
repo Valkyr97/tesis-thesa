@@ -9,7 +9,7 @@ defineProps<{
   actions?: {
     name?: string
     icon: string
-    iconColor?: string
+    iconColor?: 'green' | 'blue' | 'red'
     onAction?: (param?: any) => void
   }[]
 }>()
@@ -17,6 +17,12 @@ defineProps<{
 defineEmits<{
   (e: 'delete', id: any): void
 }>()
+
+const colorVariants = {
+  green: 'text-green-950',
+  red: 'text-red-950',
+  blue: 'text-blue-950',
+}
 </script>
 
 <template>
@@ -27,8 +33,7 @@ defineEmits<{
           <th scope="col" class="px-6 py-3" v-for="key in keys">
             {{ key }}
           </th>
-          <th></th>
-          <th></th>
+          <th v-for="_ in actions" class="w-4"></th>
         </tr>
         <button
           @click="onPlusClick"
@@ -67,7 +72,7 @@ defineEmits<{
               >
                 <FormKitIcon
                   :icon="action.icon"
-                  :class="action.iconColor ? `text-${action.iconColor}` : ''"
+                  :class="action.iconColor && colorVariants[action.iconColor]"
                   class="flex h-[1.12rem] hover:scale-110 transition"
                 />
               </button>

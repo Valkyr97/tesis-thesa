@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const uiStore = useUiStore()
+useRefreshToken()
 </script>
 
 <template>

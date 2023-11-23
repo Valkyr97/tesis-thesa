@@ -4,8 +4,6 @@ import { Developer } from '~/server/database/entities/developer'
 export default defineEventHandler(async (event) => {
   const { skip, take, withTeam, withoutTeam } = getQuery(event)
 
-  console.log(withTeam, withoutTeam)
-
   try {
     const findOptions: any = {
       skip: typeof skip === 'number' ? skip : 0,
@@ -18,8 +16,6 @@ export default defineEventHandler(async (event) => {
         team: { id: IsNull() },
       }
     }
-
-    console.log(findOptions)
 
     const developers = await Developer.find(findOptions)
     return developers

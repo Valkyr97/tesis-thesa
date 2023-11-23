@@ -184,4 +184,3 @@ const eventsForGallery = computed(
 </template>
 
 <style scoped></style>
-~/stores/api/useEvents~/stores/api/useNews

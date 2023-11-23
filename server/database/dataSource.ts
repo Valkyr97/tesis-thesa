@@ -9,6 +9,7 @@ import { Tech } from './entities/techs'
 import { Headline } from './entities/headline'
 import { Survey } from './entities/survey'
 import { Question } from './entities/question'
+import { Subscriptor } from './entities/subscriptor'
 
 export default new DataSource({
   type: 'postgres',
@@ -28,6 +29,7 @@ export default new DataSource({
     Headline,
     Survey,
     Question,
+    Subscriptor,
   ],
   synchronize: true,
   logging: false,

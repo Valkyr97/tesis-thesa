@@ -3,6 +3,8 @@ import { useToast } from 'vue-toastification'
 export default defineStore('api/auth', () => {
   const toast = useToast()
   const uiStore = useUiStore()
+  const userStore = useUserStore()
+  const router = useRouter()
 
   const signIn = async (email: string, password: string) => {
     const response = await useFetch('/api/auth/login', {
@@ -23,6 +25,12 @@ export default defineStore('api/auth', () => {
         console.log(response.error.value)
         toast.error('Lo sentimos ha ocurrido un error')
       }
+    } else if (
+      response.status.value === 'success' &&
+      response.data.value?.token
+    ) {
+      userStore.setToken(response.data.value?.token)
+      userStore.isAuthenticated = true
     }
 
     watch(
@@ -62,8 +70,35 @@ export default defineStore('api/auth', () => {
     return response
   }
 
+  const refreshToken = async () => {
+    const response = await useFetch('/api/auth/refresh-token', {
+      method: 'POST',
+      headers: {
+        'x-authorization-token': `Bearer ${userStore.token}`,
+      },
+    })
+    if (response.error.value || response.status.value === 'error') {
+      if (response.error.value?.statusCode === 401) {
+        router.push('/auth/login')
+        console.log(response.error.value)
+      } else {
+        router.push('/auth/login')
+        console.log(response.error.value)
+      }
+    } else if (
+      response.status.value === 'success' &&
+      response.data.value?.token
+    ) {
+      userStore.setToken(response.data.value?.token)
+      userStore.isAuthenticated = true
+    }
+
+    return response
+  }
+
   return {
     signIn,
     signUp,
+    refreshToken,
   }
 })

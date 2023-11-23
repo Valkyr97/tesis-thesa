@@ -8,8 +8,8 @@ const props = defineProps<{
 const emit = defineEmits(['close-toast'])
 
 const handleConfirm = async () => {
-  await props.onConfirm()
   emit('close-toast')
+  props.onConfirm()
 }
 </script>
 

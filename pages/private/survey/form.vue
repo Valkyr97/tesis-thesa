@@ -2,10 +2,8 @@
 import draggable from 'vuedraggable'
 import { FormKitIcon } from '@formkit/vue'
 
-
-
 definePageMeta({
-  middleware: 'oauth2',
+  // middleware: 'oauth2',
   name: 'survey_form',
 })
 
@@ -14,8 +12,12 @@ onBeforeRouteLeave(() => {
 })
 
 // State
-const { createSurvey, fetchSurveyById, updateFormInGoogle } = useSurvey()
+const { createSurvey, fetchSurveyById, updateSurvey } = useSurvey()
+
+const uiStore = useUiStore()
+
 const formToUpdateId = localStorage.getItem('formToUpdateId')
+
 const id = formToUpdateId && JSON.parse(formToUpdateId)
 
 const formInfo = ref({
@@ -25,14 +27,17 @@ const formInfo = ref({
 })
 const selected = ref()
 
-const surveyForms = ref<any[]>([])
+const surveyForms = ref<any[]>(
+  obligatoryQuestions.map((q, i) => ({ ...q, position: i }))
+)
 const requests = ref<any[]>([])
 
 // Request
 const response =
   id &&
-  (await fetchSurveyById(Number(id), {
-    onResponseCallback: ({ response: data }) => {
+  (await fetchSurveyById(id, {
+    onResponse: ({ response: data }: any) => {
+      console.log(data)
       if (id) {
         formInfo.value = {
           title: data._data.info?.title,
@@ -58,11 +63,15 @@ const readyForSaveRequests = computed(() =>
 
 // Actions
 const handleSubmit = async (values: any) => {
-  if (!id) {
-    await createSurvey(values.title, readyForSaveRequests.value)
-  } else {
-    await updateFormInGoogle(formInfo.value.formId, readyForSaveRequests.value)
-    response.refresh()
+  try {
+    if (!id) {
+      await createSurvey(values.title, readyForSaveRequests.value)
+    } else {
+      await updateSurvey(formInfo.value.formId, readyForSaveRequests.value)
+      response.refresh()
+    }
+  } catch (e) {
+    console.log(e)
   }
 }
 
@@ -87,15 +96,20 @@ const handleSelect = (element: any) => {
 }
 
 const handleDelete = (formToDeleteId: any) => {
+  if (isObligatoryForm(formToDeleteId)) return
+
   surveyForms.value = surveyForms.value.filter((f: any, i: number) => {
     if (f.id !== formToDeleteId) return true
+
     requests.value.push({
       deleteItem: {
         location: { index: i },
       },
     })
+
     return false
   })
+
   selected.value = null
 }
 
@@ -128,15 +142,30 @@ const handleMoved = (e: any) => {
 }
 
 const handleAdd = (e: any) => {
+  console.log(e.oldIndex)
   requests.value.push({
     isNew: true,
+    id: surveyForms.value[e.newIndex]?.id,
+    position: e.oldIndex,
   })
 }
+
+onMounted(() => {
+  if (!id) {
+    for (let i of obligatoryQuestions) {
+      requests.value.push({ isNew: true, id: i.id })
+    }
+  }
+})
 </script>
 
 <template>
   <div>
-    <FormKit type="form" @submit="handleSubmit" #default="{ value }">
+    <FormKit
+      type="form"
+      @submit="handleSubmit"
+      :submit-label="id ? 'Actualizar' : 'Crear'"
+    >
       <FormKit
         required
         type="text"
@@ -152,7 +181,7 @@ const handleAdd = (e: any) => {
         v-model="formInfo.description"
       />
       <div class="flex w-full place-content-between">
-        <div class="flex flex-col w-2/3 p-2">
+        <div class="flex flex-col w-full p-2">
           <h3 class="text-gray-600 text-xl" v-if="surveyForms?.length < 1">
             Arrastre un elemento para comenzar a crear su formulario
           </h3>
@@ -182,7 +211,7 @@ const handleAdd = (e: any) => {
                 <!-- Question Item -->
                 <div class="relative" v-if="element.type === 'questionItem'">
                   <div
-                    class="flex place-content-between gap-x-6 flex-wrap w-full"
+                    class="flex place-content-between gap-x-6 flex-wrap w-full mb-6"
                   >
                     <SurveyTitleQuestion
                       v-model="element.title"
@@ -193,7 +222,8 @@ const handleAdd = (e: any) => {
                     <FormKit
                       type="select"
                       v-if="selected === element.id"
-                      outer-class="flex-1 flex-grow w-full"
+                      :disabled="isObligatoryForm(element.id)"
+                      outer-class="flex w-fit"
                       :options="questionTypes"
                       name="questionType"
                       :ignore="true"
@@ -209,6 +239,7 @@ const handleAdd = (e: any) => {
                         element.questionType &&
                         element.questionType.type === 'choiceQuestion'
                       "
+                      :disabled="isObligatoryForm(element.id)"
                       v-model="element.questionChoices"
                       @change="
                         (field) => handleUpdate(element.id, field, index)
@@ -256,7 +287,9 @@ const handleAdd = (e: any) => {
                     v-model="element.isRequired"
                   />
                   <FormKitIcon
-                    v-if="selected === element.id"
+                    v-if="
+                      selected === element.id && !isObligatoryForm(element.id)
+                    "
                     icon="trash"
                     class="flex h-5 absolute bottom-2 right-2 cursor-pointer"
                     @click="handleDelete(element.id)"
@@ -269,10 +302,14 @@ const handleAdd = (e: any) => {
                     v-model="element.title"
                     :is-selected="element.id === selected"
                     placeholder="Sin Título"
+                    @change="handleUpdate(element.id, 'title', index)"
                   />
                   <FormKit
                     v-if="selected === element.id"
                     type="textarea"
+                    @input.passive="
+                      handleUpdate(element.id, 'description', index)
+                    "
                     auto-height
                     name="description"
                     placeholder="Descripción (opcional)"
@@ -286,7 +323,9 @@ const handleAdd = (e: any) => {
                     {{ element.description }}
                   </p>
                   <FormKitIcon
-                    v-if="selected === element.id"
+                    v-if="
+                      selected === element.id && !isObligatoryForm(element.id)
+                    "
                     icon="trash"
                     class="flex h-5 absolute top-0 right-2 cursor-pointer"
                     @click="handleDelete(element.id)"
@@ -299,7 +338,7 @@ const handleAdd = (e: any) => {
 
         <div class="">
           <draggable
-            class="flex gap-x-2 gap-y-2 flex-wrap flex-col sticky top-0"
+            class="flex gap-x-2 gap-y-2 flex-wrap flex-col sticky top-4"
             :list="formItems"
             :clone="handleClone"
             :group="{ name: 'forms', pull: 'clone', put: false }"
@@ -321,4 +360,3 @@ const handleAdd = (e: any) => {
     </FormKit>
   </div>
 </template>
-~/stores/api/useSurvey
