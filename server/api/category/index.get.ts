@@ -1,4 +1,4 @@
-import { Category } from '~/server/database/entities/category'
+import { Category } from '~/server/database/entities/Category'
 
 export default defineEventHandler(async (event) => {
   const { skip, take, select } = getQuery(event)

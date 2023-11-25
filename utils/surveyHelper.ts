@@ -206,7 +206,6 @@ export const defineRequest = (request: any, item?: any) => {
         updateItem: item
           ? {
               item: {
-                itemId: isObligatoryForm(item.id) ? item.id : undefined,
                 title: item.title,
                 description: item.description,
                 [item.type]: defineItemType(item),
@@ -270,10 +269,6 @@ export const defineAction = (actionItem: any) => {
       return {
         createItem: {
           item: {
-            itemId:
-              actionItem.id && regex.test(actionItem.id)
-                ? stringToHex(actionItem.id)
-                : undefined,
             title: actionItem.title,
             description: actionItem.description,
             [actionItem.type]: defineItemType(actionItem),
@@ -289,6 +284,7 @@ export const defineItemType = (f: any) => {
     case 'questionItem':
       return {
         question: {
+          questionId: f.id && regex.test(f.id) ? stringToHex(f.id) : undefined,
           [f.questionType.type]: defineQuestionTypeItem(f),
           required: f.isRequired,
         },
@@ -372,14 +368,14 @@ export const transformDataFromGoogleData = (originalData: any[]) => {
 
       return {
         type: 'questionItem',
-        id: itemId,
+        id: questionId,
         questionType: {
           type: questionType,
           subtype: questionSubtype,
           paragraph: paragraph !== undefined && paragraph,
         },
         isRequired: required,
-        questionId,
+        // questionId,
         questionChoices,
         scaleOptions,
         title,

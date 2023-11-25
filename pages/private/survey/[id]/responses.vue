@@ -24,10 +24,10 @@ const questions = computed(
 
 const responses = computed(
   () =>
-    responsesData.value?.responses?.map((response) => {
+    responsesData.value?.responses?.map((response: any) => {
       if (questions.value) {
         return questions.value.map(
-          (q) => response.answers[q.id]?.textAnswers.answers
+          (q: any) => response.answers[q.id]?.textAnswers.answers
         )
       }
     }) || []

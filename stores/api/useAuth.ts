@@ -15,8 +15,6 @@ export default defineStore('api/auth', () => {
       },
     })
 
-    console.log(response)
-
     if (response.error.value || response.status.value === 'error') {
       if (response.error.value?.statusCode === 401) {
         toast.error('Correo o contraseña incorrectos')
@@ -77,6 +75,9 @@ export default defineStore('api/auth', () => {
         'x-authorization-token': `Bearer ${userStore.token}`,
       },
     })
+    
+    userStore.isAuthenticated = false
+
     if (response.error.value || response.status.value === 'error') {
       if (response.error.value?.statusCode === 401) {
         router.push('/auth/login')

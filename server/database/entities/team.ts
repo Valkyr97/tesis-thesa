@@ -10,8 +10,8 @@ import {
   BaseEntity,
 } from 'typeorm'
 import { State } from '../enums/HeadlineType'
-import { Editor } from './editor'
-import { Developer } from './developer'
+import { Editor } from './Editor'
+import { Developer } from './Developer'
 
 @Entity()
 export class Team extends BaseEntity {

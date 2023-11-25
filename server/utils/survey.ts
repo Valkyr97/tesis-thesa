@@ -1,4 +1,4 @@
-import axios, { AxiosInstance } from 'axios'
+import axios, { InternalAxiosRequestConfig } from 'axios'
 import jwt from 'jsonwebtoken'
 
 let accessToken = ''
@@ -8,7 +8,19 @@ const axiosInstance = axios.create({
   baseURL: 'https://forms.googleapis.com/v1/',
 })
 
-axiosInstance.interceptors.request.use(async (config) => {
+const axiosGoogleFileInstance = axios.create({
+  baseURL: 'https://www.googleapis.com/drive/v3/',
+})
+
+axiosInstance.interceptors.request.use(
+  async (config) => await setTokenInterceptor(config)
+)
+
+axiosGoogleFileInstance.interceptors.request.use(
+  async (config) => await setTokenInterceptor(config)
+)
+
+const setTokenInterceptor = async (config: InternalAxiosRequestConfig) => {
   if (Date.now() >= tokenExpiration - 60 || !accessToken) {
     const { access_token } = await oAuthLogin()
     accessToken = access_token
@@ -16,14 +28,6 @@ axiosInstance.interceptors.request.use(async (config) => {
   config.headers.Authorization = `Bearer ${accessToken}`
 
   return config
-})
-
-const getAccessToken = async () => {
-  if (Date.now() >= tokenExpiration - 60 || !accessToken) {
-    const { access_token } = await oAuthLogin()
-    accessToken = access_token
-  }
-  return `Bearer ${accessToken}`
 }
 
 const oAuthLogin = async () => {
@@ -131,15 +135,7 @@ export const getResponsesById = async (formId: string) => {
 
 export const getForms = async () => {
   try {
-    const token = await getAccessToken()
-    const response = await axios.get(
-      'https://www.googleapis.com/drive/v3/files',
-      {
-        headers: {
-          Authorization: token,
-        },
-      }
-    )
+    const response = await axiosGoogleFileInstance.get('files')
 
     return response.data
   } catch (error: any) {
@@ -152,15 +148,7 @@ export const getForms = async () => {
 
 export const deleteForm = async (id: string) => {
   try {
-    const token = await getAccessToken()
-    const response = await axios.delete(
-      `https://www.googleapis.com/drive/v3/files/${id}`,
-      {
-        headers: {
-          Authorization: token,
-        },
-      }
-    )
+    const response = await axiosGoogleFileInstance.delete(`files/${id}`)
 
     return response.data
   } catch (error: any) {

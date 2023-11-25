@@ -1,5 +1,5 @@
 import dataSource from '~/server/database/dataSource'
-import { Team } from '~/server/database/entities/team'
+import { Team } from '~/server/database/entities/Team'
 
 export default defineEventHandler(async (event) => {
   try {

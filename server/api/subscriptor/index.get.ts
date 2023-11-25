@@ -1,4 +1,4 @@
-import { Subscriptor } from '~/server/database/entities/subscriptor'
+import { Subscriptor } from '~/server/database/entities/Subscriptor'
 
 export default defineEventHandler(async (event) => {
   const { skip, take } = getQuery(event)

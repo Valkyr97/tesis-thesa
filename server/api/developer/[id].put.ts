@@ -1,4 +1,4 @@
-import { Developer } from '~/server/database/entities/developer'
+import { Developer } from '~/server/database/entities/Developer'
 
 export default defineEventHandler(async (event) => {
   try {

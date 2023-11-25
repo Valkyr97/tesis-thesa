@@ -1,4 +1,4 @@
-import { Subscriptor } from '../database/entities/subscriptor'
+import { Subscriptor } from '../database/entities/Subscriptor'
 import { sendSurveyEmail } from '../utils/email'
 
 export default defineNitroPlugin(async (nitroApp) => {

@@ -1,4 +1,4 @@
-import { Subscriptor } from '../../database/entities/subscriptor'
+import { Subscriptor } from '../../database/entities/Subscriptor'
 
 export default defineEventHandler(async (event) => {
   try {

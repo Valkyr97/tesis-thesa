@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { Category } from '~/server/entities/category'
-import type { Developer } from '~/server/entities/developer'
+import { Category } from '~/server/database/entities/category'
+import { Developer } from '~/server/database/entities/developer'
 
 const categoriesList = ref<{ label: string; value: number }[] | undefined>([])
 const devsList = ref<{ label: string; value: number }[] | undefined>([])
@@ -46,13 +46,18 @@ onBeforeMount(async () => {
     <div class="flex xl:flex-row flex-col flex-grow gap-x-8">
       <div class="flex-1">
         <FormKit required label="Nombre" type="text" name="name" />
-        <FormKit label="Descripción" type="textarea" auto-height name="description" />
+        <FormKit
+          label="Descripción"
+          type="textarea"
+          auto-height
+          name="description"
+        />
 
         <FormKit
           label="Categorías en las que encaja"
           options-class="flex place-content-between gap-x-2 flex-wrap"
           label-class="whitespace-nowrap"
-          type="checkbox"
+          type="select"
           name="categories"
           v-model="categories"
           :options="categoriesList"
@@ -123,4 +128,4 @@ onBeforeMount(async () => {
     </div>
   </FormKit>
 </template>
-~/server/database/entities/category~/server/database/entities/developer
+~/server/database/entities/Category~/server/database/entities/Developer

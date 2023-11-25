@@ -8,10 +8,10 @@ import {
   OneToMany,
   BaseEntity,
 } from 'typeorm'
-import { Editor } from './editor'
-import { Game } from './game'
-import { Team } from './team'
-import { DevToTech } from './devsToTechs'
+import { Editor } from './Editor'
+import { Game } from './Game'
+import { Team } from './Team'
+import { DevToTech } from './DevsToTechs'
 
 @Entity()
 export class Developer extends BaseEntity {

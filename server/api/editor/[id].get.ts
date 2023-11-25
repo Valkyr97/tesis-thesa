@@ -1,4 +1,4 @@
-import { Editor } from '~/server/database/entities/editor'
+import { Editor } from '~/server/database/entities/Editor'
 
 export default defineEventHandler(async (event) => {
   const id = getRouterParam(event, 'id')

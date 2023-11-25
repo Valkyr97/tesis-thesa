@@ -1,6 +1,4 @@
 <script setup lang="ts">
-
-
 const { warningToast } = useWarningToast()
 
 const { deleteEvent, fetchEvents } = useEvents()
@@ -41,7 +39,7 @@ const handleDelete = (id: any) => {
         name: 'edit',
         icon: 'tools',
         iconColor: 'green',
-        onAction: (id) => $router.push({ path, query: id }),
+        onAction: (id) => $router.push({ path, query: { id } }),
       },
       {
         name: 'delete',

@@ -1,4 +1,4 @@
-import { Headline } from '~/server/database/entities/headline'
+import { Headline } from '~/server/database/entities/Headline'
 import { HeadlineType } from '../../../utils/enums'
 
 export default defineEventHandler(async (event) => {

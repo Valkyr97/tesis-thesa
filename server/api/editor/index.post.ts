@@ -1,4 +1,4 @@
-import { Editor } from '../../database/entities/editor'
+import { Editor } from '../../database/entities/Editor'
 import bcrypt from 'bcrypt'
 
 export default defineEventHandler(async (event) => {

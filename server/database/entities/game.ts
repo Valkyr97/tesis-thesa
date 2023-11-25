@@ -10,10 +10,9 @@ import {
   ManyToOne,
   BaseEntity,
 } from 'typeorm'
-import { State } from '../enums/HeadlineType'
-import { Category } from './category'
-import { Editor } from './editor'
-import { Developer } from './developer'
+import { Category } from './Category'
+import { Editor } from './Editor'
+import { Developer } from './Developer'
 
 @Entity()
 export class Game extends BaseEntity {

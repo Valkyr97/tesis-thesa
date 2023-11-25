@@ -8,8 +8,8 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm'
-import { Editor } from './editor'
-import { HeadlineType } from '~/utils/enums'
+import { Editor } from './Editor'
+import { HeadlineType } from '~/server/utils/enums'
 
 @Entity()
 export class Headline extends BaseEntity {

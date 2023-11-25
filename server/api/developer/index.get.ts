@@ -1,5 +1,5 @@
 import { IsNull } from 'typeorm'
-import { Developer } from '~/server/database/entities/developer'
+import { Developer } from '~/server/database/entities/Developer'
 
 export default defineEventHandler(async (event) => {
   const { skip, take, withTeam, withoutTeam } = getQuery(event)

@@ -1,4 +1,4 @@
-import { Editor } from '~/server/database/entities/editor'
+import { Editor } from '~/server/database/entities/Editor'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 

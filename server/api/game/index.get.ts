@@ -1,5 +1,5 @@
 import { In } from 'typeorm'
-import { Game } from '~/server/database/entities/game'
+import { Game } from '~/server/database/entities/Game'
 
 export default defineEventHandler(async (event) => {
   const { skip, take, withCategories, withDevelopers, categories } =

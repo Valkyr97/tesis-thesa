@@ -7,8 +7,8 @@ import {
   PrimaryGeneratedColumn,
   ManyToOne,
 } from 'typeorm'
-import { Question } from './question'
-import { Editor } from './editor'
+import { Question } from './Question'
+import { Editor } from './Editor'
 
 @Entity()
 export class Survey extends BaseEntity {

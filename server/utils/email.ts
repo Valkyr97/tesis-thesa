@@ -11,7 +11,6 @@ export const sendSurveyEmail = async (
   forms: { title: string; uri: string }[]
 ) => {
   try {
-
     const response = await courier.send({
       message: {
         to: {
@@ -25,12 +24,14 @@ export const sendSurveyEmail = async (
             {
               type: 'group',
               loop: 'data.forms',
-              elements: [{ type: 'text', content: '{{$.item.title}}' }],
-            },
-            {
-              type: 'action',
-              content: 'Rellenar Encuesta',
-              href: '{{$.item.uri}}',
+              elements: [
+                { type: 'text', content: '{{$.item.title}}' },
+                {
+                  type: 'action',
+                  content: 'Rellenar Encuesta',
+                  href: '{{$.item.uri}}',
+                },
+              ],
             },
           ],
         },
@@ -43,7 +44,6 @@ export const sendSurveyEmail = async (
         },
       },
     })
-    
   } catch (e) {
     console.log(e)
   }

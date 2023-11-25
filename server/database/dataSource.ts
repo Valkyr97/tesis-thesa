@@ -1,15 +1,15 @@
 import { DataSource } from 'typeorm'
-import { Editor } from './entities/editor'
-import { Developer } from './entities/developer'
-import { Game } from './entities/game'
-import { Category } from './entities/category'
-import { Team } from './entities/team'
-import { DevToTech } from './entities/devsToTechs'
-import { Tech } from './entities/techs'
-import { Headline } from './entities/headline'
-import { Survey } from './entities/survey'
-import { Question } from './entities/question'
-import { Subscriptor } from './entities/subscriptor'
+import { Editor } from './entities/Editor'
+import { Developer } from './entities/Developer'
+import { Game } from './entities/Game'
+import { Category } from './entities/Category'
+import { Team } from './entities/Team'
+import { DevToTech } from './entities/DevsToTechs'
+import { Tech } from './entities/Techs'
+import { Headline } from './entities/Headline'
+import { Survey } from './entities/Survey'
+import { ChoiceQuestion, Question } from './entities/Question'
+import { Subscriptor } from './entities/Subscriptor'
 
 export default new DataSource({
   type: 'postgres',
@@ -30,6 +30,7 @@ export default new DataSource({
     Survey,
     Question,
     Subscriptor,
+    ChoiceQuestion,
   ],
   synchronize: true,
   logging: false,

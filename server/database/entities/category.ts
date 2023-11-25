@@ -6,7 +6,7 @@ import {
   BaseEntity,
   ManyToOne,
 } from 'typeorm'
-import { Editor } from './editor'
+import { Editor } from './Editor'
 
 @Entity()
 export class Category extends BaseEntity {

@@ -6,8 +6,7 @@ import {
   OneToMany,
   BaseEntity,
 } from 'typeorm'
-import { State } from '../enums/HeadlineType'
-import { DevToTech } from './devsToTechs'
+import { DevToTech } from './DevsToTechs'
 
 @Entity()
 export class Tech extends BaseEntity {

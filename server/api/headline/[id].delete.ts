@@ -1,4 +1,4 @@
-import { Headline } from '~/server/database/entities/headline'
+import { Headline } from '~/server/database/entities/Headline'
 
 export default defineEventHandler(async (event) => {
   const id = getRouterParam(event, 'id')

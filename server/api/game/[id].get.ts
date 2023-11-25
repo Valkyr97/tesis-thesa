@@ -1,4 +1,4 @@
-import { Game } from '~/server/database/entities/game'
+import { Game } from '~/server/database/entities/Game'
 
 export default defineEventHandler(async (event) => {
   const id = getRouterParam(event, 'id')
