@@ -9,8 +9,6 @@ export const createAnswerInsight = async (
   percent: number
 ) => {
   try {
-    console.log('question Id:', questionId)
-
     const answerInsight = new AnswerInsight()
     answerInsight.answer = answer
     answerInsight.frequency = frequency
