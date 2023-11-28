@@ -1,4 +1,7 @@
+import { ChoiceQuestion, Question } from '~/server/database/entities/Question'
 import { stringToHex } from './helpers'
+import { questionTypeToGoogleQuestionType } from './questionTypeDict'
+import { QuestionType } from '~/enums'
 
 const regex = /^ob-\d+/
 
@@ -50,129 +53,6 @@ export const questionTypes = [
     value: { type: 'timeQuestion', subtype: undefined, paragraph: undefined },
   },
   // { label: 'Subir archivos', value: { type: 'fileUploadQuestion' } },
-]
-
-export const obligatoryQuestions = [
-  {
-    title: 'Fecha de nacimiento',
-    type: 'questionItem',
-    id: 'ob-1',
-    questionType: {
-      type: 'dateQuestion',
-      subtype: undefined,
-      paragraph: undefined,
-    },
-    isRequired: false,
-  },
-  {
-    title: 'Sexo',
-    type: 'questionItem',
-    id: 'ob-2',
-    questionType: {
-      type: 'choiceQuestion',
-      subtype: 'RADIO',
-      paragraph: undefined,
-    },
-    questionChoices: ['Masculino', 'Femenino', 'Otro', 'Prefiero no decirlo'],
-    isRequired: true,
-  },
-  {
-    title: 'Beneficios de jugar videojuegos',
-    type: 'questionItem',
-    id: 'ob-3',
-    questionType: {
-      type: 'choiceQuestion',
-      subtype: 'CHECKBOX',
-      paragraph: undefined,
-    },
-    questionChoices: [
-      'Los videojuegos traen alegría al jugar',
-      'Pueden inspirar a las personas',
-      'Proveen estimulación mental',
-      'Proveen alivio del estrés',
-      'Ayudan a enseñar a los niños a aprender a ganar y a perder de una manera saludable',
-      'Otro',
-    ],
-    isRequired: true,
-  },
-  {
-    title: 'Con quien suele jugar',
-    id: 'ob-4',
-    type: 'questionItem',
-    questionType: {
-      type: 'choiceQuestion',
-      subtype: 'CHECKBOX',
-      paragraph: undefined,
-    },
-    questionChoices: [
-      'Amigos',
-      'Esposo/Esposa/Pareja',
-      'Amigos en línea',
-      'Hijos',
-      'Padres',
-      'Otro miembro de la familia',
-    ],
-    isRequired: true,
-  },
-  {
-    title: 'Dispositivo favorito para jugar',
-    id: 'ob-5',
-    type: 'questionItem',
-    questionType: {
-      type: 'choiceQuestion',
-      subtype: 'CHECKBOX',
-      paragraph: undefined,
-    },
-    questionChoices: [
-      'Celular',
-      'Tablet',
-      'Equipo de juego',
-      'PC',
-      'Dispositivos de realidad virtual',
-    ],
-    isRequired: true,
-  },
-  {
-    title: 'Géneros favoritos',
-    id: 'ob-6',
-    type: 'questionItem',
-    questionType: {
-      type: 'choiceQuestion',
-      subtype: 'CHECKBOX',
-      paragraph: undefined,
-    },
-    questionChoices: [
-      'Puzzles (ej. Tetris, Candy Crush)',
-      'Arcade (ej. Pac-man, Super Mario)',
-      'Habilidad y probabilidad (ej. Solitario, Bingo)',
-      'Acción (ej. Zelda, Uncharted)',
-      'Shooter (ej. Call of Duty, Halo)',
-      'Simulación (ej. The Sims)',
-      'RPG y Narrativa (ej. The Witcher, Skyrim)',
-      'Estrategia (ej. Clash Royale, Imperio)',
-      'Carreras y simulación de vehículos (ej. Forza, Microsoft flight simulator)',
-      'Lucha (ej. Street Fighter, Super Smash Bros)',
-      'Deportes (ej. FIFA, NBA 2k)',
-    ],
-    isRequired: true,
-  },
-  {
-    title: 'Tiempo dedicado a Jugar',
-    id: 'ob-7',
-    type: 'questionItem',
-    questionType: {
-      type: 'choiceQuestion',
-      subtype: 'RADIO',
-      paragraph: undefined,
-    },
-    questionChoices: [
-      'Una (1) a tres (3) horas por semana',
-      'Más de tres (3) horas por semana',
-      'Más de siete (7) horas por semana',
-    ],
-    scaleOptions: {},
-    isRequired: true,
-  },
 ]
 
 export const defineRequest = (request: any, item?: any) => {
@@ -328,6 +208,26 @@ export const defineQuestionTypeItem = (f: any) => {
     default:
       break
   }
+}
+
+export const transformFromDbData = (q: Question & ChoiceQuestion) => {
+  const question: any = {
+    title: q.label,
+    type: 'questionItem',
+    id: q.questionId,
+    questionType: {
+      type: questionTypeToGoogleQuestionType[q.type],
+      subtype: q.subtype,
+      paragraph: undefined,
+    },
+    isRequired: q.requiredAnswer,
+  }
+
+  if (q.type == QuestionType.CHOICE) {
+    question.questionChoices = q.choices
+  }
+
+  return question
 }
 
 export const transformDataFromGoogleData = (originalData: any[]) => {

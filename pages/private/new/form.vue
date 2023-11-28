@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { HeadlineType } from '~/utils/enums'
+import { HeadlineType } from '~/enums'
 
 const route = useRoute()
 
@@ -21,3 +21,4 @@ const { submit, actualData } = useSubmit('/api/headline', id)
     </div>
   </FormKit>
 </template>
+~/enums/enums

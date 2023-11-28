@@ -8,8 +8,17 @@ import { DevToTech } from './entities/DevsToTechs'
 import { Tech } from './entities/Techs'
 import { Headline } from './entities/Headline'
 import { Survey } from './entities/Survey'
-import { ChoiceQuestion, Question } from './entities/Question'
+import {
+  ChoiceQuestion,
+  Question,
+  TextQuestion,
+  ScaleQuestion,
+  DateQuestion,
+  TimeQuestion,
+} from './entities/Question'
 import { Subscriptor } from './entities/Subscriptor'
+import { QuestionRelation } from './entities/QuestionRelation'
+import { AnswerInsight } from './entities/AnswerInsight'
 
 export default new DataSource({
   type: 'postgres',
@@ -31,6 +40,12 @@ export default new DataSource({
     Question,
     Subscriptor,
     ChoiceQuestion,
+    ScaleQuestion,
+    DateQuestion,
+    TextQuestion,
+    TimeQuestion,
+    QuestionRelation,
+    AnswerInsight,
   ],
   synchronize: true,
   logging: false,

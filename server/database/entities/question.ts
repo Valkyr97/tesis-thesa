@@ -6,18 +6,21 @@ import {
   PrimaryGeneratedColumn,
   TableInheritance,
   ChildEntity,
+  OneToMany,
 } from 'typeorm'
-import { QuestionType } from '~/server/utils/enums'
+import { QuestionType } from '~/enums'
+import { AnswerInsight } from './AnswerInsight'
+import { QuestionRelation } from './QuestionRelation'
 
 export type choiceQuestionSubtype = 'RADIO' | 'CHECKBOX'
 
 @Entity()
 @TableInheritance({
-  column: { enum: QuestionType, type: 'enum', name: 'type' },
+  column: { type: 'enum', enum: QuestionType, name: 'type' },
 })
 export class Question extends BaseEntity {
-  @PrimaryGeneratedColumn()
-  id: number
+  @PrimaryGeneratedColumn('uuid')
+  id: string
 
   @Column('text')
   label: string
@@ -30,6 +33,18 @@ export class Question extends BaseEntity {
 
   @Column('boolean', { nullable: true, default: false })
   requiredAnswer: boolean
+
+  @Column({ type: 'enum', enum: QuestionType, name: 'type' })
+  type: QuestionType
+
+  @OneToMany(() => AnswerInsight, (answer) => answer.question)
+  answers: AnswerInsight[]
+
+  @OneToMany(() => QuestionRelation, (relation) => relation.sourceQuestion)
+  relationToQuestions: QuestionRelation[]
+
+  @OneToMany(() => QuestionRelation, (relation) => relation.targetQuestion)
+  questionToRelations: QuestionRelation[]
 }
 
 @ChildEntity(QuestionType.CHOICE)
@@ -44,14 +59,14 @@ export class ChoiceQuestion extends Question {
     nullable: true,
     transformer: {
       to(value: string[]) {
-        return value.map((v) => v.replaceAll(',', '<<@comma>>'))
+        return value?.map((v) => v.replaceAll(',', '<<@comma>>'))
       },
       from(value: string[]) {
-        return value.map((v) => v.replaceAll('<<@comma>>', ','))
+        return value?.map((v) => v.replaceAll('<<@comma>>', ','))
       },
     },
   })
-  options: string[]
+  choices: string[]
 }
 
 @ChildEntity(QuestionType.TEXT)
@@ -62,10 +77,10 @@ export class TextQuestion extends Question {
 
 @ChildEntity(QuestionType.SCALE)
 export class ScaleQuestion extends Question {
-  @Column({ type: 'number' })
+  @Column('int')
   from: number
 
-  @Column('number')
+  @Column('int')
   to: number
 }
 

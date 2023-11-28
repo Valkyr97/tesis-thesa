@@ -1,5 +1,5 @@
 import { Headline } from '~/server/database/entities/Headline'
-import { HeadlineType } from '../../../utils/enums'
+import { HeadlineType } from '~/enums'
 
 export default defineEventHandler(async (event) => {
   const { type, skip, take } = getQuery(event)

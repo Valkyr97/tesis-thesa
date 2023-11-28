@@ -1,23 +1,16 @@
 <script setup lang="ts">
 import draggable from 'vuedraggable'
 import { FormKitIcon } from '@formkit/vue'
+import { QuestionType } from '~/enums'
+import { useToast } from 'vue-toastification'
 
 definePageMeta({
   // middleware: 'oauth2',
   name: 'survey_form',
 })
 
-onBeforeRouteLeave(() => {
-  localStorage.removeItem('formToUpdateId')
-})
-
 // State
-const { createSurvey, fetchSurveyById, updateSurvey } = useSurvey()
-
-const uiStore = useUiStore()
-
 const formToUpdateId = localStorage.getItem('formToUpdateId')
-
 const id = formToUpdateId && JSON.parse(formToUpdateId)
 
 const formInfo = ref({
@@ -27,12 +20,33 @@ const formInfo = ref({
 })
 const selected = ref()
 
-const surveyForms = ref<any[]>(
-  obligatoryQuestions.map((q, i) => ({ ...q, position: i }))
-)
+const { createSurvey, fetchSurveyById, updateSurvey } = useSurvey()
+const questionStore = useQuestion()
+const uiStore = useUiStore()
+const toast = useToast()
+
 const requests = ref<any[]>([])
 
-// Request
+const surveyForms = ref<any[]>([])
+
+const { data, error, status, pending } =
+  await questionStore.getObligatoryQuestions({
+    onResponse: (response) => {
+      surveyForms.value = response.map((q: any, i: number) => ({
+        ...transformFromDbData(q),
+        position: i,
+      }))
+    },
+  })
+
+uiStore.isLoading = pending.value
+
+if (error.value) {
+  toast.error(
+    'Lo sentimos ha ocurrido un error, por favor verifique su conexión a internet'
+  )
+}
+
 const response =
   id &&
   (await fetchSurveyById(id, {
@@ -59,6 +73,10 @@ const readyForSaveRequests = computed(() =>
     const item = surveyForms.value.find((f) => f.id === request.id)
     return defineRequest(request, item)
   })
+)
+
+const obligatoryQuestions = computed(() =>
+  data.value?.map((q) => transformFromDbData(q))
 )
 
 // Actions
@@ -151,11 +169,15 @@ const handleAdd = (e: any) => {
 }
 
 onMounted(() => {
-  if (!id) {
-    for (let i of obligatoryQuestions) {
+  if (!id && obligatoryQuestions.value) {
+    for (let i of obligatoryQuestions.value) {
       requests.value.push({ isNew: true, id: i.id })
     }
   }
+})
+
+onBeforeRouteLeave(() => {
+  localStorage.removeItem('formToUpdateId')
 })
 </script>
 

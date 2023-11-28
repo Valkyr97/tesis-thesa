@@ -29,11 +29,14 @@ definePageMeta({
         <NuxtLink active-class="text-green-600" to="/private/event/list">
           Eventos
         </NuxtLink>
-        <NuxtLink active-class="text-green-600" to="/private/survey/list">
-          Encuestas
-        </NuxtLink>
         <NuxtLink active-class="text-green-600" to="/private/editor/list">
           Editores
+        </NuxtLink>
+        <NuxtLink active-class="text-green-600" to="/private/subscriptor/list">
+          Subscriptores
+        </NuxtLink>
+        <NuxtLink active-class="text-green-600" to="/private/survey/list">
+          Encuestas
         </NuxtLink>
       </ul>
     </div>

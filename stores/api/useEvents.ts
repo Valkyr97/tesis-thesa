@@ -1,4 +1,5 @@
 import { useToast } from 'vue-toastification'
+import { HeadlineType } from '~/enums'
 
 export default defineStore('api/events', () => {
   const toast = useToast()

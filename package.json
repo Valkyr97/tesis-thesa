@@ -32,6 +32,7 @@
     "jsonwebtoken": "^9.0.2",
     "pg": "^8.11.3",
     "pinia": "^2.1.7",
+    "r-integration": "^2.4.0",
     "reflect-metadata": "^0.1.13",
     "typeorm": "^0.3.17",
     "vue-toastification": "^2.0.0-rc.5",

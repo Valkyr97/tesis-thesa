@@ -9,7 +9,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm'
 import { Editor } from './Editor'
-import { HeadlineType } from '~/server/utils/enums'
+import { HeadlineType } from '~/enums'
 
 @Entity()
 export class Headline extends BaseEntity {

@@ -1,12 +1,18 @@
 import { Question } from '~/server/database/entities/Question'
 
 export default defineEventHandler(async (event) => {
-  const { type, skip, take } = getQuery(event)
+  const { skip, take, query, obligatoryQuestion } = getQuery(event)
 
   try {
-    const questions = await Question.find()
+    const findOptions: any = {}
 
-    console.log(questions)
+    if (obligatoryQuestion) {
+      findOptions.where = {
+        obligatoryQuestion,
+      }
+    }
+
+    const questions = await Question.find(findOptions)
 
     return questions
   } catch (e) {
