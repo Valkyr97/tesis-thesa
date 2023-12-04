@@ -1,18 +1,25 @@
 import dataSource from '../database/dataSource'
 import { AnswerInsight } from '../database/entities/AnswerInsight'
+import { NumericQuestionsInsight } from '../database/entities/NumericQuestionsInsight'
 import { QuestionRelation } from '../database/entities/QuestionRelation'
 
 export const createAnswerInsight = async (
   questionId: string,
   answer: string,
   frequency: number,
-  percent: number
+  percent: number,
+  uniqueFrequency?: number,
+  uniquePercent?: number
 ) => {
   try {
     const answerInsight = new AnswerInsight()
     answerInsight.answer = answer
     answerInsight.frequency = frequency
     answerInsight.percent = percent
+
+    if (uniqueFrequency) answerInsight.uniqueFrequency = uniqueFrequency
+
+    if (uniquePercent) answerInsight.uniquePercent = uniquePercent
 
     await answerInsight.save()
 
@@ -22,6 +29,7 @@ export const createAnswerInsight = async (
       .of(answerInsight)
       .set(questionId)
   } catch (e) {
+    console.log(e)
     throw createError({
       statusCode: 500,
       message: 'Internal error saving answer insight',
@@ -55,4 +63,26 @@ export const createQuestionsRelation = async (
     .relation(QuestionRelation, 'sourceQuestion')
     .of(questionRelation)
     .set(sourceQuestionId)
+}
+
+export const createNumericQuestionInsight = async (
+  questionId: string,
+  mean: number,
+  median: number,
+  mode?: number
+) => {
+  const numericQuestionInsight = new NumericQuestionsInsight()
+
+  numericQuestionInsight.mean = mean
+  numericQuestionInsight.median = median
+
+  if (mode) numericQuestionInsight.mode = mode
+
+  await numericQuestionInsight.save()
+
+  await dataSource
+    .createQueryBuilder()
+    .relation(NumericQuestionsInsight, 'question')
+    .of(numericQuestionInsight)
+    .set(questionId)
 }

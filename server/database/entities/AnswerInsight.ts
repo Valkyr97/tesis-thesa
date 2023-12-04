@@ -10,7 +10,7 @@ import { Question } from './Question'
 
 @Entity()
 export class AnswerInsight extends BaseEntity {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('rowid')
   id: number
 
   @Column('text')
@@ -21,6 +21,12 @@ export class AnswerInsight extends BaseEntity {
 
   @Column('float')
   percent: number
+
+  @Column('integer', { nullable: true })
+  uniqueFrequency: number
+
+  @Column('float', { nullable: true })
+  uniquePercent: number
 
   @ManyToOne(() => Question, (question) => question.answers)
   question: Question

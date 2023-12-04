@@ -5,6 +5,7 @@ export default defineNuxtConfig({
   routeRules: {
     '/private/**': { ssr: false },
     '/auth/**': { ssr: false },
+    '/games': { ssr: false },
   },
 
   runtimeConfig: {
@@ -21,7 +22,16 @@ export default defineNuxtConfig({
 
   app: {
     head: {
-      script: [{ src: 'https://accounts.google.com/gsi/client' }],
+      script: [
+        { src: 'https://accounts.google.com/gsi/client' },
+        {
+          src: 'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js',
+          integrity:
+            'sha512-YcsIPGdhPK4P/uRW6/sruonlYj+Q7UHWeKfTAkBW+g83NKM+jMJFJ4iAPfSnVp7BKD4dKMHmVSvICUbE/V1sSw==',
+          crossorigin: 'anonymous',
+          referrerpolicy: 'no-referrer',
+        },
+      ],
     },
   },
 

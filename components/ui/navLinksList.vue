@@ -1,35 +1,35 @@
 <script setup lang="ts">
-import { FormKitIcon } from "@formkit/vue";
+import { FormKitIcon } from '@formkit/vue'
 
 defineProps<{
-  transparentModel: boolean;
-  isMenuOpen: boolean;
-  isMobile: boolean;
-}>();
+  transparentModel: boolean
+  isMenuOpen: boolean
+  isMobile: boolean
+}>()
 
-export type links = { name: string; to: string };
+export type links = { name: string; to: string }
 
 const primaryLinks: links[] = [
   {
-    name: "Catálogo de juegos",
-    to: "/games",
+    name: 'Catálogo de juegos',
+    to: '/games',
   },
   {
-    name: "Catálogo de desarrolladores",
-    to: "/developers",
+    name: 'Catálogo de desarrolladores',
+    to: '/developers',
   },
   {
-    name: "Catálogo de equipos",
-    to: "/teams",
+    name: 'Catálogo de equipos',
+    to: '/teams',
   },
-];
+]
 
 const secondaryLinks: links[] = [
   {
     name: `Hechos interesantes ${new Date().getFullYear()}`,
-    to: "/interesting_facts",
+    to: '/interesting_facts',
   },
-];
+]
 </script>
 
 <template>
@@ -50,7 +50,11 @@ const secondaryLinks: links[] = [
     <li class="hidden md:block">
       <FormKit
         type="search"
-        @input="{}"
+        @input="
+          {
+          }
+        "
+        :disabled="true"
         inner-class="bg-white border shadow"
         placeholder="BUSCAR"
         input-class="text-black px-3 xl:py-2 !py-0"

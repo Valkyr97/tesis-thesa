@@ -38,7 +38,7 @@ const handleDelete = async (id: any) => {
     :tableRowsData="data"
     :actions="[
       {
-        name: 'delete',
+        name: 'eliminar',
         icon: 'trash',
         iconColor: 'red',
         onAction: handleDelete,

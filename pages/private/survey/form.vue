@@ -204,8 +204,8 @@ onBeforeRouteLeave(() => {
       />
       <div class="flex w-full place-content-between">
         <div class="flex flex-col w-full p-2">
-          <h3 class="text-gray-600 text-xl" v-if="surveyForms?.length < 1">
-            Arrastre un elemento para comenzar a crear su formulario
+          <h3 class="text-gray-600 text-xl mb-2">
+            Arrastre un elemento para editar su formulario
           </h3>
           <draggable
             item-key="id"

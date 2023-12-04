@@ -20,7 +20,7 @@ withDefaults(
     <slot />
   </div>
   <Footer v-if="footer" />
-  <ScrollToTop v-if="scroll" />
+  <ScrollToTop class="data-html2canvas-ignore" v-if="scroll" />
 </template>
 
 <style scoped></style>

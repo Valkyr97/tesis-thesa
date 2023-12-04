@@ -19,6 +19,7 @@ import {
 import { Subscriptor } from './entities/Subscriptor'
 import { QuestionRelation } from './entities/QuestionRelation'
 import { AnswerInsight } from './entities/AnswerInsight'
+import { NumericQuestionsInsight } from './entities/NumericQuestionsInsight'
 
 export default new DataSource({
   type: 'postgres',
@@ -46,6 +47,7 @@ export default new DataSource({
     TimeQuestion,
     QuestionRelation,
     AnswerInsight,
+    NumericQuestionsInsight,
   ],
   synchronize: true,
   logging: false,

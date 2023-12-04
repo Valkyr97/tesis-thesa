@@ -1,6 +1,4 @@
 <script setup lang="ts">
-
-
 //State
 const route = useRoute()
 const router = useRouter()
@@ -23,15 +21,35 @@ const routeCategories = computed(
     []
 )
 
-const { data: games, refresh } = await fetchGames({
-  categories: routeCategories.value,
-})
+let response = ref()
 
 //Actions
 const handleFilterUpdated = async (elements: Set<any>) => {
   await router.push({ query: { categories: [...elements] } })
-  refresh()
+  await useFetch('/api/game', {
+    query: {
+      categories: routeCategories.value,
+    },
+    onResponse(context) {
+      console.log('trying')
+      console.log(context.response._data)
+      response.value = context?.response?._data
+    },
+  })
 }
+
+onMounted(async () => {
+  await useFetch('/api/game', {
+    query: {
+      categories: routeCategories.value,
+    },
+    onResponse(context) {
+      console.log('trying')
+      console.log(context.response._data)
+      response.value = context?.response?._data
+    },
+  })
+})
 </script>
 
 <template>
@@ -44,7 +62,7 @@ const handleFilterUpdated = async (elements: Set<any>) => {
     />
     <div class="grid grid-cols-3 py-4 gap-20 w-full">
       <div
-        v-for="game in games"
+        v-for="game in response"
         class="w-full h-[40vh] relative cursor-pointer group overflow-hidden"
         @click="$router.push(`/game/${game.id}`)"
       >

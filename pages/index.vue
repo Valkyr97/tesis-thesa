@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { FormKitIcon } from '@formkit/vue'
 
-
-
 export type element = {
   img: string
   name: string

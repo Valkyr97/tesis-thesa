@@ -1,11 +1,14 @@
-import { Question } from '../database/entities/Question'
+import { Question } from '~/server/database/entities/Question'
+import { hexToString } from '~/utils/helpers'
 import { appendFile, readFile } from 'fs/promises'
 import { join } from 'path'
-import { hexToString } from '~/utils/helpers'
 
 //@ts-ignore
 import * as R from 'r-integration'
-import { createAnswerInsight } from './answers'
+import { createAnswerInsight, createNumericQuestionInsight } from './insights'
+import { QuestionRelation } from '../database/entities/QuestionRelation'
+import { AnswerInsight } from '../database/entities/AnswerInsight'
+import { NumericQuestionsInsight } from '../database/entities/NumericQuestionsInsight'
 
 export const collectAnswersData = async () => {
   try {
@@ -62,18 +65,18 @@ export const collectAnswersData = async () => {
       }
     )
 
-    const result = R.executeRScript(
-      join('server/scripts/form_answers_analisis.R')
+    await R.executeRScript(join('server/scripts/form_answers_analisis.R'))
+
+    const response = await readFile(
+      join('server/scripts/outfile.json'),
+      'utf-8'
     )
+    const data = JSON.parse(response)
 
-    if (result == 'OK') {
-      const response = await readFile(
-        join('server/scripts/outfile.json'),
-        'utf-8'
-      )
-      const data = JSON.parse(response)
+    const [answersInsights, gameGenderPerDisp, ageInsights] = data
 
-      const [answersInsights, gameGenderPerDisp] = data
+    if (answersInsights) {
+      AnswerInsight.clear()
 
       await Promise.all(
         answersInsights.map((insight: any) => {
@@ -81,7 +84,9 @@ export const collectAnswersData = async () => {
             insight.id,
             insight.answer,
             insight.answer_count,
-            insight.percent
+            insight.percent,
+            insight.unique_frequency,
+            insight.unique_percent
           )
         })
       ).catch((e) => {
@@ -90,9 +95,13 @@ export const collectAnswersData = async () => {
           message: e.message || 'Error createing questions relation',
         })
       })
+    }
 
+    if (gameGenderPerDisp) {
       let sourceQuestion: any = undefined
       let targetQuestion: any = undefined
+
+      await QuestionRelation.clear()
 
       await Promise.all(
         gameGenderPerDisp.map((relation: any) => {
@@ -124,9 +133,34 @@ export const collectAnswersData = async () => {
           message: e.message || 'Error createing questions relation',
         })
       })
-
-      console.log('Finish')
     }
+
+    if (ageInsights) {
+      const previousInsights = await NumericQuestionsInsight.find({
+        relations: {
+          question: true,
+        },
+        where: {
+          question: {
+            questionId: 'ob-0',
+          },
+        },
+      })
+
+      if (previousInsights && previousInsights.length > 0)
+        NumericQuestionsInsight.delete(previousInsights.map((pI) => pI.id))
+
+      const id = obligatoryQuestions.find((q) => q.questionId === 'ob-0')?.id
+
+      id &&
+        createNumericQuestionInsight(
+          id,
+          ageInsights[0].mean,
+          ageInsights[0].median
+        )
+    }
+
+    console.log('Finish')
   } catch (e) {
     console.log(e)
   }

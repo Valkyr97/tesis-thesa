@@ -1,3 +1,4 @@
+import { QuestionType } from '~/enums'
 import {
   ChoiceQuestion,
   DateQuestion,
@@ -59,6 +60,7 @@ export default defineEventHandler(async (event) => {
       })
     }
 
+    //@ts-ignore
     manager.merge(newQuestion, { ...body })
 
     return await newQuestion.save()

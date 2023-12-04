@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { FormKitIcon } from '@formkit/vue'
+import Tooltip from '../ui/Tooltip.vue'
 
 defineProps<{
   keys: string[]
@@ -7,7 +8,7 @@ defineProps<{
   onEditClick?: (id: any) => void
   onPlusClick?: () => void
   actions?: {
-    name?: string
+    name: string
     icon: string
     iconColor?: 'green' | 'blue' | 'red'
     onAction?: (param?: any) => void
@@ -44,7 +45,7 @@ const colorVariants = {
       </thead>
       <tbody>
         <tr
-          class="bg-white border-b overflow-auto cursor-auto select-none relative group"
+          class="bg-white border-b overflow-auto cursor-auto select-none relative"
           v-for="row in tableRowsData"
         >
           <td v-for="key in keys" class="px-6 py-4">
@@ -70,11 +71,16 @@ const colorVariants = {
                 type="button"
                 class="text-center"
               >
-                <FormKitIcon
-                  :icon="action.icon"
-                  :class="action.iconColor && colorVariants[action.iconColor]"
-                  class="flex h-[1.12rem] hover:scale-110 transition"
-                />
+                <Tooltip class="absolute bottom-0 z-20" :text="action.name">
+                  <FormKitIcon
+                    :icon="action.icon"
+                    :class="[
+                      action.iconColor && colorVariants[action.iconColor],
+                      { 'animate-spin': action.icon == 'spinner' },
+                    ]"
+                    class="flex h-[1.12rem] hover:scale-110 transition"
+                  />
+                </Tooltip>
               </button>
             </template>
           </div>

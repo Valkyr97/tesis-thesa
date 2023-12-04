@@ -12,7 +12,13 @@ export default defineStore('api/games', () => {
   }
 
   const fetchGames = async (query?: any) => {
-    const response = await useFetch('/api/game', { query, headers })
+    const response = await useFetch('/api/game', {
+      query,
+      headers,
+      onRequest(context) {
+        console.log(context)
+      },
+    })
 
     if (response.error.value || response.status.value === 'error') {
       toast.error('Lo sentimos ha ocurrido un error')
@@ -22,9 +28,7 @@ export default defineStore('api/games', () => {
     watch(
       () => response.status,
       (status) => {
-        uiStore.setIsLoading(
-          status.value === 'idle' || status.value === 'pending'
-        )
+        uiStore.setIsLoading(response.pending.value)
       }
     )
 

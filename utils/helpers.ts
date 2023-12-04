@@ -24,3 +24,17 @@ export function hexToString(input: string) {
   const buffer = Buffer.from(input, 'hex')
   return buffer.toString('utf8')
 }
+
+export const deviceNameShorter = (device: string) => {
+  switch (device) {
+    case 'Equipo de juego (Consola)':
+      return 'Consola'
+    case 'Computadora personal (PC)':
+      return 'PC/Laptop'
+    case 'Dispositivos de realidad virtual':
+      return 'Dispositivo RV'
+
+    default:
+      return device
+  }
+}

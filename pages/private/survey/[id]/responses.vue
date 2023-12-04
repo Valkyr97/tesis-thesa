@@ -35,7 +35,7 @@ const responses = computed(
 </script>
 
 <template>
-  <div class="overflow-x-auto max-w-4xl">
+  <div class="overflow-auto max-w-4xl max-h-screen">
     <table class="text-sm text-left text-gray-500">
       <thead class="text-xs text-gray-700 uppercase bg-gray-50 relative">
         <tr>
@@ -52,9 +52,9 @@ const responses = computed(
         >
           <td class="px-6 py-4">{{ i }}</td>
           <td class="px-6 py-4" v-for="(answers, i) in response">
-            <span v-for="answer in answers">
+            <p v-for="answer in answers">
               {{ answer.value }}
-            </span>
+            </p>
           </td>
         </tr>
       </tbody>

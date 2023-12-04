@@ -34,13 +34,13 @@ const handleDelete = async (id: any) => {
     :onPlusClick="() => $router.push(path)"
     :actions="[
       {
-        name: 'edit',
+        name: 'editar',
         icon: 'tools',
         iconColor: 'green',
         onAction: (id) => $router.push({ path, query: { id } }),
       },
       {
-        name: 'delete',
+        name: 'eliminar',
         icon: 'trash',
         iconColor: 'red',
         onAction: handleDelete,

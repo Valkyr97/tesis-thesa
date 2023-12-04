@@ -2,6 +2,7 @@
 definePageMeta({
   middleware: ['auth'],
 })
+useRefreshToken()
 </script>
 
 <template>
