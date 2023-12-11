@@ -29,7 +29,7 @@ const handleNewsClick = (link: string) => {
         class="w-full flex flex-col gap-y-1 h-[45vh] lg:col-span-1 col-span-full"
       >
         <div class="h-[83%] border-b-8 border-blue-800">
-          <img
+          <UtilsImg
             @click="handleNewsClick(el.link)"
             class="w-full h-full content-center object-cover cursor-pointer"
             :src="el.img"

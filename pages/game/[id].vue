@@ -13,7 +13,7 @@ onBeforeMount(() => {
 
 <template>
   <NuxtLayout v-if="game">
-    <img
+    <UtilsImg
       :src="game.pictures[0]"
       alt=""
       class="top-32 w-full left-0 right-0 h-[40vh] object-center object-cover absolute"

@@ -20,7 +20,7 @@ const handleClick = () => {
         class="flex h-[33vh] gap-4 w-full border"
       >
         <div class="flex h-full basis-2/5 flex-shrink-0">
-          <img
+          <UtilsImg
             class="object-fill object-center h-full w-full"
             :src="team.picture"
             alt=""

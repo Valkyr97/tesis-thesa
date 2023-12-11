@@ -1,3 +1,3 @@
 <template>
-    Welcome to the editor section
+    Bienvenido a la sección de editor
 </template>

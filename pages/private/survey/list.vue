@@ -55,19 +55,25 @@ const handleLinkClick = async (id: string) => {
   linkBtnIcon.value = 'spinner'
   uiStore.isLoading = true
 
-  const { data, error, status } = await fetchSurveyById(id)
-  uiStore.isLoading = false
-  linkBtnIcon.value = 'link'
+  try {
+    const { data, error, status } = await fetchSurveyById(id)
 
-  if (error.value || status.value == 'error') {
-    toast.error('Ha ocurrido un error al intentar copiar el link')
-    console.log(error.value)
-    return
-  }
+    linkBtnIcon.value = 'link'
+    uiStore.isLoading = false
 
-  if (data.value.responderUri) {
-    toast.success('Link copiado con éxito')
-    navigator.clipboard.writeText(data.value.responderUri)
+    if (error.value || status.value == 'error') {
+      toast.error('Ha ocurrido un error al intentar copiar el link')
+      linkBtnIcon.value = 'link'
+      console.log(error.value)
+      return
+    }
+
+    if (data.value.responderUri) {
+      toast.success('Link copiado con éxito')
+      navigator.clipboard.writeText(data.value.responderUri)
+    }
+  } catch (e: any) {
+    linkBtnIcon.value = 'link'
   }
 }
 </script>

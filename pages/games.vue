@@ -66,10 +66,9 @@ onMounted(async () => {
         class="w-full h-[40vh] relative cursor-pointer group overflow-hidden"
         @click="$router.push(`/game/${game.id}`)"
       >
-        <img
+        <UtilsImg
           class="w-full h-full content-center object-cover group-hover:scale-110 transition"
           :src="game.pictures[0]"
-          alt=""
         />
         <div
           class="absolute bottom-0 w-full bg-gray-800/60 backdrop-blur-md text-white p-2 py-4"

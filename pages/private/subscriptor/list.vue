@@ -42,6 +42,10 @@ const handleSend = async (id: number) => {
 
   if (!error.value && status.value === 'success') {
     toast.success('Encuestas enviadas satisfactoriamente')
+  } else if (error.value || status.value === 'error') {
+    toast.error(
+      'Lo sentimos ha ocurrido un error, verifique su conexión a internet'
+    )
   }
 }
 </script>
@@ -90,7 +94,11 @@ const handleSend = async (id: number) => {
                 />
               </UiTooltip>
             </button>
-            <button @click="handleDelete" type="button" class="text-center">
+            <button
+              @click="handleDelete(row.id)"
+              type="button"
+              class="text-center"
+            >
               <UiTooltip class="z-20" text="eliminar">
                 <FormKitIcon
                   icon="trash"

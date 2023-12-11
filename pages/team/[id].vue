@@ -12,7 +12,7 @@ onBeforeMount(() => {
 
 <template>
   <NuxtLayout v-if="team">
-    <img
+    <UtilsImg
       :src="team.teamPicture"
       alt=""
       class="top-32 w-full left-0 right-0 h-[40vh] object-center object-cover absolute"

@@ -12,7 +12,11 @@ export default defineEventHandler(async (event) => {
     subscriptor.remove()
 
     return subscriptor
-  } catch (e) {
+  } catch (e: any) {
     console.log(e)
+    throw createError({
+      statusCode: e.statusCode || e.code || e.status || 500,
+      message: e.message || 'Ha ocurrido un error al intentar eliminar el subscriptor'
+    })
   }
 })

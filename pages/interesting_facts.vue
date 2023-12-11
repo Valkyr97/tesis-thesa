@@ -124,7 +124,7 @@ const communityBuilding: typeof demographicVisualData =
 
 <template>
   <div
-    class="h-full w-full flex flex-col bg-gradient-to-r from-sky-900 to-sky-950 text-white pdf_to_exoprt_container"
+    class="h-full w- overflow-hidden flex flex-col bg-gradient-to-r from-sky-900 to-sky-950 text-white pdf_to_exoprt_container"
   >
     <NuxtLayout>
       <div class="flex flex-col gap-y-36 py-32">
@@ -331,7 +331,7 @@ const communityBuilding: typeof demographicVisualData =
           <TablesHorizontalColumn title="" :data="communityBuilding" />
         </div>
       </div>
-      <div class="w-full h-14">
+      <div class="w-full overflow-hidden h-14">
         <InterestingFactsPdf>
           Descargar Anuario de Videojuegos {{ new Date().getFullYear() }}
         </InterestingFactsPdf>

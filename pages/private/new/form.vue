@@ -21,4 +21,3 @@ const { submit, actualData } = useSubmit('/api/headline', id)
     </div>
   </FormKit>
 </template>
-~/enums/enums

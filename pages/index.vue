@@ -51,10 +51,9 @@ const eventsForGallery = computed(
               id="sobre"
               class="contenedor lg:w-2/3 w-full h-2/3 lg:h-full flex-grow-0 flex-shrink-0"
             >
-              <img
+              <UtilsImg
                 class="w-full h-full content-center object-cover"
                 src="https://picsum.photos/600/400"
-                alt=""
               />
             </div>
             <div
@@ -85,7 +84,7 @@ const eventsForGallery = computed(
 
           <div class="flex flex-col lg:flex-row mt-32 sm:mt-12 gap-x-12">
             <div class="lg:w-1/3 p-2 lg:p-0 w-full flex flex-col space-y-3">
-              <img
+              <UtilsImg
                 class="w-full h-5/6 lg:h-1/2 xl:h-3/4 cursor-pointer"
                 src="https://picsum.photos/400"
                 alt=""
@@ -101,7 +100,7 @@ const eventsForGallery = computed(
               </h2>
             </div>
             <div class="lg:w-1/3 p-2 lg:p-0 w-full flex flex-col space-y-3">
-              <img
+              <UtilsImg
                 class="w-full h-5/6 lg:h-1/2 xl:h-3/4 cursor-pointer"
                 src="https://picsum.photos/400"
                 alt=""
@@ -117,7 +116,7 @@ const eventsForGallery = computed(
               </h2>
             </div>
             <div class="lg:w-1/3 p-2 lg:p-0 w-full flex flex-col space-y-3">
-              <img
+              <UtilsImg
                 class="w-full h-5/6 lg:h-1/2 xl:h-3/4 cursor-pointer"
                 src="https://picsum.photos/400"
                 alt=""
@@ -165,14 +164,14 @@ const eventsForGallery = computed(
         <div
           class="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-12 py-8 sm:px-24"
         >
-          <img src="https://picsum.photos/200" alt="" />
-          <img src="https://picsum.photos/200" alt="" />
-          <img src="https://picsum.photos/200" alt="" />
-          <img src="https://picsum.photos/200" alt="" />
-          <img src="https://picsum.photos/200" alt="" />
-          <img src="https://picsum.photos/200" alt="" />
-          <img src="https://picsum.photos/200" alt="" />
-          <img src="https://picsum.photos/200" alt="" />
+          <UtilsImg src="https://picsum.photos/200" />
+          <UtilsImg src="https://picsum.photos/200" />
+          <UtilsImg src="https://picsum.photos/200" />
+          <UtilsImg src="https://picsum.photos/200" />
+          <UtilsImg src="https://picsum.photos/200" />
+          <UtilsImg src="https://picsum.photos/200" />
+          <UtilsImg src="https://picsum.photos/200" />
+          <UtilsImg src="https://picsum.photos/200" />
         </div>
       </div>
     </div>

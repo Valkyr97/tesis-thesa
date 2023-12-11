@@ -19,11 +19,10 @@ const props = defineProps<{
     class="flex flex-col py-2 px-4 border w-full select-none hover:shadow-md transition"
   >
     <div class="flex gap-3 items-start pb-2 border-b">
-      <img
-        @error="e => (e.target as HTMLImageElement).src = '/avatar.png'"
+      <UtilsImg
         :src="avatar"
         class="rounded h-16 w-16 object-contain"
-        alt=""
+        placeholder="/avatar.png"
       />
       <div class="flex flex-col">
         <h2 class="text-xl font-medium">{{ title }}</h2>

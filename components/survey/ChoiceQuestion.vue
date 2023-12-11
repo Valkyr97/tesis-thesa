@@ -30,9 +30,9 @@ const value = computed({
     #default="{ items, node }"
   >
     <FormKit
-      v-for="(item, i) in items"
+      v-for="(item, index) in items"
       :key="item"
-      :index="i"
+      :index="index"
       @input.passive="emit('change', fields.OPTIONS)"
       type="text"
       validation="required"
@@ -44,7 +44,9 @@ const value = computed({
       prefix-icon-class="$remove:w-10 w-6 border-b"
       :suffix-icon="isSelected && value.length > 1 ? 'trash' : false"
       suffix-icon-class="$remove:p-3 $remove:pr-3 border-b"
-      @suffix-icon-click="() => (value = value.splice(i, 1))"
+      @suffix-icon-click="
+        () => node.input(value?.filter((_: any, i: number) => i !== index))
+      "
       :sections-schema="{
         suffixIcon: {
           // change wrapper to a button for accessibility
