@@ -9,6 +9,9 @@ dist
 # Node dependencies
 node_modules
 
+# Ide folders
+.vscode
+
 # Logs
 logs
 *.log
@@ -17,7 +20,7 @@ logs
 .DS_Store
 .fleet
 .idea
-tailwind.config.ts
+
 
 # Local env files
 .env
